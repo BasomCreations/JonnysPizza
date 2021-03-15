@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingTop="12dp"
+    android:paddingRight="10dp"
+    tools:context=".OrderPizza">
+
+    <LinearLayout
+        android:id="@+id/sizeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/sizeText"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:text="Size:"
+            android:textColor="@color/black"
+            android:textSize="52px" />
+
+        <RadioGroup
+            android:id="@+id/sizeGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RadioButton
+                android:id="@+id/smallBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Small" />
+
+            <RadioButton
+                android:id="@+id/mediumBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Medium" />
+
+            <RadioButton
+                android:id="@+id/largeBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Large" />
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/sizeBottom"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sizeLayout"/>
+
+    <LinearLayout
+        android:id="@+id/crustLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sizeLayout">
+
+        <TextView
+            android:id="@+id/crustText"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:text="Crust:"
+            android:textColor="@color/black"
+            android:textSize="52px" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <RadioButton
+                android:id="@+id/handTossedBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hand Tossed" />
+
+            <RadioButton
+                android:id="@+id/thinBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thin" />
+
+            <RadioButton
+                android:id="@+id/panBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pan" />
+
+            <RadioButton
+                android:id="@+id/stuffedBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stuffed" />
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/crustBottom"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/crustLayout"/>
+
+    <LinearLayout
+        android:id="@+id/sauceLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/crustLayout">
+
+        <TextView
+            android:id="@+id/sauceText"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:text="Sauce:"
+            android:textColor="@color/black"
+            android:textSize="52px" />
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+
+            <RadioButton
+                android:id="@+id/marinaraBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Marinara" />
+
+            <RadioButton
+                android:id="@+id/bbqBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="BBQ" />
+
+            <RadioButton
+                android:id="@+id/garlicParmBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Garlic Parmesan" />
+
+            <RadioButton
+                android:id="@+id/alfredoBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Alfredo" />
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/sauceBottom"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sauceLayout"/>
+
+    <LinearLayout
+        android:id="@+id/cheeseLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sauceLayout">
+
+        <TextView
+            android:id="@+id/cheeseText"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:text="Cheese:"
+            android:textColor="@color/black"
+            android:textSize="52px" />
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <RadioButton
+                android:id="@+id/regCheeseBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Regular" />
+
+            <RadioButton
+                android:id="@+id/extraCheeseBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Extra ($1.00)" />
+
+        </RadioGroup>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/cheeseBottom"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cheeseLayout"/>
+
+    <LinearLayout
+        android:id="@+id/toppingsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cheeseLayout">
+
+        <TextView
+            android:id="@+id/toppingsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Toppings:"
+            android:textColor="@color/black"
+            android:textSize="52px" />
+
+        <LinearLayout
+            android:id="@+id/toppingsCol1Layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="@id/toppingsText"
+            app:layout_constraintTop_toBottomOf="@+id/cheeseLayout">
+
+            <CheckBox
+                android:id="@+id/pepperoniCheck"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pepperoni" />
+
+            <CheckBox
+                android:id="@+id/baconCheck"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bacon" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/toppingsCol2Layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="@id/toppingsCol1Layout"
+            app:layout_constraintTop_toBottomOf="@+id/cheeseLayout">
+
+            <CheckBox
+                android:id="@+id/hamCheck"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ham" />
+
+            <CheckBox
+                android:id="@+id/chickenCheck"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Chicken" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/toppingsCol3Layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="@id/toppingsText"
+            app:layout_constraintTop_toBottomOf="@+id/cheeseLayout">
+
+            <CheckBox
+                android:id="@+id/onionsCheck"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Onions" />
+
+            <CheckBox
+                android:id="@+id/greenPeppersCheck"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Green Peppers" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
