@@ -27,7 +27,7 @@
 
         <RadioGroup
             android:id="@+id/sizeGroup"
-            android:layout_width="wrap_content"
+            android:layout_width="145dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -37,20 +37,21 @@
 
             <RadioButton
                 android:id="@+id/smallBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Small" />
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:text="Small"
+                android:checked="true"/>
 
             <RadioButton
                 android:id="@+id/mediumBtn"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:text="Medium" />
 
             <RadioButton
                 android:id="@+id/largeBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
                 android:text="Large" />
         </RadioGroup>
 
@@ -83,8 +84,8 @@
             android:textSize="52px" />
 
         <RadioGroup
-            android:id="@+id/radioGroup"
-            android:layout_width="wrap_content"
+            android:id="@+id/crustGroup"
+            android:layout_width="145dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -94,25 +95,26 @@
             <RadioButton
                 android:id="@+id/handTossedBtn"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hand Tossed" />
+                android:layout_height="35dp"
+                android:text="Hand Tossed"
+                android:checked="true"/>
 
             <RadioButton
                 android:id="@+id/thinBtn"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:text="Thin" />
 
             <RadioButton
                 android:id="@+id/panBtn"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:text="Pan" />
 
             <RadioButton
                 android:id="@+id/stuffedBtn"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:text="Stuffed" />
         </RadioGroup>
 
@@ -144,7 +146,8 @@
             android:textSize="52px" />
 
         <RadioGroup
-            android:layout_width="wrap_content"
+            android:id="@+id/sauceGroup"
+            android:layout_width="145dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -154,25 +157,26 @@
             <RadioButton
                 android:id="@+id/marinaraBtn"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Marinara" />
+                android:layout_height="35sp"
+                android:text="Marinara"
+                android:checked="true"/>
 
             <RadioButton
                 android:id="@+id/bbqBtn"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:text="BBQ" />
 
             <RadioButton
                 android:id="@+id/garlicParmBtn"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:text="Garlic Parmesan" />
 
             <RadioButton
                 android:id="@+id/alfredoBtn"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:text="Alfredo" />
         </RadioGroup>
 
@@ -204,7 +208,8 @@
             android:textSize="52px" />
 
         <RadioGroup
-            android:layout_width="wrap_content"
+            android:id="@+id/cheeseGroup"
+            android:layout_width="145dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -213,13 +218,14 @@
             <RadioButton
                 android:id="@+id/regCheeseBtn"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Regular" />
+                android:layout_height="35dp"
+                android:text="Regular"
+                android:checked="true"/>
 
             <RadioButton
                 android:id="@+id/extraCheeseBtn"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:text="Extra ($1.00)" />
 
         </RadioGroup>
@@ -317,5 +323,15 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Complete Order"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toppingsLayout"
+        android:onClick="completeOrder"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
