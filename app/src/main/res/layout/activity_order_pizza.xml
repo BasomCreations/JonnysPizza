@@ -30,48 +30,75 @@
                 android:text="Size:"
                 android:textColor="@color/black"
                 android:textSize="52px"
-                android:background="@color/teal_200"/>
+                android:background="@drawable/header_border"
+                android:paddingLeft="5dp"/>
 
-            <RadioGroup
-                android:id="@+id/sizeGroup"
-                android:layout_width="145dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+            <LinearLayout
 
-                <RadioButton
-                    android:id="@+id/smallBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:text="Small"
-                    android:checked="true"/>
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-                <RadioButton
-                    android:id="@+id/mediumBtn"
+                <RadioGroup
+                    android:id="@+id/sizeGroup"
+                    android:layout_width="145dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <RadioButton
+                        android:id="@+id/smallBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:text="Small"
+                        android:checked="true"/>
+
+                    <RadioButton
+                        android:id="@+id/mediumBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:text="Medium" />
+
+                    <RadioButton
+                        android:id="@+id/largeBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:text="Large" />
+                </RadioGroup>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:text="Medium" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                <RadioButton
-                    android:id="@+id/largeBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:text="Large" />
-            </RadioGroup>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:text="($8)"
+                        android:gravity="center"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:text="($10)"
+                        android:gravity="center"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:text="($12)"
+                        android:gravity="center"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
-        <View
-            android:id="@+id/sizeBottom"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@android:color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sizeLayout"/>
 
         <LinearLayout
             android:id="@+id/crustLayout"
@@ -89,7 +116,8 @@
                 android:text="Crust:"
                 android:textColor="@color/black"
                 android:textSize="52px"
-                android:background="@color/teal_200"/>
+                android:background="@drawable/header_border"
+                android:paddingLeft="5dp"/>
 
             <RadioGroup
                 android:id="@+id/crustGroup"
@@ -128,14 +156,6 @@
 
         </LinearLayout>
 
-        <View
-            android:id="@+id/crustBottom"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/crustLayout"/>
 
         <LinearLayout
             android:id="@+id/sauceLayout"
@@ -152,7 +172,8 @@
                 android:text="Sauce:"
                 android:textColor="@color/black"
                 android:textSize="52px"
-                android:background="@color/teal_200"/>
+                android:background="@drawable/header_border"
+                android:paddingLeft="5dp"/>
 
             <RadioGroup
                 android:id="@+id/sauceGroup"
@@ -191,14 +212,6 @@
 
         </LinearLayout>
 
-        <View
-            android:id="@+id/sauceBottom"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sauceLayout"/>
 
         <LinearLayout
             android:id="@+id/cheeseLayout"
@@ -212,43 +225,58 @@
                 android:id="@+id/cheeseText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/teal_200"
+                android:background="@drawable/header_border"
                 android:text="Cheese:"
                 android:textColor="@color/black"
-                android:textSize="52px" />
+                android:textSize="52px"
+                android:paddingLeft="5dp"/>
 
-            <RadioGroup
-                android:id="@+id/cheeseGroup"
-                android:layout_width="145dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-                <RadioButton
-                    android:id="@+id/regCheeseBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:text="Regular"
-                    android:checked="true"/>
+                <RadioGroup
+                    android:id="@+id/cheeseGroup"
+                    android:layout_width="145dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
 
-                <RadioButton
-                    android:id="@+id/extraCheeseBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:text="Extra ($1.00)" />
+                    <RadioButton
+                        android:id="@+id/regCheeseBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:text="Regular"
+                        android:checked="true"/>
 
-            </RadioGroup>
+                    <RadioButton
+                        android:id="@+id/extraCheeseBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:text="Extra" />
+
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:text="($1.00)"
+                        android:gravity="center"/>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
 
-        <View
-            android:id="@+id/cheeseBottom"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cheeseLayout"/>
 
         <LinearLayout
             android:id="@+id/toppingsLayout"
@@ -265,7 +293,13 @@
                 android:text="Toppings:"
                 android:textColor="@color/black"
                 android:textSize="52px"
-                android:background="@color/teal_200"/>
+                android:background="@drawable/header_border"
+                android:paddingLeft="5dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="*2 Free ($0.50/Topping for Additional)" />
 
             <LinearLayout
                 android:id="@+id/toppingsLayoutInner"
