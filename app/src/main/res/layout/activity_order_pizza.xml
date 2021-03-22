@@ -415,6 +415,62 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Quantity"
+            android:textSize="52px"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/quantity_border"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/decreaseQuantityBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="-"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/white"
+                android:layout_marginLeft="2dp"
+                android:onClick="decreaseQuantityBtn_Click"
+                style="?android:attr/borderlessButtonStyle"
+                />
+
+            <TextView
+                android:id="@+id/quantityText"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:text="1"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:gravity="center"
+                android:background="@drawable/quantity_border"/>
+
+            <Button
+                android:id="@+id/increaseQuantityBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="+"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/white"
+                android:layout_marginRight="2dp"
+                android:onClick="increaseQuantityBtn_Click"
+                style="?android:attr/borderlessButtonStyle"
+                />
+
+        </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

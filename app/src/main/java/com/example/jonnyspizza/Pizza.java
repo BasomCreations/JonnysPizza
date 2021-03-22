@@ -13,8 +13,8 @@ public class Pizza extends Item implements Serializable {
     private String cheese;
     private ArrayList<String> toppings = new ArrayList<>();
 
-    public Pizza(String size, String crust, String sauce, String cheese) {
-        super("Pizza");
+    public Pizza(int quantity, String size, String crust, String sauce, String cheese) {
+        super("Pizza", quantity);
         this.size = size;
         this.crust = crust;
         this.sauce = sauce;
@@ -25,9 +25,36 @@ public class Pizza extends Item implements Serializable {
         this.toppings.add(topping);
     }
 
-    private void calculateCost(){
+    public void calculateCost(){
+        double total = 0;
 
+        // Add cost for pizza size
+        if (this.size != null && this.size.toLowerCase().equals(Price.SMALL.getName())){
+            total += Price.SMALL.getValue();
+        }
+        else if (this.size != null && this.size.toLowerCase().equals(Price.MEDIUM.getName())){
+            total += Price.MEDIUM.getValue();
+        }
+        else if (this.size != null && this.size.toLowerCase().equals(Price.LARGE.getName())){
+            total += Price.LARGE.getValue();
+        }
+
+        // Add cost for extra cheese
+        if (this.cheese != null && this.cheese.toLowerCase().equals(Price.EXTRA_CHEESE.getName())){
+            total += Price.EXTRA_CHEESE.getValue();
+        }
+
+        // Add cost for toppings (2 free, additional $0.50 each)
+        int num_toppings = toppings.size();
+        int additional_toppings = num_toppings - 2;
+        if (additional_toppings > 0){
+            total += (additional_toppings * Price.ADDITIONAL_TOPPINGS.getValue());
+        }
+
+        setCost(total);
     }
+
+    // Getters
 
     public String getSize() {
         return size;
@@ -48,4 +75,5 @@ public class Pizza extends Item implements Serializable {
     public ArrayList<String> getToppings() {
         return toppings;
     }
+
 }

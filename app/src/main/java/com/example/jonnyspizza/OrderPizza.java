@@ -10,7 +10,10 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 public class OrderPizza extends AppCompatActivity {
 
@@ -28,6 +31,7 @@ public class OrderPizza extends AppCompatActivity {
 
         Pizza pizza = createPizza();
         addToppings(pizza);
+        pizza.calculateCost();
 
         Intent i = new Intent(this, DisplayPizzaOrderActivity.class);
         i.putExtra("Pizza", pizza);
@@ -60,7 +64,11 @@ public class OrderPizza extends AppCompatActivity {
         String sauce = (String) ((RadioButton) findViewById(sauceId)).getText();
         String cheese = (String) ((RadioButton) findViewById(cheeseId)).getText();
 
-        Pizza pizza = new Pizza(size, crust, sauce, cheese);
+        // Get quantity
+        TextView quantityText = findViewById(R.id.quantityText);
+        int quantity = Integer.parseInt(quantityText.getText().toString());
+
+        Pizza pizza = new Pizza(quantity, size, crust, sauce, cheese);
 
         return pizza;
     }
@@ -147,6 +155,36 @@ public class OrderPizza extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Decreases the quantity counter
+     * @param view
+     */
+    public void decreaseQuantityBtn_Click(View view){
+
+        TextView quantityTV = findViewById(R.id.quantityText);
+        String quantityString = quantityTV.getText().toString();
+        int quantity = Integer.parseInt(quantityString);
+
+        if (quantity > 1) {
+            quantity--;
+            quantityTV.setText(String.valueOf(quantity));
+        }
+    }
+
+    /**
+     * Increases the quantity counter
+     * @param view
+     */
+    public void increaseQuantityBtn_Click(View view){
+
+        TextView quantityTV = findViewById(R.id.quantityText);
+        String quantityString = quantityTV.getText().toString();
+        int quantity = Integer.parseInt(quantityString);
+
+        quantity++;
+        quantityTV.setText(String.valueOf(quantity));
     }
 
     /**

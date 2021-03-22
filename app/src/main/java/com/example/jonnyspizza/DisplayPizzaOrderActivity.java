@@ -3,6 +3,7 @@ package com.example.jonnyspizza;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.widget.TextView;
 
 public class DisplayPizzaOrderActivity extends AppCompatActivity {
@@ -51,6 +52,11 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
             }
             sb.append(pizza.getToppings().get(i).toLowerCase());
         }
+
+        sb.append(String.format("\n\n%s %.2f", Html.fromHtml("<b>Cost:</b>"), pizza.getCost()));
+
+        sb.append("\nQuantity: " + pizza.getQuantity());
+        sb.append(String.format("\nTotal Cost: %.2f", (pizza.getQuantity() * pizza.getCost())));
 
         displayText.setText(sb.toString());
     }
