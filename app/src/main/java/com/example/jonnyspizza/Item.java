@@ -2,7 +2,7 @@ package com.example.jonnyspizza;
 
 import java.io.Serializable;
 
-public class Item implements Serializable {
+public abstract class Item implements Serializable {
 
     private String name;
     private double cost;        // cost of item of 1 quantity
@@ -28,6 +28,12 @@ public class Item implements Serializable {
         this.cost = 0;      // default cost is 0 until calculated later
         this.quantity = quantity;
     }
+
+    /**
+     * Gets a formatted string of the description of the item
+     * @return String
+     */
+    public abstract String getDescription();
 
     public String getName() {
         return name;

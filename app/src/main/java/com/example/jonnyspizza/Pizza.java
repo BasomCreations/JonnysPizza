@@ -76,4 +76,33 @@ public class Pizza extends Item implements Serializable {
         return toppings;
     }
 
+    /**
+     * Gets a formatted string of the description of the item
+     * @return String
+     */
+    @Override
+    public String getDescription() {
+        StringBuilder sb = new StringBuilder();
+
+        if (this.size != null) { sb.append(this.size + " - "); }
+        if (this.crust != null) { sb.append(this.crust + " Crust\n"); }
+        if (this.sauce != null) { sb.append(this.sauce + " Sauce\n"); }
+        if (this.cheese != null) { sb.append(this.cheese +  " Cheese\n"); }
+
+        int numToppings = this.toppings.size();
+
+        if (numToppings == 1){
+            sb.append(this.toppings.get(0));
+        }
+
+        else if (numToppings > 1) {
+
+            for (int i = 0; i < numToppings - 1; i++) {
+                sb.append(this.toppings.get(i) + ", ");
+            }
+            sb.append(this.toppings.get(numToppings - 1));      // Add the last topping
+        }
+
+        return sb.toString();
+    }
 }
