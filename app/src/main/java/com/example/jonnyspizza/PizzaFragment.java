@@ -1,21 +1,94 @@
 package com.example.jonnyspizza;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-public class OrderPizza extends AppCompatActivity {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link PizzaFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class PizzaFragment extends Fragment {
+
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
+    public PizzaFragment() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment PizzaFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static PizzaFragment newInstance(String param1, String param2) {
+        PizzaFragment fragment = new PizzaFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_pizza);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        View rootView = inflater.inflate(R.layout.activity_order_pizza, container, false);
+
+        rootView.findViewById(R.id.decreasePizzaQuantityBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                decreaseQuantityBtn_Click(v);
+            }
+        });
+
+        rootView.findViewById(R.id.increasePizzaQuantityBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                increaseQuantityBtn_Click(v);
+            }
+        });
+
+        rootView.findViewById(R.id.addPizzaBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                completeOrder(v);
+            }
+        });
+
+        // Inflate the layout for this fragment
+        return rootView;
     }
 
     /**
@@ -28,7 +101,7 @@ public class OrderPizza extends AppCompatActivity {
         addToppings(pizza);
         pizza.calculateCost();
 
-        Intent i = new Intent(this, DisplayPizzaOrderActivity.class);
+        Intent i = new Intent(getActivity(), DisplayPizzaOrderActivity.class);
         i.putExtra("Pizza", pizza);
         startActivity(i);
 
@@ -40,10 +113,10 @@ public class OrderPizza extends AppCompatActivity {
      */
     private Pizza createPizza(){
         // Find group for each pizza category
-        RadioGroup sizeGroup = findViewById(R.id.sizeGroup);
-        RadioGroup crustGroup = findViewById(R.id.crustGroup);
-        RadioGroup sauceGroup = findViewById(R.id.sauceGroup);
-        RadioGroup cheeseGroup = findViewById(R.id.cheeseGroup);
+        RadioGroup sizeGroup = getView().findViewById(R.id.sizeGroup);
+        RadioGroup crustGroup = getView().findViewById(R.id.crustGroup);
+        RadioGroup sauceGroup = getView().findViewById(R.id.sauceGroup);
+        RadioGroup cheeseGroup = getView().findViewById(R.id.cheeseGroup);
 
         // Get ID of selected button
         int sizeId = sizeGroup.getCheckedRadioButtonId();
@@ -54,13 +127,13 @@ public class OrderPizza extends AppCompatActivity {
         boolean validInput = validateRadioGroups(sizeId, crustId, sauceId, cheeseId);
 
         // Get value of selected button
-        String size = (String) ((RadioButton) findViewById(sizeId)).getText();
-        String crust = (String) ((RadioButton) findViewById(crustId)).getText();
-        String sauce = (String) ((RadioButton) findViewById(sauceId)).getText();
-        String cheese = (String) ((RadioButton) findViewById(cheeseId)).getText();
+        String size = (String) ((RadioButton) getView().findViewById(sizeId)).getText();
+        String crust = (String) ((RadioButton) getView().findViewById(crustId)).getText();
+        String sauce = (String) ((RadioButton) getView().findViewById(sauceId)).getText();
+        String cheese = (String) ((RadioButton) getView().findViewById(cheeseId)).getText();
 
         // Get quantity
-        TextView quantityText = findViewById(R.id.quantityPizzaText);
+        TextView quantityText = getView().findViewById(R.id.quantityPizzaText);
         int quantity = Integer.parseInt(quantityText.getText().toString());
 
         Pizza pizza = new Pizza(quantity, size, crust, sauce, cheese);
@@ -74,18 +147,18 @@ public class OrderPizza extends AppCompatActivity {
      */
     private void addToppings(Pizza pizza){
         // Gather all toppings checkboxes
-        CheckBox pepperoniBox = findViewById(R.id.pepperoniCheck);
-        CheckBox baconBox = findViewById(R.id.baconCheck);
-        CheckBox sausageBox = findViewById(R.id.sausageCheck);
-        CheckBox phillySteakBox = findViewById(R.id.phillySteakCheck);
-        CheckBox hamBox = findViewById(R.id.hamCheck);
-        CheckBox chickenBox = findViewById(R.id.chickenCheck);
-        CheckBox mushroomBox = findViewById(R.id.mushroomCheck);
-        CheckBox pineappleBox = findViewById(R.id.pineappleCheck);
-        CheckBox onionsBox = findViewById(R.id.onionsCheck);
-        CheckBox greenPeppersBox = findViewById(R.id.greenPeppersCheck);
-        CheckBox jalapenoBox = findViewById(R.id.jalapenoCheck);
-        CheckBox spinachBox = findViewById(R.id.spinachCheck);
+        CheckBox pepperoniBox = getView().findViewById(R.id.pepperoniCheck);
+        CheckBox baconBox = getView().findViewById(R.id.baconCheck);
+        CheckBox sausageBox = getView().findViewById(R.id.sausageCheck);
+        CheckBox phillySteakBox = getView().findViewById(R.id.phillySteakCheck);
+        CheckBox hamBox = getView().findViewById(R.id.hamCheck);
+        CheckBox chickenBox = getView().findViewById(R.id.chickenCheck);
+        CheckBox mushroomBox = getView().findViewById(R.id.mushroomCheck);
+        CheckBox pineappleBox = getView().findViewById(R.id.pineappleCheck);
+        CheckBox onionsBox = getView().findViewById(R.id.onionsCheck);
+        CheckBox greenPeppersBox = getView().findViewById(R.id.greenPeppersCheck);
+        CheckBox jalapenoBox = getView().findViewById(R.id.jalapenoCheck);
+        CheckBox spinachBox = getView().findViewById(R.id.spinachCheck);
 
         // Determined if selected
         boolean pepperoni = pepperoniBox.isChecked();
@@ -158,7 +231,7 @@ public class OrderPizza extends AppCompatActivity {
      */
     public void decreaseQuantityBtn_Click(View view){
 
-        TextView quantityTV = findViewById(R.id.quantityPizzaText);
+        TextView quantityTV = getView().findViewById(R.id.quantityPizzaText);
         String quantityString = quantityTV.getText().toString();
         int quantity = Integer.parseInt(quantityString);
 
@@ -174,23 +247,11 @@ public class OrderPizza extends AppCompatActivity {
      */
     public void increaseQuantityBtn_Click(View view){
 
-        TextView quantityTV = findViewById(R.id.quantityPizzaText);
+        TextView quantityTV = getView().findViewById(R.id.quantityPizzaText);
         String quantityString = quantityTV.getText().toString();
         int quantity = Integer.parseInt(quantityString);
 
         quantity++;
         quantityTV.setText(String.valueOf(quantity));
     }
-
-    /**
-     * Displays the message that one of the inputs was invalid
-     * @param message
-     *//*
-    private void displayInvalidToast(String message){
-        Context context = getApplicationContext();
-        int duration = 100; //Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
-        //toast.setGravity(Gravity.TOP|Gravity.CENTER, 0, 0);
-        toast.show();
-    }*/
 }

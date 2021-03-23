@@ -435,7 +435,7 @@
             android:layout_gravity="center_horizontal">
 
             <Button
-                android:id="@+id/decreaseQuantityBtn"
+                android:id="@+id/decreasePizzaQuantityBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="-"
@@ -447,7 +447,7 @@
                 />
 
             <TextView
-                android:id="@+id/quantityText"
+                android:id="@+id/quantityPizzaText"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:textColor="@color/black"
@@ -458,16 +458,15 @@
                 android:background="@drawable/quantity_border"/>
 
             <Button
-                android:id="@+id/increaseQuantityBtn"
+                android:id="@+id/increasePizzaQuantityBtn"
+                style="?android:attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="+"
-                android:textColor="@color/black"
-                android:backgroundTint="@color/white"
                 android:layout_marginRight="2dp"
+                android:backgroundTint="@color/white"
                 android:onClick="increaseQuantityBtn_Click"
-                style="?android:attr/borderlessButtonStyle"
-                />
+                android:text="+"
+                android:textColor="@color/black" />
 
         </LinearLayout>
 
@@ -479,7 +478,7 @@
             android:paddingTop="16dp">
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/addPizzaBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Complete Order"

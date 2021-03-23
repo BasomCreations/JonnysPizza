@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Jonny\'s Pizza</string>
+    <string name="title_activity_order_item">OrderItemActivity</string>
+    <string name="tab_text_1">Pizzas</string>
+    <string name="tab_text_2">Subs</string>
+    <string name="tab_text_3">Wings</string>
+    <string name="tab_text_4">Drinks</string>
+
 </resources>

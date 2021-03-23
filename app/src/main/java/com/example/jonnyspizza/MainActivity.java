@@ -16,7 +16,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void orderPizza(View view){
         View v = findViewById(R.id.orderPizzaBtn);
-        Intent intent = new Intent(this, OrderPizza.class);
+        //Intent intent = new Intent(this, OrderPizza.class);
+        Intent intent = new Intent(this, OrderItemActivity.class);
         startActivity(intent);
     }
 }
