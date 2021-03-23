@@ -1,11 +1,8 @@
 package com.example.jonnyspizza;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
-import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -29,9 +26,10 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_pizza_order);
 
-        Pizza pizza = (Pizza) getIntent().getSerializableExtra("Pizza");
+        Pizza pizza = (Pizza) getIntent().getSerializableExtra(getString(R.string.pizza_name));
+        Sub sub = (Sub) getIntent().getSerializableExtra(getString(R.string.sub_name));
         //displayOrder(pizza);
-        displayItem(pizza);
+        displayItem(sub);
     }
 
     /**

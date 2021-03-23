@@ -102,7 +102,7 @@ public class PizzaFragment extends Fragment {
         pizza.calculateCost();
 
         Intent i = new Intent(getActivity(), DisplayPizzaOrderActivity.class);
-        i.putExtra("Pizza", pizza);
+        i.putExtra(getString(R.string.pizza_name), pizza);
         startActivity(i);
 
     }

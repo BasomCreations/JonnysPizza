@@ -7,7 +7,10 @@ public enum Price {
 
     SMALL(8.00, "small"), MEDIUM(10.00, "medium"), LARGE(12.00, "large"),
     EXTRA_CHEESE(1.00, "extra"),
-    ADDITIONAL_TOPPINGS(0.50, "additional toppings");
+    ADDITIONAL_TOPPINGS(0.50, "additional toppings"),
+    SUB(7.00, "sandwich"),
+    WINGS(9.50, "wings"),
+    DRINKS(2.50, "drinks");
 
     private double value;
     private String name;

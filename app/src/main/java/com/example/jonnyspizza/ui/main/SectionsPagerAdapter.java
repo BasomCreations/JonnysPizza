@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.jonnyspizza.PizzaFragment;
 import com.example.jonnyspizza.R;
+import com.example.jonnyspizza.SubFragment;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -36,6 +37,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         switch (position){
             case 0:
                 fragment = PizzaFragment.newInstance("test", "test");
+                break;
+            case 1:
+                fragment = SubFragment.newInstance("test", "test");
                 break;
         }
         return fragment;
