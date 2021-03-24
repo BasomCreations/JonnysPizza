@@ -20,14 +20,18 @@ import android.widget.TextView;
  */
 public class PizzaFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
+    /**
+    // Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+     */
 
-    // TODO: Rename and change types of parameters
+    /**
+    // Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+     */
 
     public PizzaFragment() {
         // Required empty public constructor
@@ -37,27 +41,25 @@ public class PizzaFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment PizzaFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static PizzaFragment newInstance(String param1, String param2) {
+    // Rename and change types and number of parameters
+    public static PizzaFragment newInstance() {
         PizzaFragment fragment = new PizzaFragment();
-        Bundle args = new Bundle();
+        /**Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        fragment.setArguments(args);*/
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
+        /**if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        }*/
     }
 
     @Override
@@ -83,7 +85,8 @@ public class PizzaFragment extends Fragment {
         rootView.findViewById(R.id.addPizzaBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                completeOrder(v);
+                addToCart(v);
+                ((OrderItemActivity)getActivity()).createNewDialog(v);
             }
         });
 
@@ -95,15 +98,18 @@ public class PizzaFragment extends Fragment {
      * Complete Order Button Click
      * @param view
      */
-    public void completeOrder(View view){
+    public void addToCart(View view){
 
         Pizza pizza = createPizza();
         addToppings(pizza);
         pizza.calculateCost();
 
-        Intent i = new Intent(getActivity(), DisplayPizzaOrderActivity.class);
+        Cart cart = ((OrderItemActivity)getActivity()).getCart();
+        cart.addItem(pizza);
+
+        /**Intent i = new Intent(getActivity(), DisplayPizzaOrderActivity.class);
         i.putExtra(getString(R.string.pizza_name), pizza);
-        startActivity(i);
+        startActivity(i);*/
 
     }
 

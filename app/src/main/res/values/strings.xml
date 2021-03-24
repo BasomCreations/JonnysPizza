@@ -9,4 +9,6 @@
     <string name="pizza_name">Pizza</string>
     <string name="sub_name">Sub</string>
 
+    <string name="cart_name">Cart</string>
+
 </resources>

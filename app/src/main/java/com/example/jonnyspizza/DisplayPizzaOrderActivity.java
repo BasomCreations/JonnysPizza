@@ -26,14 +26,27 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_pizza_order);
 
-        Pizza pizza = (Pizza) getIntent().getSerializableExtra(getString(R.string.pizza_name));
-        Sub sub = (Sub) getIntent().getSerializableExtra(getString(R.string.sub_name));
+        //Pizza pizza = (Pizza) getIntent().getSerializableExtra(getString(R.string.pizza_name));
+        //Sub sub = (Sub) getIntent().getSerializableExtra(getString(R.string.sub_name));
         //displayOrder(pizza);
-        displayItem(sub);
+        //displayItem(sub);
+
+        Cart cart = (Cart) getIntent().getSerializableExtra(getString(R.string.cart_name));
+        displayCart(cart);
     }
 
     /**
-     * Display an idea on the confirmation screen
+     * Display all items in the cart
+     * @param cart
+     */
+    private void displayCart(Cart cart){
+        for (Item item: cart.getItems()) {
+            displayItem(item);
+        }
+    }
+
+    /**
+     * Display an item on the confirmation screen
      * @param item
      */
     private void displayItem(Item item){

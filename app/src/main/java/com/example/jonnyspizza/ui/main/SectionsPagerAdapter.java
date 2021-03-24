@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.example.jonnyspizza.Cart;
 import com.example.jonnyspizza.PizzaFragment;
 import com.example.jonnyspizza.R;
 import com.example.jonnyspizza.SubFragment;
@@ -33,13 +34,13 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
         return PlaceholderFragment.newInstance(position + 1); */
-        Fragment fragment = PizzaFragment.newInstance("test", "test");
+        Fragment fragment = PizzaFragment.newInstance();
         switch (position){
             case 0:
-                fragment = PizzaFragment.newInstance("test", "test");
+                fragment = PizzaFragment.newInstance();
                 break;
             case 1:
-                fragment = SubFragment.newInstance("test", "test");
+                fragment = SubFragment.newInstance();
                 break;
         }
         return fragment;

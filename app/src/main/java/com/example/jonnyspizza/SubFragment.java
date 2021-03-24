@@ -1,6 +1,5 @@
 package com.example.jonnyspizza;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -19,14 +18,10 @@ import android.widget.TextView;
  */
 public class SubFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    /**private static final String CART_PARAM = "Cart";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    //private Cart cart; */
 
     public SubFragment() {
         // Required empty public constructor
@@ -36,27 +31,22 @@ public class SubFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment SubFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static SubFragment newInstance(String param1, String param2) {
+    public static SubFragment newInstance() {
         SubFragment fragment = new SubFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        /**Bundle args = new Bundle();
+        //args.putSerializable(CART_PARAM, cart);
+        fragment.setArguments(args);*/
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        /**if (getArguments() != null) {
+            cart = (Cart) getArguments().getSerializable(CART_PARAM);
+        }*/
     }
 
     @Override
@@ -81,7 +71,8 @@ public class SubFragment extends Fragment {
         rootView.findViewById(R.id.addSubBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                completeOrder(v);
+                addToCart(v);
+                ((OrderItemActivity)getActivity()).createNewDialog(v);
             }
         });
 
@@ -90,10 +81,10 @@ public class SubFragment extends Fragment {
     }
 
     /**
-     * Complete Order Button Click
+     * Add the current item to the cart
      * @param view
      */
-    public void completeOrder(View view){
+    public void addToCart(View view){
 
         RadioGroup hotSubGroup = getView().findViewById(R.id.hotSubGroup);
         int subId = hotSubGroup.getCheckedRadioButtonId();
@@ -105,10 +96,9 @@ public class SubFragment extends Fragment {
 
         Sub sub = new Sub(subType, Price.SUB.getValue(), quantity);
 
-
-        Intent i = new Intent(getActivity(), DisplayPizzaOrderActivity.class);
-        i.putExtra(getString(R.string.sub_name), sub);
-        startActivity(i);
+        //cart.addItem(sub);
+        Cart cart = ((OrderItemActivity)getActivity()).getCart();
+        cart.addItem(sub);
 
     }
 
