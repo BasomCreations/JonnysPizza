@@ -11,4 +11,6 @@
 
     <string name="cart_name">Cart</string>
 
+    <string name="add_to_cart">ADD TO CART</string>
+
 </resources>

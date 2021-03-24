@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/pizzaScroll"
     >
 
     <!-- TODO: Look into context (change to PizzaFragment - put above) -->
@@ -482,12 +483,12 @@
                 android:id="@+id/addPizzaBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Complete Order"
+                android:gravity="center"
+                android:onClick="completeOrder"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toppingsLayout"
-                android:onClick="completeOrder"
-                android:gravity="center"/>
+                android:text="@string/add_to_cart"/>
 
         </LinearLayout>
 

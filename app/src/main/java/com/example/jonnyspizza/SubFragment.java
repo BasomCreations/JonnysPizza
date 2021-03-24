@@ -131,4 +131,28 @@ public class SubFragment extends Fragment {
         quantity++;
         quantityTV.setText(String.valueOf(quantity));
     }
+
+    /**
+     * Refresh the pizza ordering page to default
+     */
+    public void refresh(){
+        resetRadioButtons();
+        resetQuantity();
+    }
+
+    /**
+     * Reset all of the radio buttons to the default (first) choice in the group
+     */
+    private void resetRadioButtons(){
+        RadioGroup hotSubGroup = getView().findViewById(R.id.hotSubGroup);
+        hotSubGroup.check(R.id.chickenBaconRanchBtn);
+    }
+
+    /**
+     * Reset the quantity counter to 1
+     */
+    private void resetQuantity(){
+        TextView quantityTV = getView().findViewById(R.id.quantitySubText);
+        quantityTV.setText("1");
+    }
 }

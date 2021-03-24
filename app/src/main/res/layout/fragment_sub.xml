@@ -133,8 +133,7 @@
                     android:id="@+id/addSubBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Complete Order"
-                    android:onClick="completeOrder"
+                    android:text="@string/add_to_cart"
                     android:gravity="center"/>
 
             </LinearLayout>

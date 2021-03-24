@@ -24,6 +24,11 @@ import org.w3c.dom.Text;
 
 public class OrderItemActivity extends AppCompatActivity {
 
+    private final static int PIZZA_INDEX = 0;
+    private final static int SUB_INDEX = 1;
+    private final static int WINGS_INDEX = 2;
+    private final static int DRINKS_INDEX = 3;
+
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
     private Button backToMenuBtn, checkoutBtn;
@@ -71,8 +76,14 @@ public class OrderItemActivity extends AppCompatActivity {
         backToMenuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // define save button here
                 dialog.dismiss();
+
+                // Set the current fragment to the first one (Pizza)
+                ViewPager viewPager = findViewById(R.id.view_pager);
+                viewPager.setCurrentItem(PIZZA_INDEX);
+
+                // Refresh all of the fragments
+                refreshFragments(viewPager);
             }
         });
 
@@ -80,7 +91,6 @@ public class OrderItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 proceedToCheckout();
-                //dialog.dismiss();
             }
         });
     }
@@ -100,5 +110,17 @@ public class OrderItemActivity extends AppCompatActivity {
      */
     public Cart getCart(){
         return this.cart;
+    }
+
+    /**
+     * Clear all of the changed features of the menu fragments
+     * @param viewPager
+     */
+    private void refreshFragments(ViewPager viewPager){
+        PizzaFragment pizzaFragment = (PizzaFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + PIZZA_INDEX);
+        pizzaFragment.refresh();
+
+        SubFragment subFragment = (SubFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + SUB_INDEX);
+        subFragment.refresh();
     }
 }

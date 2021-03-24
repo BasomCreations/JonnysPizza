@@ -3,14 +3,17 @@ package com.example.jonnyspizza;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 /**
@@ -260,4 +263,82 @@ public class PizzaFragment extends Fragment {
         quantity++;
         quantityTV.setText(String.valueOf(quantity));
     }
+
+    /**
+     * Refresh the pizza ordering page to default
+     */
+    public void refresh(){
+        resetRadioButtons();
+        resetCheckboxes();
+        resetQuantity();
+        resetScroll();
+    }
+
+    /**
+     * Reset all of the radio buttons to the default (first) choice in the group
+     */
+    private void resetRadioButtons(){
+        // Find group for each pizza category
+        RadioGroup sizeGroup = getView().findViewById(R.id.sizeGroup);
+        RadioGroup crustGroup = getView().findViewById(R.id.crustGroup);
+        RadioGroup sauceGroup = getView().findViewById(R.id.sauceGroup);
+        RadioGroup cheeseGroup = getView().findViewById(R.id.cheeseGroup);
+
+        sizeGroup.check(R.id.smallBtn);
+        crustGroup.check(R.id.handTossedBtn);
+        sauceGroup.check(R.id.marinaraBtn);
+        cheeseGroup.check(R.id.regCheeseBtn);
+    }
+
+    /**
+     * Deselect all of the checkboxes
+     */
+    private void resetCheckboxes(){
+        boolean selected = false;
+
+        // Gather all toppings checkboxes
+        CheckBox pepperoniBox = getView().findViewById(R.id.pepperoniCheck);
+        CheckBox baconBox = getView().findViewById(R.id.baconCheck);
+        CheckBox sausageBox = getView().findViewById(R.id.sausageCheck);
+        CheckBox phillySteakBox = getView().findViewById(R.id.phillySteakCheck);
+        CheckBox hamBox = getView().findViewById(R.id.hamCheck);
+        CheckBox chickenBox = getView().findViewById(R.id.chickenCheck);
+        CheckBox mushroomBox = getView().findViewById(R.id.mushroomCheck);
+        CheckBox pineappleBox = getView().findViewById(R.id.pineappleCheck);
+        CheckBox onionsBox = getView().findViewById(R.id.onionsCheck);
+        CheckBox greenPeppersBox = getView().findViewById(R.id.greenPeppersCheck);
+        CheckBox jalapenoBox = getView().findViewById(R.id.jalapenoCheck);
+        CheckBox spinachBox = getView().findViewById(R.id.spinachCheck);
+
+        // Reset checkboxes
+        pepperoniBox.setChecked(selected);
+        baconBox.setChecked(selected);
+        sausageBox.setChecked(selected);
+        phillySteakBox.setChecked(selected);
+        hamBox.setChecked(selected);
+        chickenBox.setChecked(selected);
+        mushroomBox.setChecked(selected);
+        pineappleBox.setChecked(selected);
+        onionsBox.setChecked(selected);
+        greenPeppersBox.setChecked(selected);
+        jalapenoBox.setChecked(selected);
+        spinachBox.setChecked(selected);
+    }
+
+    /**
+     * Reset the quantity counter to 1
+     */
+    private void resetQuantity(){
+        TextView quantityTV = getView().findViewById(R.id.quantityPizzaText);
+        quantityTV.setText("1");
+    }
+
+    /**
+     * Set the scroll to the top of the fragment
+     */
+    private void resetScroll(){
+        NestedScrollView scrollView = getView().findViewById(R.id.pizzaScroll);
+        scrollView.smoothScrollTo(0, 0);
+    }
+
 }
