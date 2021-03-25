@@ -3,12 +3,15 @@ package com.example.jonnyspizza;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class DisplayPizzaOrderActivity extends AppCompatActivity {
 
@@ -20,6 +23,7 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
     private final static int INNER_PADDING_RIGHT = 10;
     private final static int ITEM_PADDING = 12;
     private final static int DIVIDER_WIDTH = 2;
+    private final static int INNER_ITEM_WIDTH = 380;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,7 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
         for (Item item: cart.getItems()) {
             displayItem(item);
         }
+        displayTotalCost(cart);
     }
 
     /**
@@ -62,6 +67,7 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
         // Create inner layout for the item name, quantity, and cost
         LinearLayout itemInnerLayout = new LinearLayout(DisplayPizzaOrderActivity.this);
         itemInnerLayout.setOrientation(LinearLayout.VERTICAL);
+        itemInnerLayout.setLayoutParams(new LinearLayout.LayoutParams(INNER_ITEM_WIDTH, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         // Create text for item name
         TextView itemName = new TextView(DisplayPizzaOrderActivity.this);
@@ -79,7 +85,7 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
         // Create text for total item cost
         TextView itemCost = new TextView(DisplayPizzaOrderActivity.this);
         String totalCost = String.format("$%.2f", (item.getCost() * item.getQuantity()));
-        itemCost.setText("Total Cost: " + totalCost);
+        itemCost.setText("Cost: " + totalCost);
         itemCost.setTextSize(NORMAL_TEXT_SIZE);
         itemCost.setPadding(0, 0, INNER_PADDING_RIGHT, 0);
 
@@ -105,6 +111,25 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
         parentLayout.addView(itemLayout);
     }
 
+    private void displayTotalCost(Cart cart){
+        // Original layout in the activity
+        LinearLayout parentLayout = findViewById(R.id.parentLayout);
+
+        // TextView for the total cost
+        TextView totalTextView = new TextView(DisplayPizzaOrderActivity.this);
+
+        totalTextView.setText(String.format("Total Cost: $%.2f", cart.getTotalCost()));
+        totalTextView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        totalTextView.setTextSize(HEADER_TEXT_SIZE);
+        totalTextView.setTypeface(null, Typeface.BOLD);
+        totalTextView.setTextColor(Color.BLACK);
+        totalTextView.setBackgroundColor(Color.YELLOW);
+        //totalTextView.setPadding(0, TOTAL_PADDING, 0, 0);
+
+        parentLayout.addView(totalTextView);
+    }
+
+    /**
     private void displayOrder(Pizza pizza){
         TextView displayText = findViewById(R.id.finalOrderText);
 
@@ -148,4 +173,5 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
 
         displayText.setText(sb.toString());
     }
+     */
 }
