@@ -80,6 +80,11 @@ public class SubFragment extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
     /**
      * Add the current item to the cart
      * @param view

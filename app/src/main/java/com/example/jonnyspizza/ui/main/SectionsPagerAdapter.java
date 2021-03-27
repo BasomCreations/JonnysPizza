@@ -12,6 +12,7 @@ import com.example.jonnyspizza.Cart;
 import com.example.jonnyspizza.PizzaFragment;
 import com.example.jonnyspizza.R;
 import com.example.jonnyspizza.SubFragment;
+import com.example.jonnyspizza.WingsFragment;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -42,6 +43,12 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 fragment = SubFragment.newInstance();
                 break;
+            case 2:
+                fragment = WingsFragment.newInstance();
+                break;
+            case 3:
+                fragment = SubFragment.newInstance();
+                //TODO: change this to drinks fragment
         }
         return fragment;
     }

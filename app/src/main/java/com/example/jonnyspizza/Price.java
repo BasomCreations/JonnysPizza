@@ -9,7 +9,7 @@ public enum Price {
     EXTRA_CHEESE(1.00, "extra"),
     ADDITIONAL_TOPPINGS(0.50, "additional toppings"),
     SUB(7.00, "sandwich"),
-    WINGS(9.50, "wings"),
+    WINGS_HALF_DOZEN(5.00, "half dozen"), WINGS_DOZEN(9.50, "dozen"),
     DRINKS(2.50, "drinks");
 
     private double value;

@@ -45,6 +45,7 @@ public class OrderItemActivity extends AppCompatActivity {
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
+        viewPager.setOffscreenPageLimit(sectionsPagerAdapter.getCount());       // retains the info between all the menu fragments
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -118,9 +119,12 @@ public class OrderItemActivity extends AppCompatActivity {
      */
     private void refreshFragments(ViewPager viewPager){
         PizzaFragment pizzaFragment = (PizzaFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + PIZZA_INDEX);
-        pizzaFragment.refresh();
+        if (pizzaFragment != null) pizzaFragment.refresh();
 
         SubFragment subFragment = (SubFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + SUB_INDEX);
-        subFragment.refresh();
+        if (subFragment != null) subFragment.refresh();
+
+        WingsFragment wingsFragment = (WingsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + WINGS_INDEX);
+        if (wingsFragment != null) wingsFragment.refresh();
     }
 }

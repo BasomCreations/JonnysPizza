@@ -8,6 +8,8 @@
 
     <string name="pizza_name">Pizza</string>
     <string name="sub_name">Sub</string>
+    <string name="half_dozen_name">Half Dozen</string>
+    <string name="dozen_name">Dozen</string>
 
     <string name="cart_name">Cart</string>
 
