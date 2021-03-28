@@ -91,6 +91,7 @@ public class OrderItemActivity extends AppCompatActivity {
         checkoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialog.dismiss();
                 proceedToCheckout();
             }
         });
@@ -126,5 +127,8 @@ public class OrderItemActivity extends AppCompatActivity {
 
         WingsFragment wingsFragment = (WingsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + WINGS_INDEX);
         if (wingsFragment != null) wingsFragment.refresh();
+
+        DrinkFragment drinkFragment = (DrinkFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + DRINKS_INDEX);
+        if (drinkFragment != null) drinkFragment.refresh();
     }
 }

@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.jonnyspizza.Cart;
+import com.example.jonnyspizza.DrinkFragment;
 import com.example.jonnyspizza.PizzaFragment;
 import com.example.jonnyspizza.R;
 import com.example.jonnyspizza.SubFragment;
@@ -47,8 +48,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 fragment = WingsFragment.newInstance();
                 break;
             case 3:
-                fragment = SubFragment.newInstance();
-                //TODO: change this to drinks fragment
+                fragment = DrinkFragment.newInstance();
         }
         return fragment;
     }
