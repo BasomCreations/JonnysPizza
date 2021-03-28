@@ -19,7 +19,10 @@ public class Cart implements Serializable {
     }
 
     public void removeItem(Item item){
+        double cost = item.getCost() * item.getQuantity();
+
         this.items.remove(item);
+        this.totalCost -= cost;
     }
 
     public ArrayList<Item> getItems() {
