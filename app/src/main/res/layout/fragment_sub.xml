@@ -29,6 +29,12 @@
                 android:background="@drawable/header_border"
                 android:paddingLeft="5dp"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="($7.00/Sub)" />
+
+
             <RadioGroup
                 android:id="@+id/hotSubGroup"
                 android:layout_width="wrap_content"

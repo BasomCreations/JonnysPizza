@@ -29,6 +29,12 @@
                 android:background="@drawable/header_border"
                 android:paddingLeft="5dp"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="($2.50/2-Liter Soda)" />
+
+
             <RadioGroup
                 android:id="@+id/sodaGroup"
                 android:layout_width="wrap_content"

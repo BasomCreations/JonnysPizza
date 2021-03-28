@@ -29,25 +29,53 @@
                 android:background="@drawable/header_border"
                 android:paddingLeft="5dp"/>
 
-            <RadioGroup
-                android:id="@+id/wingSizeGroup"
+            <LinearLayout
+
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-                <RadioButton
-                    android:id="@+id/halfDozenBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/half_dozen_name"
-                    android:checked="true"/>
+                <RadioGroup
+                    android:id="@+id/wingSizeGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-                <RadioButton
-                    android:id="@+id/dozenBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/dozen_name" />
+                    <RadioButton
+                        android:id="@+id/halfDozenBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/half_dozen_name"
+                        android:checked="true"/>
 
-            </RadioGroup>
+                    <RadioButton
+                        android:id="@+id/dozenBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dozen_name" />
+
+                </RadioGroup>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:text="($5.00)"
+                        android:gravity="center"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="55dp"
+                        android:text="($9.50)"
+                        android:gravity="center"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
