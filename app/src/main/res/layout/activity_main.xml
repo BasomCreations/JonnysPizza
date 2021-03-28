@@ -18,13 +18,24 @@
 
     <Button
         android:id="@+id/orderPizzaBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:onClick="orderPizza"
-        android:text="Order Pizza"
+        android:onClick="CarryoutBtn_Click"
+        android:text="Carryout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/deliveryBtn"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:onClick="DeliveryBtn_Click"
+        android:text="Delivery"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/orderPizzaBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

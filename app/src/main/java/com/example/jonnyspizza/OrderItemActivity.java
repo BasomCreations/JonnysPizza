@@ -3,6 +3,7 @@ package com.example.jonnyspizza;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.jonnyspizza.CustomObjects.Order;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -32,6 +33,7 @@ public class OrderItemActivity extends AppCompatActivity {
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
     private Button backToMenuBtn, checkoutBtn;
+    private Order order;
     private Cart cart;
 
 
@@ -39,7 +41,8 @@ public class OrderItemActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        cart = new Cart();
+        this.order = (Order) getIntent().getSerializableExtra(getString(R.string.order_name));
+        this.cart = this.order.getCart();
 
         setContentView(R.layout.activity_order_item);
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
@@ -102,7 +105,7 @@ public class OrderItemActivity extends AppCompatActivity {
      */
     private void proceedToCheckout(){
         Intent i = new Intent(this, DisplayPizzaOrderActivity.class);
-        i.putExtra(getString(R.string.cart_name), cart);
+        i.putExtra(getString(R.string.order_name), order);
         startActivity(i);
     }
 

@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.jonnyspizza.CustomObjects.Order;
+
 import org.jetbrains.annotations.NotNull;
 
 public class DisplayPizzaOrderActivity extends AppCompatActivity {
@@ -38,7 +40,8 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
         //displayOrder(pizza);
         //displayItem(sub);
 
-        Cart cart = (Cart) getIntent().getSerializableExtra(getString(R.string.cart_name));
+        Order order = (Order) getIntent().getSerializableExtra(getString(R.string.order_name));
+        Cart cart = order.getCart();
         displayCart(cart);
     }
 
