@@ -1,10 +1,14 @@
 package com.example.jonnyspizza;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.jonnyspizza.CustomObjects.Carryout;
@@ -19,6 +23,11 @@ public class PlaceOrderActivity extends AppCompatActivity {
     private Cart cart;
 
     private EditText firstNameTxt, lastNameTxt, emailAddressTxt, phoneNumberTxt, creditCardTxt, securityCodeTxt, mmTxt, yyyyTxt, billingZipTxt;
+
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+    private TextView orderPlaced_CustomerMsg;
+    private Button orderPlaced_OkBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +93,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
         if (isValid){
             setOrderCustomer();
             setOrderPayment();
-            finish();
+            createOrderPlacedDialog();
         }
     }
 
@@ -113,6 +122,57 @@ public class PlaceOrderActivity extends AppCompatActivity {
 
         Payment payment = new Payment(creditCardNum, securityCode, month, year, billingZip);
         this.order.setPayment(payment);
+    }
+
+    /**
+     * Create the popup to notify user of successful order
+     */
+    public void createOrderPlacedDialog() {
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View orderPlacedPopupView = getLayoutInflater().inflate(R.layout.order_placed_popup, null);
+
+        orderPlaced_CustomerMsg = (TextView) orderPlacedPopupView.findViewById(R.id.customerNotificationMessage);
+        orderPlaced_CustomerMsg.setText(createPopupText());
+        orderPlaced_OkBtn = (Button) orderPlacedPopupView.findViewById(R.id.orderPlaced_OkBtn);
+
+        dialogBuilder.setView(orderPlacedPopupView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        orderPlaced_OkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+    }
+
+    /**
+     * Create the text that will be displayed in the order placed popup
+     * @return String
+     */
+    private String createPopupText(){
+        StringBuilder sb = new StringBuilder();
+        String firstName = order.getCustomer().getFirstName();
+        String email = order.getCustomer().getEmail();
+        String phone = parseCustomerPhone();
+
+        sb.append(firstName + ", your order has been received!\n\n");
+        sb.append("We will notify you as soon as your order is ready. Make sure to check your email " + email);
+        sb.append(" and your phone " + phone + ".");
+
+        return sb.toString();
+    }
+
+    /**
+     * Format the customer's phone number in a readable format
+     * @return
+     */
+    private String parseCustomerPhone(){
+        String originalPhone = order.getCustomer().getPhoneNumber();
+        String updatedPhone = "(" + originalPhone.substring(0, 3) + ") " + originalPhone.substring(3, 6) + "-" + originalPhone.substring(6);
+        return updatedPhone;
     }
 
     /**
