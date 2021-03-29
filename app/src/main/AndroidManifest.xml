@@ -9,10 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.JonnysPizza">
+        <activity android:name=".PlaceOrderActivity"></activity>
         <activity
             android:name=".OrderItemActivity"
             android:label="@string/title_activity_order_item"
-            android:theme="@style/Theme.JonnysPizza.NoActionBar"></activity>
+            android:theme="@style/Theme.JonnysPizza.NoActionBar" />
         <activity android:name=".DisplayPizzaOrderActivity" />
         <activity android:name=".OrderPizza" />
         <activity android:name=".MainActivity">

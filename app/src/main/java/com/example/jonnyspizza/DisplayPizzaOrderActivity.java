@@ -30,6 +30,8 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
     private final static int ITEM_WIDTH = 950;
     private final static int DELETE_BTN_DIMENSION = 100;
 
+    private Order order;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +42,7 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
         //displayOrder(pizza);
         //displayItem(sub);
 
-        Order order = (Order) getIntent().getSerializableExtra(getString(R.string.order_name));
+        this.order = (Order) getIntent().getSerializableExtra(getString(R.string.order_name));
         Cart cart = order.getCart();
         displayCart(cart);
     }
@@ -227,6 +229,12 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
         totalTextView.setBackgroundColor(Color.YELLOW);
 
         totalCostLayout.addView(totalTextView);
+    }
+
+    public void ProceedToPaymentBtn_Click(View view){
+        Intent i = new Intent(this, PlaceOrderActivity.class);
+        i.putExtra(getString(R.string.order_name), order);
+        startActivity(i);
     }
 
     /**

@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else if (zip.length() != 5){                        // check zip code length
             deliveryPopup_zip.setError("Invalid Zip Code!");
+            isValid = false;
         }
 
         return isValid;

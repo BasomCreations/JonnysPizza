@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PlaceOrderActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingTop="12dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="12dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/OrderSummaryHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Order Summary:"
+            android:textColor="@color/black"
+            android:textSize="52px"
+            android:background="@drawable/header_border"
+            android:paddingLeft="5dp"/>
+
+        <TextView
+            android:id="@+id/orderSummaryText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="test"
+            android:textColor="@color/black"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/CustomerInfoHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Customer Details:"
+            android:textColor="@color/black"
+            android:textSize="52px"
+            android:background="@drawable/header_border"
+            android:paddingLeft="5dp"
+            android:layout_marginTop="20dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/firstNameText"
+                android:layout_width="175dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="First Name"
+                android:inputType="textPersonName"/>
+
+            <EditText
+                android:id="@+id/lastNameText"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="Last Name"
+                android:inputType="textPersonName"/>
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/emailAddressText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Email Address"
+            android:inputType="textEmailAddress"/>
+
+        <EditText
+            android:id="@+id/phoneNumberText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Phone Number"
+            android:inputType="phone"/>
+
+
+        <TextView
+            android:id="@+id/PaymentInfoHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Payment Details:"
+            android:textColor="@color/black"
+            android:textSize="52px"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/header_border"
+            android:paddingLeft="5dp"/>
+
+        <EditText
+            android:id="@+id/creditCardNumberText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Credit Card Number"
+            android:inputType="number"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/securityCodeText"
+                android:layout_width="125dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="30dp"
+                android:hint="Security Code"
+                android:inputType="number"/>
+
+            <EditText
+                android:id="@+id/expirationMonthText"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="MM"
+                android:inputType="number"/>
+
+            <EditText
+                android:id="@+id/expirationYearText"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="YYYY"
+                android:inputType="number"/>
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/billingZipText"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Billing Zip"
+            android:inputType="number"/>
+
+        <Button
+            android:id="@+id/placeOrderBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="Place Order"
+            android:layout_gravity="center"
+            android:onClick="PlaceOrderBtn_Click"/>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
