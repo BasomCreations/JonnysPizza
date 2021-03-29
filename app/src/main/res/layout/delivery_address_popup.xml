@@ -30,6 +30,7 @@
         android:layout_marginTop="30dp"
         android:hint="Street Address"
         android:textSize="24sp"
+        android:inputType="textPostalAddress"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/deliveryAddressText" />
 
@@ -41,30 +42,40 @@
         android:layout_marginTop="20dp"
         android:hint="City"
         android:textSize="24sp"
+        android:inputType="textPostalAddress"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/deliveryPopup_streetAddress" />
 
-    <EditText
-        android:id="@+id/deliveryPopup_state"
+    <LinearLayout
+        android:id="@+id/deliveryPopup_stateZip_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:hint="State"
-        android:textSize="24sp"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/deliveryPopup_city" />
+        app:layout_constraintTop_toBottomOf="@id/deliveryPopup_city">
 
-    <EditText
-        android:id="@+id/deliveryPopup_zip"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:hint="Zip"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/deliveryPopup_state" />
+        <Spinner
+            android:id="@+id/deliveryPopup_stateSpinner"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/deliveryPopup_zip"/>
+
+        <EditText
+            android:id="@+id/deliveryPopup_zip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:hint="Zip"
+            android:textSize="24sp"
+            android:inputType="number"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/deliveryPopup_state" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -72,7 +83,7 @@
         android:orientation="horizontal"
         android:layout_marginTop="50dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/deliveryPopup_zip"
+        app:layout_constraintTop_toBottomOf="@id/deliveryPopup_stateZip_layout"
         android:gravity="center">
 
         <Button

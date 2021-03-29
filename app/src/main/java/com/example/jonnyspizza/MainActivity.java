@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.example.jonnyspizza.CustomObjects.Address;
 import com.example.jonnyspizza.CustomObjects.Carryout;
@@ -18,7 +20,8 @@ public class MainActivity extends AppCompatActivity {
 
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
-    private EditText deliveryPopup_streetAddress, deliveryPopup_city, deliveryPopup_state, deliveryPopup_zip;
+    private EditText deliveryPopup_streetAddress, deliveryPopup_city, deliveryPopup_zip;
+    private Spinner deliveryPopup_stateSpinner;
     private Button deliveryPopup_cancelBtn, deliveryPopup_saveBtn;
 
     @Override
@@ -63,8 +66,13 @@ public class MainActivity extends AppCompatActivity {
         final View deliveryPopupView = getLayoutInflater().inflate(R.layout.delivery_address_popup, null);
         deliveryPopup_streetAddress = (EditText) deliveryPopupView.findViewById(R.id.deliveryPopup_streetAddress);
         deliveryPopup_city = (EditText) deliveryPopupView.findViewById(R.id.deliveryPopup_city);
-        deliveryPopup_state = (EditText) deliveryPopupView.findViewById(R.id.deliveryPopup_state);
         deliveryPopup_zip = (EditText) deliveryPopupView.findViewById(R.id.deliveryPopup_zip);
+
+        deliveryPopup_stateSpinner = (Spinner) deliveryPopupView.findViewById(R.id.deliveryPopup_stateSpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.states_array, R.layout.spinner_item);
+                //ArrayAdapter.createFromResource(this, R.array.states_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        deliveryPopup_stateSpinner.setAdapter(adapter);
 
         deliveryPopup_cancelBtn = (Button) deliveryPopupView.findViewById(R.id.deliveryPopup_cancelBtn);
         deliveryPopup_saveBtn = (Button) deliveryPopupView.findViewById(R.id.deliveryPopup_saveBtn);
@@ -110,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
         String emptyString = "";
         String streetAddress = deliveryPopup_streetAddress.getText().toString();
         String city = deliveryPopup_city.getText().toString();
-        String state = deliveryPopup_state.getText().toString();
         String zip = deliveryPopup_zip.getText().toString();
 
         if (streetAddress == null || streetAddress.equals(emptyString)) {
@@ -123,14 +130,12 @@ public class MainActivity extends AppCompatActivity {
             isValid = false;
         }
 
-        if (state == null || state.equals(emptyString)){
-            deliveryPopup_state.setError("State Required!");
-            isValid = false;
-        }
-
         if (zip == null || zip.equals(emptyString)){
             deliveryPopup_zip.setError("Zip Code Required!");
             isValid = false;
+        }
+        else if (zip.length() != 5){                        // check zip code length
+            deliveryPopup_zip.setError("Invalid Zip Code!");
         }
 
         return isValid;
@@ -143,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
     private Address createDeliveryAddress(){
         String streetAddress = deliveryPopup_streetAddress.getText().toString();
         String city = deliveryPopup_city.getText().toString();
-        String state = deliveryPopup_state.getText().toString();
+        String state = deliveryPopup_stateSpinner.getSelectedItem().toString();//deliveryPopup_state.getText().toString();
         String zip = deliveryPopup_zip.getText().toString();
 
         Address address = new Address(streetAddress, city, state, zip);
