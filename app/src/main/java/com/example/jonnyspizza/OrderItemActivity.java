@@ -1,5 +1,6 @@
 package com.example.jonnyspizza;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -8,6 +9,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +31,8 @@ public class OrderItemActivity extends AppCompatActivity {
     private final static int SUB_INDEX = 1;
     private final static int WINGS_INDEX = 2;
     private final static int DRINKS_INDEX = 3;
+
+    private final static int LAUNCH_CONFIRMATION_ACTIVITY = 1;
 
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
@@ -106,7 +110,22 @@ public class OrderItemActivity extends AppCompatActivity {
     private void proceedToCheckout(){
         Intent i = new Intent(this, DisplayPizzaOrderActivity.class);
         i.putExtra(getString(R.string.order_name), order);
-        startActivity(i);
+        //startActivity(i);
+        startActivityForResult(i, LAUNCH_CONFIRMATION_ACTIVITY);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == LAUNCH_CONFIRMATION_ACTIVITY) {
+            if (resultCode == Activity.RESULT_OK){
+                this.order = (Order) data.getSerializableExtra(getString(R.string.order_name));
+                this.cart = this.order.getCart();
+            }
+            if (resultCode == Activity.RESULT_CANCELED){
+                finish();
+            }
+        }
     }
 
     /**
