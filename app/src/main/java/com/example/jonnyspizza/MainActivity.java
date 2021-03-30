@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, OrderItemActivity.class);
         intent.putExtra(getString(R.string.order_name), order);
         startActivity(intent);
+        recreate();
     }
 
     /**
@@ -91,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
         deliveryPopup_saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
                 ConfirmAddressBtn_Click();
             }
         });
