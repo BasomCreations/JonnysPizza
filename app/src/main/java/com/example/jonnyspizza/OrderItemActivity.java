@@ -86,12 +86,10 @@ public class OrderItemActivity extends AppCompatActivity {
             public void onClick(View v) {
                 dialog.dismiss();
 
-                // Set the current fragment to the first one (Pizza)
-                ViewPager viewPager = findViewById(R.id.view_pager);
-                viewPager.setCurrentItem(PIZZA_INDEX);
+
 
                 // Refresh all of the fragments
-                refreshFragments(viewPager);
+                refreshFragments();
             }
         });
 
@@ -121,6 +119,7 @@ public class OrderItemActivity extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK){
                 this.order = (Order) data.getSerializableExtra(getString(R.string.order_name));
                 this.cart = this.order.getCart();
+                refreshFragments();
             }
             if (resultCode == Activity.RESULT_CANCELED){
                 finish();
@@ -138,9 +137,12 @@ public class OrderItemActivity extends AppCompatActivity {
 
     /**
      * Clear all of the changed features of the menu fragments
-     * @param viewPager
      */
-    private void refreshFragments(ViewPager viewPager){
+    private void refreshFragments(){
+        // Set the current fragment to the first one (Pizza)
+        ViewPager viewPager = findViewById(R.id.view_pager);
+        viewPager.setCurrentItem(PIZZA_INDEX);
+
         PizzaFragment pizzaFragment = (PizzaFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + PIZZA_INDEX);
         if (pizzaFragment != null) pizzaFragment.refresh();
 

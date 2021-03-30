@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         deliveryPopup_saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialog.dismiss();
                 ConfirmAddressBtn_Click();
             }
         });
