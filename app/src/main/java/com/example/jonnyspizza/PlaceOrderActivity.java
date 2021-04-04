@@ -3,6 +3,8 @@ package com.example.jonnyspizza;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -83,6 +85,14 @@ public class PlaceOrderActivity extends AppCompatActivity {
         summaryText.setText(sb.toString());
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent returnIntent = new Intent();
+        setResult(Activity.RESULT_OK, returnIntent);
+        super.onBackPressed();
+        finish();
+    }
+
     /**
      * Handles the Place Order Button click
      * @param view
@@ -143,6 +153,8 @@ public class PlaceOrderActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                Intent returnIntent = new Intent();
+                setResult(Activity.RESULT_CANCELED, returnIntent);
                 finish();
             }
         });

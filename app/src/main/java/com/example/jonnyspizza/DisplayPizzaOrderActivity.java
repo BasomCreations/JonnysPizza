@@ -1,5 +1,6 @@
 package com.example.jonnyspizza;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -31,6 +33,8 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
     private final static int ITEM_WIDTH = 950;
     private final static int DELETE_BTN_DIMENSION = 100;
 
+    private final static int LAUNCH_PAYMENT_ACTIVITY = 1;
+
     private Order order;
 
     @Override
@@ -38,14 +42,9 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_pizza_order);
 
-        //Pizza pizza = (Pizza) getIntent().getSerializableExtra(getString(R.string.pizza_name));
-        //Sub sub = (Sub) getIntent().getSerializableExtra(getString(R.string.sub_name));
-        //displayOrder(pizza);
-        //displayItem(sub);
-
         this.order = (Order) getIntent().getSerializableExtra(getString(R.string.order_name));
         Cart cart = order.getCart();
-        displayCart(cart);
+        handleCart(cart);
     }
 
     @Override
@@ -56,6 +55,31 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
         //setResult(200, returnIntent);
         super.onBackPressed();
         finish();
+    }
+
+    /**
+     * Handle
+     * @param cart
+     */
+    private void handleCart(Cart cart){
+        // only display the cart if there are items
+        if (cart.getItems().size() > 0){
+            displayCart(cart);
+        }
+        // otherwise, remove the option to checkout
+        else{
+            Button checkoutBtn = findViewById(R.id.proceedToPaymentBtn);
+            checkoutBtn.setVisibility(View.GONE);
+
+            LinearLayout parentLayout = findViewById(R.id.parentLayout);
+
+            TextView noItemTV = new TextView(this);
+            noItemTV.setText("Empty Cart");
+            noItemTV.setTextSize(HEADER_TEXT_SIZE);
+            noItemTV.setGravity(Gravity.CENTER);
+
+            parentLayout.addView(noItemTV);
+        }
     }
 
     /**
@@ -258,13 +282,25 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
      * @param view
      */
     public void ProceedToPaymentBtn_Click(View view){
-        Intent i = new Intent(this, PlaceOrderActivity.class);
-        i.putExtra(getString(R.string.order_name), order);
-        startActivity(i);
+        // only allow users to checkout if they have added at least one item to the cart
+        if (this.order.getCart().getItems().size() > 0){
+            Intent i = new Intent(this, PlaceOrderActivity.class);
+            i.putExtra(getString(R.string.order_name), order);
+            startActivityForResult(i, LAUNCH_PAYMENT_ACTIVITY);
+        }
+    }
 
-        Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_CANCELED, returnIntent);
-        finish();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == LAUNCH_PAYMENT_ACTIVITY) {
+            if (resultCode == Activity.RESULT_OK){ }
+            else if (resultCode == Activity.RESULT_CANCELED){
+                Intent returnIntent = new Intent();
+                setResult(Activity.RESULT_CANCELED, returnIntent);
+                finish();
+            }
+        }
     }
 
     /**

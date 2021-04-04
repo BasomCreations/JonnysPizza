@@ -107,10 +107,13 @@ public class OrderItemActivity extends AppCompatActivity {
      * Advance to the checkout screen
      */
     public void proceedToCheckout(View v){
-        Intent i = new Intent(this, DisplayPizzaOrderActivity.class);
-        i.putExtra(getString(R.string.order_name), order);
-        //startActivity(i);
-        startActivityForResult(i, LAUNCH_CONFIRMATION_ACTIVITY);
+        // only allow users to checkout if they have added at least one item to the cart
+        if (this.cart.getItems().size() > 0) {
+            Intent i = new Intent(this, DisplayPizzaOrderActivity.class);
+            i.putExtra(getString(R.string.order_name), order);
+            //startActivity(i);
+            startActivityForResult(i, LAUNCH_CONFIRMATION_ACTIVITY);
+        }
     }
 
     @Override
