@@ -86,7 +86,8 @@ public class OrderItemActivity extends AppCompatActivity {
             public void onClick(View v) {
                 dialog.dismiss();
 
-
+                // Update the cost TextView
+                updateCartCost();
 
                 // Refresh all of the fragments
                 refreshFragments();
@@ -97,7 +98,7 @@ public class OrderItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                proceedToCheckout();
+                proceedToCheckout(v);
             }
         });
     }
@@ -105,7 +106,7 @@ public class OrderItemActivity extends AppCompatActivity {
     /**
      * Advance to the checkout screen
      */
-    private void proceedToCheckout(){
+    public void proceedToCheckout(View v){
         Intent i = new Intent(this, DisplayPizzaOrderActivity.class);
         i.putExtra(getString(R.string.order_name), order);
         //startActivity(i);
@@ -119,6 +120,7 @@ public class OrderItemActivity extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK){
                 this.order = (Order) data.getSerializableExtra(getString(R.string.order_name));
                 this.cart = this.order.getCart();
+                updateCartCost();
                 refreshFragments();
             }
             if (resultCode == Activity.RESULT_CANCELED){
@@ -154,5 +156,14 @@ public class OrderItemActivity extends AppCompatActivity {
 
         DrinkFragment drinkFragment = (DrinkFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.view_pager + ":" + DRINKS_INDEX);
         if (drinkFragment != null) drinkFragment.refresh();
+    }
+
+    /**
+     * Updates the TextView containing the total cost of the cart
+     */
+    private void updateCartCost(){
+        TextView cartCostTV = findViewById(R.id.cartCostTextView);
+        String totalCostString = String.format("($%.2f)", this.cart.getTotalCost());
+        cartCostTV.setText(totalCostString);
     }
 }

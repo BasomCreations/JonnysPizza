@@ -11,15 +11,42 @@
         android:layout_height="wrap_content"
         android:theme="@style/Theme.JonnysPizza.AppBarOverlay">
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:minHeight="?actionBarSize"
-            android:padding="@dimen/appbar_padding"
-            android:text="@string/app_name"
-            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minHeight="?actionBarSize"
+                android:padding="@dimen/appbar_padding"
+                android:text="@string/app_name"
+                android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
+
+            <TextView
+                android:id="@+id/cartCostTextView"
+                android:layout_width="175dp"
+                android:layout_height="match_parent"
+                android:textColor="@color/white"
+                android:text=""
+                android:textSize="16sp"
+                android:gravity="center|right"
+                android:paddingRight="20dp"/>
+
+            <ImageButton
+                android:id="@+id/cart_imageBtn"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:background="@color/purple_500"
+                android:src="@drawable/cart_logo"
+                android:onClick="proceedToCheckout"/>
+        </LinearLayout>
+
+
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"

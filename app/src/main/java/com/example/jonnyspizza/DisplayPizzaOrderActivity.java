@@ -242,6 +242,21 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
         totalCostLayout.addView(totalTextView);
     }
 
+    /**
+     * Back to Menu button click
+     * @param view
+     */
+    public void BackToMenuBtn_Click(View view){
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(getString(R.string.order_name), order);
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
+    }
+
+    /**
+     * Checkout button click
+     * @param view
+     */
     public void ProceedToPaymentBtn_Click(View view){
         Intent i = new Intent(this, PlaceOrderActivity.class);
         i.putExtra(getString(R.string.order_name), order);

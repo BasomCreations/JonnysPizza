@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:text="Order Confirmation"
+            android:text="Order Summary"
             android:textColor="@color/black"
             android:textSize="28sp"
             android:layout_gravity="center" />
@@ -51,14 +51,36 @@
             android:layout_gravity="center"
             android:paddingTop="20dp"/>
 
-        <Button
-            android:id="@+id/proceedToPaymentBtn"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:text="Confirm Order"
-            android:layout_gravity="center"
-            android:onClick="ProceedToPaymentBtn_Click"/>
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/orderSummary_backToMenuBtn"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:onClick="BackToMenuBtn_Click"
+                android:text="Back to Menu"
+                app:layout_constraintEnd_toStartOf="@+id/proceedToPaymentBtn"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/proceedToPaymentBtn"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:onClick="ProceedToPaymentBtn_Click"
+                android:text="Checkout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/orderSummary_backToMenuBtn"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- <TextView
             android:id="@+id/finalOrderText"
