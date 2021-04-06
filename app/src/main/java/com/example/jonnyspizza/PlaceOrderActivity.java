@@ -31,6 +31,8 @@ public class PlaceOrderActivity extends AppCompatActivity {
     private TextView orderPlaced_CustomerMsg;
     private Button orderPlaced_OkBtn;
 
+    private DatabaseHandler dbHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +44,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
         this.cart = order.getCart();
         setSummaryText();
 
+        dbHandler = new DatabaseHandler(this);
     }
 
     /**
@@ -103,6 +106,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
         if (isValid){
             setOrderCustomer();
             setOrderPayment();
+            dbHandler.addOrder(order);
             createOrderPlacedDialog();
         }
     }
