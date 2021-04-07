@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OrderHistoryFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/closeHistoryBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:backgroundTint="@android:color/holo_red_dark"
+            android:text="X"
+            android:layout_gravity="right"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Recent Orders"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_marginTop="5dp"/>
+
+        <HorizontalScrollView
+            android:id="@+id/historyHorizontalScrollView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/historyLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/orderHistoryHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="75dp"
+                        android:layout_height="wrap_content"
+                        android:text="Order #"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:background="@drawable/table_cell_border"/>
+
+                    <TextView
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:text="Date"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:background="@drawable/table_cell_border"/>
+
+                    <TextView
+                        android:layout_width="75dp"
+                        android:layout_height="wrap_content"
+                        android:text="Cost"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:background="@drawable/table_cell_border"/>
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="Order Type"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:background="@drawable/table_cell_border"/>
+
+                    <TextView
+                        android:layout_width="75dp"
+                        android:layout_height="wrap_content"
+                        android:text="Details"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:background="@drawable/table_cell_border"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </HorizontalScrollView>
+
+        <!-- <TableLayout
+            android:id="@+id/orderHistoryTable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <TableRow
+                android:id="@+id/orderHistoryHeaderRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="75dp"
+                    android:layout_height="wrap_content"
+                    android:text="Order #"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:paddingLeft="5dp"
+                    android:background="@drawable/table_cell_border"/>
+
+                <TextView
+                    android:layout_width="75dp"
+                    android:layout_height="wrap_content"
+                    android:text="Date"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:paddingLeft="5dp"
+                    android:background="@drawable/table_cell_border"/>
+
+                <TextView
+                    android:layout_width="75dp"
+                    android:layout_height="wrap_content"
+                    android:text="Cost"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:paddingLeft="5dp"
+                    android:background="@drawable/table_cell_border"/>
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="Order Type"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:paddingLeft="5dp"
+                    android:background="@drawable/table_cell_border"/>
+
+                <TextView
+                    android:layout_width="75dp"
+                    android:layout_height="wrap_content"
+                    android:text="Details"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:paddingLeft="5dp"
+                    android:background="@drawable/table_cell_border"/>
+            </TableRow>
+
+        </TableLayout> -->
+
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

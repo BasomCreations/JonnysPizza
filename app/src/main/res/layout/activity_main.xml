@@ -6,16 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
     <ImageView
         android:id="@+id/menuLogoImage"
         android:layout_width="350dp"
         android:layout_height="350dp"
+        android:src="@drawable/jonny_pizza_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/jonny_pizza_logo"/>
-
+        app:layout_constraintVertical_bias="0.282" />
 
     <Button
         android:id="@+id/orderPizzaBtn"
@@ -40,5 +42,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/orderPizzaBtn" />
+
+    <Button
+        android:id="@+id/orderHistoryBtn"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:onClick="orderHistoryBtn_Click"
+        android:text="Order History"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/deliveryBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

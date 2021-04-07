@@ -3,18 +3,26 @@ package com.example.jonnyspizza;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.jonnyspizza.CustomObjects.Address;
 import com.example.jonnyspizza.CustomObjects.Carryout;
 import com.example.jonnyspizza.CustomObjects.Delivery;
 import com.example.jonnyspizza.CustomObjects.Order;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,12 +30,19 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog dialog;
     private EditText deliveryPopup_streetAddress, deliveryPopup_city, deliveryPopup_zip;
     private Spinner deliveryPopup_stateSpinner;
-    private Button deliveryPopup_cancelBtn, deliveryPopup_saveBtn;
+    private Button deliveryPopup_cancelBtn, deliveryPopup_saveBtn, historyPopup_closeBtn;
+    private DatabaseHandler dbHandler;
+
+    private LinearLayout historyLinearLayout;
+    private final static int HISTORY_TEXT_SIZE = 16;
+    private final static int HISTORY_SIDE_PADDING = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        dbHandler = new DatabaseHandler(this);
     }
 
     /**
@@ -156,5 +171,106 @@ public class MainActivity extends AppCompatActivity {
         Address address = new Address(streetAddress, city, state, zip);
 
         return address;
+    }
+
+    /**
+     * Handles the "Order History" button click
+     * @param view
+     */
+    public void orderHistoryBtn_Click(View view){
+        createNewOrderHistoryDialog();
+    }
+
+    /**
+     * Create the popup to display the order history
+     */
+    public void createNewOrderHistoryDialog() {
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View orderHistoryPopupView = getLayoutInflater().inflate(R.layout.fragment_order_history, null);
+        historyPopup_closeBtn = (Button) orderHistoryPopupView.findViewById(R.id.closeHistoryBtn);
+        historyLinearLayout = (LinearLayout) orderHistoryPopupView.findViewById(R.id.historyLinearLayout);
+
+        populateOrderHistoryDialog(dialogBuilder.getContext());
+
+        dialogBuilder.setView(orderHistoryPopupView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        historyPopup_closeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void populateOrderHistoryDialog(Context context){
+        ArrayList<ContentValues> results = dbHandler.getRecentOrders();
+
+        int i = 1;
+        for (ContentValues values: results) {
+            displayOrder(context, values, i);
+            i++;
+        }
+    }
+
+    private void displayOrder(Context context, ContentValues values, int index){
+        String orderID = (String) values.get(DB_Util.ORDER_PK);
+        String orderType = (String) values.get(DB_Util.ORDER_TYPE);
+        String orderCost = (String) values.get(DB_Util.ORDER_COST);
+        String orderDate = (String) values.get(DB_Util.ORDER_DATE);
+
+        // Conversion from dp (specified in xml) to pixels
+        final float scale = context.getResources().getDisplayMetrics().density;
+        int pixelsA = (int) (75 * scale + 0.5f);
+        int pixelsB = (int) (100 * scale + 0.5f);
+        int pixelsC = (int) (160 * scale + 0.5f);
+
+        LinearLayout recordLayout = new LinearLayout(context);
+        recordLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        recordLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+        TextView orderIDTV = new TextView(context);
+        orderIDTV.setLayoutParams(new LinearLayout.LayoutParams(pixelsA, ViewGroup.LayoutParams.WRAP_CONTENT));
+        orderIDTV.setTextSize(HISTORY_TEXT_SIZE);
+        orderIDTV.setText(orderID);
+        orderIDTV.setGravity(Gravity.RIGHT);
+        orderIDTV.setPadding(HISTORY_SIDE_PADDING, 0, HISTORY_SIDE_PADDING, 0);
+        orderIDTV.setBackgroundResource(R.drawable.table_cell_border);
+
+        TextView orderDateTV = new TextView(context);
+        orderDateTV.setLayoutParams(new LinearLayout.LayoutParams(pixelsC, ViewGroup.LayoutParams.WRAP_CONTENT));
+        orderDateTV.setTextSize(HISTORY_TEXT_SIZE);
+        orderDateTV.setText(orderDate);
+        orderDateTV.setPadding(HISTORY_SIDE_PADDING, 0, 0, 0);
+        orderDateTV.setBackgroundResource(R.drawable.table_cell_border);
+
+        TextView orderCostTV = new TextView(context);
+        orderCostTV.setLayoutParams(new LinearLayout.LayoutParams(pixelsA, ViewGroup.LayoutParams.WRAP_CONTENT));
+        orderCostTV.setTextSize(HISTORY_TEXT_SIZE);
+        orderCostTV.setText(formatMoney(orderCost));
+        orderCostTV.setGravity(Gravity.RIGHT);
+        orderCostTV.setPadding(HISTORY_SIDE_PADDING, 0, HISTORY_SIDE_PADDING, 0);
+        orderCostTV.setBackgroundResource(R.drawable.table_cell_border);
+
+        TextView orderTypeTV = new TextView(context);
+        orderTypeTV.setLayoutParams(new LinearLayout.LayoutParams(pixelsB, ViewGroup.LayoutParams.WRAP_CONTENT));
+        orderTypeTV.setTextSize(HISTORY_TEXT_SIZE);
+        orderTypeTV.setText(orderType);
+        orderTypeTV.setGravity(Gravity.CENTER);
+        orderTypeTV.setPadding(HISTORY_SIDE_PADDING, 0, 0, 0);
+        orderTypeTV.setBackgroundResource(R.drawable.table_cell_border);
+
+        recordLayout.addView(orderIDTV);
+        recordLayout.addView(orderDateTV);
+        recordLayout.addView(orderCostTV);
+        recordLayout.addView(orderTypeTV);
+
+        historyLinearLayout.addView(recordLayout);
+    }
+
+    private String formatMoney(String cost){
+        double costDouble = Double.parseDouble(cost);
+        return String.format("$%.2f", costDouble);
     }
 }

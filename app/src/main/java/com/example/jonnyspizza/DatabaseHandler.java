@@ -9,9 +9,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.example.jonnyspizza.CustomObjects.Carryout;
 import com.example.jonnyspizza.CustomObjects.Order;
 
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
@@ -59,6 +61,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * Adds an order to the database
+     * @param order
+     * @return boolean - true if successfully added
+     */
     public boolean addOrder(Order order){
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -80,6 +87,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * Parse the Order for data to add to the database
+     * @param order
+     * @return ContentValues containing the data to add to the db
+     */
     private ContentValues handleOrder(Order order){
         ContentValues values = new ContentValues();
 
@@ -98,5 +110,41 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(DB_Util.ORDER_DATE, strDate);
 
         return values;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public ArrayList<ContentValues> getRecentOrders(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("Select * From " + DB_Util.TABLE_ORDER + " ORDER BY datetime(" + DB_Util.ORDER_DATE + ") DESC LIMIT " + DB_Util.NUMBER_RECENT_ORDERS, null);
+
+        ContentValues contentValues = new ContentValues();
+
+        ArrayList<ContentValues> resultsList = new ArrayList<>();
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                String orderID = cursor.getString(0);
+                String orderType = cursor.getString(1);
+                String orderCost = cursor.getString(2);
+                String orderDate = cursor.getString(3);
+
+                ContentValues values = new ContentValues();
+                values.put(DB_Util.ORDER_PK, orderID);
+                values.put(DB_Util.ORDER_TYPE, orderType);
+                values.put(DB_Util.ORDER_COST, orderCost);
+                values.put(DB_Util.ORDER_DATE, orderDate);
+
+                resultsList.add(values);
+
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+
+        return resultsList;
     }
 }

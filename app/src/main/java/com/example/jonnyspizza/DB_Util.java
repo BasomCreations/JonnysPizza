@@ -14,6 +14,8 @@ public final class DB_Util {
     public static final String ORDER_COST = "Cost";
     public static final String ORDER_DATE = "Date";
 
+    public static final int NUMBER_RECENT_ORDERS = 10;
+
     // Pizza Table
     public static final String TABLE_PIZZA = "pizza_table";
     public static final String PIZZA_PK = "ID";
