@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.example.jonnyspizza.CustomObjects.Address;
 import com.example.jonnyspizza.CustomObjects.Carryout;
 import com.example.jonnyspizza.CustomObjects.Delivery;
 import com.example.jonnyspizza.CustomObjects.Order;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
@@ -34,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseHandler dbHandler;
 
     private LinearLayout historyLinearLayout;
-    private final static int HISTORY_TEXT_SIZE = 16;
-    private final static int HISTORY_SIDE_PADDING = 10;
+    private final static int HISTORY_TEXT_SIZE = 20;
+    private final static int HISTORY_SIDE_PADDING = 15;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -222,16 +224,19 @@ public class MainActivity extends AppCompatActivity {
 
         // Conversion from dp (specified in xml) to pixels
         final float scale = context.getResources().getDisplayMetrics().density;
-        int pixelsA = (int) (75 * scale + 0.5f);
-        int pixelsB = (int) (100 * scale + 0.5f);
-        int pixelsC = (int) (160 * scale + 0.5f);
+        int pixelsHeight = (int) (32 * scale + 0.5f);
+        int pixelsID = (int) (80 * scale + 0.5f);
+        int pixelsDate = (int) (200 * scale + 0.5f);
+        int pixelsCost = (int) (75 * scale + 0.5f);
+        int pixelsType = (int) (110 * scale + 0.5f);
+        int pixelsDetails = (int) (75 * scale + 0.5f);
 
         LinearLayout recordLayout = new LinearLayout(context);
-        recordLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        recordLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, pixelsHeight));
         recordLayout.setOrientation(LinearLayout.HORIZONTAL);
 
         TextView orderIDTV = new TextView(context);
-        orderIDTV.setLayoutParams(new LinearLayout.LayoutParams(pixelsA, ViewGroup.LayoutParams.WRAP_CONTENT));
+        orderIDTV.setLayoutParams(new LinearLayout.LayoutParams(pixelsID, ViewGroup.LayoutParams.MATCH_PARENT));
         orderIDTV.setTextSize(HISTORY_TEXT_SIZE);
         orderIDTV.setText(orderID);
         orderIDTV.setGravity(Gravity.RIGHT);
@@ -239,14 +244,14 @@ public class MainActivity extends AppCompatActivity {
         orderIDTV.setBackgroundResource(R.drawable.table_cell_border);
 
         TextView orderDateTV = new TextView(context);
-        orderDateTV.setLayoutParams(new LinearLayout.LayoutParams(pixelsC, ViewGroup.LayoutParams.WRAP_CONTENT));
+        orderDateTV.setLayoutParams(new LinearLayout.LayoutParams(pixelsDate, ViewGroup.LayoutParams.MATCH_PARENT));
         orderDateTV.setTextSize(HISTORY_TEXT_SIZE);
         orderDateTV.setText(orderDate);
         orderDateTV.setPadding(HISTORY_SIDE_PADDING, 0, 0, 0);
         orderDateTV.setBackgroundResource(R.drawable.table_cell_border);
 
         TextView orderCostTV = new TextView(context);
-        orderCostTV.setLayoutParams(new LinearLayout.LayoutParams(pixelsA, ViewGroup.LayoutParams.WRAP_CONTENT));
+        orderCostTV.setLayoutParams(new LinearLayout.LayoutParams(pixelsCost, ViewGroup.LayoutParams.MATCH_PARENT));
         orderCostTV.setTextSize(HISTORY_TEXT_SIZE);
         orderCostTV.setText(formatMoney(orderCost));
         orderCostTV.setGravity(Gravity.RIGHT);
@@ -254,17 +259,29 @@ public class MainActivity extends AppCompatActivity {
         orderCostTV.setBackgroundResource(R.drawable.table_cell_border);
 
         TextView orderTypeTV = new TextView(context);
-        orderTypeTV.setLayoutParams(new LinearLayout.LayoutParams(pixelsB, ViewGroup.LayoutParams.WRAP_CONTENT));
+        orderTypeTV.setLayoutParams(new LinearLayout.LayoutParams(pixelsType, ViewGroup.LayoutParams.MATCH_PARENT));
         orderTypeTV.setTextSize(HISTORY_TEXT_SIZE);
         orderTypeTV.setText(orderType);
         orderTypeTV.setGravity(Gravity.CENTER);
         orderTypeTV.setPadding(HISTORY_SIDE_PADDING, 0, 0, 0);
         orderTypeTV.setBackgroundResource(R.drawable.table_cell_border);
 
+        Button viewButton = new Button(context);
+        //MaterialButton viewButton = new MaterialButton(context);
+        viewButton.setLayoutParams(new LinearLayout.LayoutParams(pixelsDetails, ViewGroup.LayoutParams.MATCH_PARENT));
+        //viewButton.setInsetBottom(0);
+        //viewButton.setInsetTop(0);
+        //viewButton.setMinHeight(0);
+        viewButton.setBackgroundResource(R.drawable.view_button_background);
+        //viewButton.setBackgroundColor(Color.GRAY);
+        viewButton.setText("View");
+        viewButton.setPadding(0,0,0,0);
+
         recordLayout.addView(orderIDTV);
         recordLayout.addView(orderDateTV);
         recordLayout.addView(orderCostTV);
         recordLayout.addView(orderTypeTV);
+        recordLayout.addView(viewButton);
 
         historyLinearLayout.addView(recordLayout);
     }

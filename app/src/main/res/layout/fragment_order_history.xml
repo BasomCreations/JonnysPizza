@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Recent Orders"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:textColor="@color/black"
             android:gravity="center"
             android:layout_marginTop="5dp"/>
@@ -48,20 +48,20 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="75dp"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
                         android:text="Order #"
-                        android:textSize="16sp"
+                        android:textSize="20sp"
                         android:textColor="@color/black"
                         android:gravity="center"
                         android:paddingLeft="5dp"
                         android:background="@drawable/table_cell_border"/>
 
                     <TextView
-                        android:layout_width="160dp"
+                        android:layout_width="200dp"
                         android:layout_height="wrap_content"
                         android:text="Date"
-                        android:textSize="16sp"
+                        android:textSize="20sp"
                         android:textColor="@color/black"
                         android:gravity="center"
                         android:paddingLeft="5dp"
@@ -71,17 +71,17 @@
                         android:layout_width="75dp"
                         android:layout_height="wrap_content"
                         android:text="Cost"
-                        android:textSize="16sp"
+                        android:textSize="20sp"
                         android:textColor="@color/black"
                         android:gravity="center"
                         android:paddingLeft="5dp"
                         android:background="@drawable/table_cell_border"/>
 
                     <TextView
-                        android:layout_width="100dp"
+                        android:layout_width="110dp"
                         android:layout_height="wrap_content"
                         android:text="Order Type"
-                        android:textSize="16sp"
+                        android:textSize="20sp"
                         android:textColor="@color/black"
                         android:gravity="center"
                         android:paddingLeft="5dp"
@@ -91,7 +91,7 @@
                         android:layout_width="75dp"
                         android:layout_height="wrap_content"
                         android:text="Details"
-                        android:textSize="16sp"
+                        android:textSize="20sp"
                         android:textColor="@color/black"
                         android:gravity="center"
                         android:paddingLeft="5dp"
