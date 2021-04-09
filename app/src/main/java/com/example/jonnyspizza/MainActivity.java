@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
         int pixelsHeight = (int) (32 * scale + 0.5f);
         int pixelsID = (int) (80 * scale + 0.5f);
         int pixelsDate = (int) (200 * scale + 0.5f);
-        int pixelsCost = (int) (75 * scale + 0.5f);
+        int pixelsCost = (int) (85 * scale + 0.5f);
         int pixelsType = (int) (110 * scale + 0.5f);
         int pixelsDetails = (int) (75 * scale + 0.5f);
 
@@ -267,13 +267,8 @@ public class MainActivity extends AppCompatActivity {
         orderTypeTV.setBackgroundResource(R.drawable.table_cell_border);
 
         Button viewButton = new Button(context);
-        //MaterialButton viewButton = new MaterialButton(context);
         viewButton.setLayoutParams(new LinearLayout.LayoutParams(pixelsDetails, ViewGroup.LayoutParams.MATCH_PARENT));
-        //viewButton.setInsetBottom(0);
-        //viewButton.setInsetTop(0);
-        //viewButton.setMinHeight(0);
         viewButton.setBackgroundResource(R.drawable.view_button_background);
-        //viewButton.setBackgroundColor(Color.GRAY);
         viewButton.setText("View");
         viewButton.setPadding(0,0,0,0);
 

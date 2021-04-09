@@ -68,7 +68,7 @@
                         android:background="@drawable/table_cell_border"/>
 
                     <TextView
-                        android:layout_width="75dp"
+                        android:layout_width="85dp"
                         android:layout_height="wrap_content"
                         android:text="Cost"
                         android:textSize="20sp"

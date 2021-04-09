@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.telephony.PhoneNumberUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,6 +20,10 @@ import com.example.jonnyspizza.CustomObjects.Customer;
 import com.example.jonnyspizza.CustomObjects.Delivery;
 import com.example.jonnyspizza.CustomObjects.Order;
 import com.example.jonnyspizza.CustomObjects.Payment;
+
+import java.time.Year;
+import java.util.Calendar;
+import java.util.Date;
 
 public class PlaceOrderActivity extends AppCompatActivity {
 
@@ -55,6 +61,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
         lastNameTxt = findViewById(R.id.lastNameText);
         emailAddressTxt = findViewById(R.id.emailAddressText);
         phoneNumberTxt = findViewById(R.id.phoneNumberText);
+        phoneNumberTxt.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
         creditCardTxt = findViewById(R.id.creditCardNumberText);
         securityCodeTxt = findViewById(R.id.securityCodeText);
@@ -118,7 +125,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
         String firstName = firstNameTxt.getText().toString();
         String lastName = lastNameTxt.getText().toString();
         String emailAddress = emailAddressTxt.getText().toString();
-        String phoneNumber = phoneNumberTxt.getText().toString();
+        String phoneNumber = PhoneNumberUtils.normalizeNumber(phoneNumberTxt.getText().toString());
 
         Customer customer = new Customer(firstName, lastName, emailAddress, phoneNumber);
         this.order.setCustomer(customer);
@@ -199,12 +206,16 @@ public class PlaceOrderActivity extends AppCompatActivity {
         boolean isValid =  true;
 
         String emptyString = "";
-        int phoneNumberLength = 10;
+        int phoneNumberLength = 14;
         int minCreditCardLength = 13;
         int maxCreditCardLength = 19;
         int securityLength = 3;
         int mmLength = 2;
+        int minMonth = 1;
+        int maxMonth = 12;
         int yyyyLength = 4;
+        int minYear = Calendar.getInstance().get(Calendar.YEAR);
+        int maxYear = minYear + 3;
         int zipCodeLength = 5;
 
         String firstName = firstNameTxt.getText().toString();
@@ -217,6 +228,9 @@ public class PlaceOrderActivity extends AppCompatActivity {
         String month = mmTxt.getText().toString();
         String year = yyyyTxt.getText().toString();
         String billingZip = billingZipTxt.getText().toString();
+
+        int monthInt = Integer.parseInt(month);
+        int yearInt = Integer.parseInt(year);
 
         if (firstName.equals(emptyString)){
             firstNameTxt.setError("First Name Required!");
@@ -261,7 +275,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
             mmTxt.setError("Month of Expiration Required!");
             isValid = false;
         }
-        else if (month.length() != mmLength){
+        else if (monthInt < minMonth || monthInt > maxMonth){
             mmTxt.setError("Invalid Expiration Month!");
         }
 
@@ -269,7 +283,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
             yyyyTxt.setError("Year of Expiration Required!");
             isValid = false;
         }
-        else if (year.length() != yyyyLength){
+        else if (yearInt < minYear || yearInt > maxYear){
             yyyyTxt.setError("Invalid Expiration Year!");
             isValid = false;
         }
