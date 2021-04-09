@@ -77,6 +77,25 @@ public class Pizza extends Item implements Serializable {
     }
 
     /**
+     * Returns a semi-colon separated string of the pizza toppings
+     * @return
+     */
+    public String getToppingsString(){
+        StringBuilder sb = new StringBuilder();
+
+        int numToppings = this.toppings.size();
+
+        if (numToppings > 0){
+            for (int i = 0; i < numToppings-1; i++){
+                sb.append(this.toppings.get(i) + ";");
+            }
+            sb.append(this.toppings.get(numToppings - 1));
+        }
+
+        return sb.toString();
+    }
+
+    /**
      * Gets a formatted string of the description of the item
      * @return String
      */
