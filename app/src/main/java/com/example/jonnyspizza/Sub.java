@@ -18,4 +18,8 @@ public class Sub extends Item implements Serializable {
         }
         return "";
     }
+
+    public String getType() {
+        return type;
+    }
 }

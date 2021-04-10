@@ -38,12 +38,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 DB_Util.PIZZA_COST + " REAL, " + DB_Util.PIZZA_TOPPINGS + " TEXT, " + DB_Util.PIZZA_QUANTITY +
                 " INTEGER, FOREIGN KEY(" + DB_Util.PIZZA_FK + ") REFERENCES " + DB_Util.TABLE_ORDER + "(" + DB_Util.ORDER_PK + "))";
 
-        String CREATE_SUB_TABLE;
-        String CREATE_WINGS_TABLE;
-        String CREATE_DRINK_TABLE;
+        String CREATE_SUB_TABLE = "CREATE TABLE IF NOT EXISTS " + DB_Util.TABLE_SUB + " (" + DB_Util.SUB_PK + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                DB_Util.SUB_FK + " INTEGER, " + DB_Util.SUB_TYPE + " TEXT, " + DB_Util.SUB_COST + " REAL, " + DB_Util.SUB_QUANTITY +
+                " INTEGER, FOREIGN KEY(" + DB_Util.SUB_FK + ") REFERENCES " + DB_Util.TABLE_ORDER + "(" + DB_Util.ORDER_PK + "))";
+
+        String CREATE_WINGS_TABLE = "CREATE TABLE IF NOT EXISTS " + DB_Util.TABLE_WINGS + " (" + DB_Util.WINGS_PK + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                DB_Util.WINGS_FK + " INTEGER, " + DB_Util.WINGS_SIZE + " TEXT, " + DB_Util.WINGS_SAUCE + " TEXT, " + DB_Util.WINGS_COST + " REAL, " +
+                DB_Util.WINGS_QUANTITY + " INTEGER, FOREIGN KEY(" + DB_Util.WINGS_FK + ") REFERENCES " + DB_Util.TABLE_ORDER + "(" + DB_Util.ORDER_PK + "))";
+
+        String CREATE_DRINK_TABLE = "CREATE TABLE IF NOT EXISTS " + DB_Util.TABLE_DRINK + " (" +DB_Util.DRINK_PK + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                DB_Util.DRINK_FK + " INTEGER, " + DB_Util.DRINK_TYPE + " TEXT," + DB_Util.DRINK_COST + " REAL, " + DB_Util.DRINK_QUANTITY + " INTEGER, FOREIGN KEY(" +
+                DB_Util.DRINK_FK + ") REFERENCES " + DB_Util.TABLE_ORDER + "(" + DB_Util.ORDER_PK + "))";
 
         db.execSQL(CREATE_ORDER_TABLE);
         db.execSQL(CREATE_PIZZA_TABLE);
+        db.execSQL(CREATE_SUB_TABLE);
+        db.execSQL(CREATE_WINGS_TABLE);
+        db.execSQL(CREATE_DRINK_TABLE);
 
     }
 
@@ -60,6 +71,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // drop older tables
         db.execSQL("DROP TABLE IF EXISTS " + DB_Util.TABLE_ORDER);
         db.execSQL("DROP TABLE IF EXISTS " + DB_Util.TABLE_PIZZA);
+        db.execSQL("DROP TABLE IF EXISTS " + DB_Util.TABLE_SUB);
+        db.execSQL("DROP TABLE IF EXISTS " + DB_Util.TABLE_WINGS);
+        db.execSQL("DROP TABLE IF EXISTS " + DB_Util.TABLE_DRINK);
 
         // create new tables
         onCreate(db);
@@ -140,6 +154,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             if (item instanceof Pizza){
                 result = handlePizza(db, orderID, (Pizza)item);
             }
+            else if (item instanceof Sub){
+                result = handleSub(db, orderID, (Sub)item);
+            }
+            else if (item instanceof Wings){
+                result = handleWings(db, orderID, (Wings)item);
+            }
+            else if (item instanceof Drink){
+                result = handleDrink(db, orderID, (Drink)item);
+            }
             success = success && result;            // once an individual insertion is unsuccessful, entire process considered unsuccessful
         }
         return success;
@@ -150,7 +173,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * @param db
      * @param orderID ID of the corresponding order
      * @param pizza
-     * @return boolean true if the insertions were successful
+     * @return boolean true if the insertion was successful
      */
     private boolean handlePizza(SQLiteDatabase db, String orderID, Pizza pizza){
         boolean success = true;
@@ -172,6 +195,81 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return success;
     }
 
+    /**
+     * Inserts a Sub into the sub_table
+     * @param db
+     * @param orderID ID of the corresponding order
+     * @param sub
+     * @return boolean true if the insertion was successful
+     */
+    private boolean handleSub(SQLiteDatabase db, String orderID, Sub sub){
+        boolean success = true;
+
+        ContentValues values = new ContentValues();
+
+        values.put(DB_Util.SUB_FK, orderID);
+        values.put(DB_Util.SUB_TYPE, sub.getType());
+        values.put(DB_Util.SUB_COST, sub.getCost());
+        values.put(DB_Util.SUB_QUANTITY, sub.getQuantity());
+
+        long result = db.insert(DB_Util.TABLE_SUB, null, values);
+        if (result == -1) {success = false; }
+
+        return success;
+    }
+
+    /**
+     * Inserts a Wings object into the wings_table
+     * @param db
+     * @param orderID ID of the corresponding order
+     * @param wings
+     * @return boolean true if the insertion was successful
+     */
+    private boolean handleWings(SQLiteDatabase db, String orderID, Wings wings){
+        boolean success = true;
+
+        ContentValues values = new ContentValues();
+
+        values.put(DB_Util.WINGS_FK, orderID);
+        values.put(DB_Util.WINGS_SIZE, wings.getSize());
+        values.put(DB_Util.WINGS_SAUCE, wings.getSauce());
+        values.put(DB_Util.WINGS_COST, wings.getCost());
+        values.put(DB_Util.WINGS_QUANTITY, wings.getQuantity());
+
+        long result = db.insert(DB_Util.TABLE_WINGS, null, values);
+        if (result == -1) {success = false; }
+
+        return success;
+    }
+
+    /**
+     * Inserts a Drink into the drink_table
+     * @param db
+     * @param orderID ID of the corresponding order
+     * @param drink
+     * @return boolean true if the insertion was successful
+     */
+    private boolean handleDrink(SQLiteDatabase db, String orderID, Drink drink){
+        boolean success = true;
+
+        ContentValues values = new ContentValues();
+
+        values.put(DB_Util.DRINK_FK, orderID);
+        values.put(DB_Util.DRINK_TYPE, drink.getType());
+        values.put(DB_Util.DRINK_COST, drink.getCost());
+        values.put(DB_Util.DRINK_QUANTITY, drink.getQuantity());
+
+        long result = db.insert(DB_Util.TABLE_DRINK, null, values);
+        if (result == -1) {success = false; }
+
+        return success;
+    }
+
+    /**
+     * Retrieves the ID of the last row inserted into the database
+     * @param db
+     * @return String with the ID
+     */
     private String getLastRowID(SQLiteDatabase db){
         String id;
         Cursor cursor = db.rawQuery("Select last_insert_rowid()", null);

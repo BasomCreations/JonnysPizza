@@ -2,7 +2,7 @@ package com.example.jonnyspizza;
 
 public final class DB_Util {
 
-    public static final int VERSION_NUMBER = 4;
+    public static final int VERSION_NUMBER = 5;
     public static final String DB_NAME = "JonnyPizza.db";
 
     // Order Table

@@ -19,4 +19,8 @@ public class Drink extends Item implements Serializable {
         }
         return "";
     }
+
+    public String getType() {
+        return type;
+    }
 }
