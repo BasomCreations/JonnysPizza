@@ -1,8 +1,10 @@
 package com.example.jonnyspizza;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -33,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private Button deliveryPopup_cancelBtn, deliveryPopup_saveBtn, historyPopup_closeBtn;
     private DatabaseHandler dbHandler;
 
+    private final static int LAUNCH_ORDER_SUMMARY_ACTIVITY = 1;
+
     private LinearLayout historyLinearLayout;
     private final static int HISTORY_TEXT_SIZE = 20;
     private final static int HISTORY_SIDE_PADDING = 15;
@@ -45,6 +49,20 @@ public class MainActivity extends AppCompatActivity {
         dbHandler = new DatabaseHandler(this);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == LAUNCH_ORDER_SUMMARY_ACTIVITY) {
+            if (resultCode == Activity.RESULT_OK){
+            }
+            if (resultCode == Activity.RESULT_CANCELED){
+                if (dialog.isShowing()){
+                    dialog.dismiss();
+                }
+            }
+        }
+    }
+
     /**
      * Starts the order items activity
      * @param order Order object for the specific type of order (Carryout or Delivery)
@@ -53,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, OrderItemActivity.class);
         intent.putExtra(getString(R.string.order_name), order);
         startActivity(intent);
-        recreate();
+        //recreate();
     }
 
     /**
@@ -108,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ConfirmAddressBtn_Click();
+                dialog.dismiss();
             }
         });
     }
@@ -312,7 +331,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, OrderSummaryActivity.class);
         intent.putExtra(getString(R.string.order_name), order);
         intent.putExtra(getString(R.string.summary_mode), getString(R.string.view_only));
-        startActivity(intent);
+        startActivityForResult(intent, LAUNCH_ORDER_SUMMARY_ACTIVITY);
     }
 
     /**

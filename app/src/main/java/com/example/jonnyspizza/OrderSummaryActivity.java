@@ -134,6 +134,13 @@ public class OrderSummaryActivity extends AppCompatActivity {
     private void displayItem(Cart cart, Item item){
         // Original layout in the activity
         LinearLayout parentLayout = findViewById(R.id.parentLayout);
+        // Adjust layout if in view-only mode
+        if (!editMode) {
+            final float scale = getResources().getDisplayMetrics().density;
+            int topPadding = (int) (16 * scale + 0.5f);
+            int sidePadding = (int) (25 * scale + 0.5f);
+            parentLayout.setPadding(sidePadding, topPadding, 0, 0);
+        }
 
         //Create layout for item and delete button
         LinearLayout outerLayout = new LinearLayout(OrderSummaryActivity.this);

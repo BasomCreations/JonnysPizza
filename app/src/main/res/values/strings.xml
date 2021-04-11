@@ -23,9 +23,9 @@
     <string name="view_only">VIEW_ONLY</string>
     <string name="editable">EDITABLE</string>
     <!-- Button names for modes -->
-    <string name="back_view_only">Back to Orders</string>
+    <string name="back_view_only">Back</string>
     <string name="back_editable">Back to Menu</string>
-    <string name="checkout_view_only">Re-order</string>
+    <string name="checkout_view_only">Reorder</string>
     <string name="checkout_editable">Checkout</string>
 
 </resources>
