@@ -19,7 +19,7 @@ import com.example.jonnyspizza.CustomObjects.Order;
 
 import org.jetbrains.annotations.NotNull;
 
-public class DisplayPizzaOrderActivity extends AppCompatActivity {
+public class OrderSummaryActivity extends AppCompatActivity {
 
     private final static int HEADER_TEXT_SIZE = 24;
     private final static int NORMAL_TEXT_SIZE = 16;
@@ -36,15 +36,30 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
     private final static int LAUNCH_PAYMENT_ACTIVITY = 1;
 
     private Order order;
+    private boolean editMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_pizza_order);
+        setContentView(R.layout.activity_order_summary);
 
+        setMode();
         this.order = (Order) getIntent().getSerializableExtra(getString(R.string.order_name));
         Cart cart = order.getCart();
         handleCart(cart);
+    }
+
+    /**
+     * Determine if the screen should be view-only (past orders) or editable
+     */
+    private void setMode(){
+        String mode = getIntent().getStringExtra(getString(R.string.summary_mode));
+        if (mode.equals(getString(R.string.editable))){
+            editMode = true;
+        }
+        else{
+            editMode = false;
+        }
     }
 
     @Override
@@ -58,10 +73,12 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
     }
 
     /**
-     * Handle
+     * Handles a cart based on the number of items in it
      * @param cart
      */
     private void handleCart(Cart cart){
+        setButtonNames();
+
         // only display the cart if there are items
         if (cart.getItems().size() > 0){
             displayCart(cart);
@@ -79,6 +96,23 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
             noItemTV.setGravity(Gravity.CENTER);
 
             parentLayout.addView(noItemTV);
+        }
+    }
+
+    /**
+     * Adjusts the names of the buttons based on the current mode
+     */
+    private void setButtonNames(){
+        Button backButton = findViewById(R.id.orderSummary_backToMenuBtn);
+        Button checkoutButton = findViewById(R.id.proceedToPaymentBtn);
+
+        if (editMode){
+            backButton.setText(R.string.back_editable);
+            checkoutButton.setText(R.string.checkout_editable);
+        }
+        else{
+            backButton.setText(R.string.back_view_only);
+            checkoutButton.setText(R.string.checkout_view_only);
         }
     }
 
@@ -102,11 +136,12 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
         LinearLayout parentLayout = findViewById(R.id.parentLayout);
 
         //Create layout for item and delete button
-        LinearLayout outerLayout = new LinearLayout(DisplayPizzaOrderActivity.this);
+        LinearLayout outerLayout = new LinearLayout(OrderSummaryActivity.this);
         outerLayout.setOrientation(LinearLayout.HORIZONTAL);
 
         // Create button to delete the item
-        Button deleteBtn = createDeleteButton(cart, item);
+        Button deleteBtn = null;
+        if (editMode) deleteBtn = createDeleteButton(cart, item);
 
         // Create layout for the entire item
         LinearLayout itemLayout = createItemLayout();
@@ -118,7 +153,7 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
         TextView itemName = createItemNameTV(item);
 
         // Create text for item quantity
-        TextView itemQuantity = new TextView(DisplayPizzaOrderActivity.this);
+        TextView itemQuantity = new TextView(OrderSummaryActivity.this);
         itemQuantity.setText("Quantity: " + item.getQuantity());
         itemQuantity.setTextSize(NORMAL_TEXT_SIZE);
         itemQuantity.setPadding(0, 0, INNER_PADDING_RIGHT, 0);
@@ -130,7 +165,7 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
         View divider = createDivider();
 
         // Create text for description of item
-        TextView itemDescription = new TextView(DisplayPizzaOrderActivity.this);
+        TextView itemDescription = new TextView(OrderSummaryActivity.this);
         itemDescription.setText(item.getDescription());
         itemDescription.setTextSize(NORMAL_TEXT_SIZE);
         itemDescription.setPadding(INNER_PADDING_LEFT, 0, 0, 0);
@@ -144,7 +179,7 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
         itemLayout.addView(divider);
         itemLayout.addView(itemDescription);
 
-        outerLayout.addView(deleteBtn);
+        if (deleteBtn != null) outerLayout.addView(deleteBtn);
         outerLayout.addView(itemLayout);
 
         parentLayout.addView(outerLayout);
@@ -158,7 +193,7 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
      */
     @NotNull
     private Button createDeleteButton(Cart cart, Item item) {
-        Button deleteBtn = new Button(DisplayPizzaOrderActivity.this);
+        Button deleteBtn = new Button(OrderSummaryActivity.this);
         deleteBtn.setText("X");
         deleteBtn.setTextColor(Color.RED);
         deleteBtn.setLayoutParams(new LinearLayout.LayoutParams(DELETE_BTN_DIMENSION, DELETE_BTN_DIMENSION));
@@ -183,7 +218,7 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
      */
     @NotNull
     private LinearLayout createItemLayout() {
-        LinearLayout itemLayout = new LinearLayout(DisplayPizzaOrderActivity.this);
+        LinearLayout itemLayout = new LinearLayout(OrderSummaryActivity.this);
         itemLayout.setOrientation(LinearLayout.HORIZONTAL);
         itemLayout.setBackgroundResource(R.drawable.order_display_border);
         itemLayout.setPadding(ITEM_PADDING, ITEM_PADDING, ITEM_PADDING, ITEM_PADDING);
@@ -197,7 +232,7 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
      */
     @NotNull
     private LinearLayout createInnerItemLayout() {
-        LinearLayout itemInnerLayout = new LinearLayout(DisplayPizzaOrderActivity.this);
+        LinearLayout itemInnerLayout = new LinearLayout(OrderSummaryActivity.this);
         itemInnerLayout.setOrientation(LinearLayout.VERTICAL);
         itemInnerLayout.setLayoutParams(new LinearLayout.LayoutParams(INNER_ITEM_WIDTH, ViewGroup.LayoutParams.WRAP_CONTENT));
         return itemInnerLayout;
@@ -210,7 +245,7 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
      */
     @NotNull
     private TextView createItemNameTV(Item item) {
-        TextView itemName = new TextView(DisplayPizzaOrderActivity.this);
+        TextView itemName = new TextView(OrderSummaryActivity.this);
         itemName.setText(item.getName());
         itemName.setTextSize(HEADER_TEXT_SIZE);
         itemName.setTextColor(Color.BLACK);
@@ -225,7 +260,7 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
      */
     @NotNull
     private TextView createItemCostTV(Item item) {
-        TextView itemCost = new TextView(DisplayPizzaOrderActivity.this);
+        TextView itemCost = new TextView(OrderSummaryActivity.this);
         String totalCost = String.format("$%.2f", (item.getCost() * item.getQuantity()));
         itemCost.setText("Cost: " + totalCost);
         itemCost.setTextSize(NORMAL_TEXT_SIZE);
@@ -239,7 +274,7 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
      */
     @NotNull
     private View createDivider() {
-        View divider = new View(DisplayPizzaOrderActivity.this);
+        View divider = new View(OrderSummaryActivity.this);
         divider.setLayoutParams(new LinearLayout.LayoutParams(DIVIDER_WIDTH, ViewGroup.LayoutParams.MATCH_PARENT));
         divider.setBackgroundColor(Color.BLACK);
         return divider;
@@ -254,7 +289,7 @@ public class DisplayPizzaOrderActivity extends AppCompatActivity {
         LinearLayout totalCostLayout = findViewById(R.id.totalCostLayout);
 
         // TextView for the total cost
-        TextView totalTextView = new TextView(DisplayPizzaOrderActivity.this);
+        TextView totalTextView = new TextView(OrderSummaryActivity.this);
 
         totalTextView.setText(String.format("Total Cost: $%.2f", cart.getTotalCost()));
         totalTextView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));

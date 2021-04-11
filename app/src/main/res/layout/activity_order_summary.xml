@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DisplayPizzaOrderActivity">
+    tools:context=".OrderSummaryActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:onClick="BackToMenuBtn_Click"
-                android:text="Back to Menu"
+                android:text="@string/back_editable"
                 app:layout_constraintEnd_toStartOf="@+id/proceedToPaymentBtn"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:onClick="ProceedToPaymentBtn_Click"
-                android:text="Checkout"
+                android:text="@string/checkout_editable"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/orderSummary_backToMenuBtn"

@@ -14,7 +14,7 @@
             android:name=".OrderItemActivity"
             android:label="@string/title_activity_order_item"
             android:theme="@style/Theme.JonnysPizza.NoActionBar" />
-        <activity android:name=".DisplayPizzaOrderActivity" />
+        <activity android:name=".OrderSummaryActivity" />
         <activity android:name=".OrderPizza" />
         <activity android:name=".MainActivity">
             <intent-filter>

@@ -28,7 +28,7 @@ public class OrderPizza extends AppCompatActivity {
         addToppings(pizza);
         pizza.calculateCost();
 
-        Intent i = new Intent(this, DisplayPizzaOrderActivity.class);
+        Intent i = new Intent(this, OrderSummaryActivity.class);
         i.putExtra("Pizza", pizza);
         startActivity(i);
 

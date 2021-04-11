@@ -14,16 +14,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.jonnyspizza.ui.main.SectionsPagerAdapter;
-
-import org.w3c.dom.Text;
 
 public class OrderItemActivity extends AppCompatActivity {
 
@@ -109,8 +104,9 @@ public class OrderItemActivity extends AppCompatActivity {
     public void proceedToCheckout(View v){
         // only allow users to checkout if they have added at least one item to the cart
         if (this.cart.getItems().size() > 0) {
-            Intent i = new Intent(this, DisplayPizzaOrderActivity.class);
+            Intent i = new Intent(this, OrderSummaryActivity.class);
             i.putExtra(getString(R.string.order_name), order);
+            i.putExtra(getString(R.string.summary_mode), getString(R.string.editable));
             //startActivity(i);
             startActivityForResult(i, LAUNCH_CONFIRMATION_ACTIVITY);
         }

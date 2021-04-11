@@ -11,11 +11,21 @@
     <string name="half_dozen_name">Half Dozen</string>
     <string name="dozen_name">Dozen</string>
 
+    <!-- Strings to pass Cart and Order objects between activities -->
     <string name="cart_name">Cart</string>
     <string name="order_name">Order</string>
 
+    <!-- Text for Order Item buttons -->
     <string name="add_to_cart">ADD TO CART</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Strings to determine mode of Order Summary -->
+    <string name="summary_mode">SUMMARY_MODE</string>
+    <string name="view_only">VIEW_ONLY</string>
+    <string name="editable">EDITABLE</string>
+    <!-- Button names for modes -->
+    <string name="back_view_only">Back to Orders</string>
+    <string name="back_editable">Back to Menu</string>
+    <string name="checkout_view_only">Re-order</string>
+    <string name="checkout_editable">Checkout</string>
 
 </resources>

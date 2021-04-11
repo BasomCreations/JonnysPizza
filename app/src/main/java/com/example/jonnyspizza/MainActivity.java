@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -22,7 +21,6 @@ import com.example.jonnyspizza.CustomObjects.Address;
 import com.example.jonnyspizza.CustomObjects.Carryout;
 import com.example.jonnyspizza.CustomObjects.Delivery;
 import com.example.jonnyspizza.CustomObjects.Order;
-import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
@@ -303,8 +301,17 @@ public class MainActivity extends AppCompatActivity {
             order = new Carryout(cart);
         }
 
-        Intent intent = new Intent(this, DisplayPizzaOrderActivity.class);
+        viewOrderSummary(order);
+    }
+
+    /**
+     * Proceed to the Order Summary activities
+     * @param order
+     */
+    private void viewOrderSummary(Order order){
+        Intent intent = new Intent(this, OrderSummaryActivity.class);
         intent.putExtra(getString(R.string.order_name), order);
+        intent.putExtra(getString(R.string.summary_mode), getString(R.string.view_only));
         startActivity(intent);
     }
 
