@@ -271,6 +271,12 @@ public class MainActivity extends AppCompatActivity {
         viewButton.setBackgroundResource(R.drawable.view_button_background);
         viewButton.setText("View");
         viewButton.setPadding(0,0,0,0);
+        viewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewButton_Click(orderID, orderType);
+            }
+        });
 
         recordLayout.addView(orderIDTV);
         recordLayout.addView(orderDateTV);
@@ -281,6 +287,32 @@ public class MainActivity extends AppCompatActivity {
         historyLinearLayout.addView(recordLayout);
     }
 
+    /**
+     * Handles the View button click to go to the "Order Summary" screen
+     * @param orderID
+     * @param orderType
+     */
+    private void viewButton_Click(String orderID, String orderType){
+        Order order;
+        Cart cart = dbHandler.getOrderItems(orderID);
+
+        if (orderType.equals(DB_Util.DELIVERY_TYPE)){
+            order = new Delivery(cart, null);   //TODO: fix this field by getting address data
+        }
+        else{
+            order = new Carryout(cart);
+        }
+
+        Intent intent = new Intent(this, DisplayPizzaOrderActivity.class);
+        intent.putExtra(getString(R.string.order_name), order);
+        startActivity(intent);
+    }
+
+    /**
+     * Helper method to format money as a string
+     * @param cost Original money string
+     * @return String with formatted money
+     */
     private String formatMoney(String cost){
         double costDouble = Double.parseDouble(cost);
         return String.format("$%.2f", costDouble);

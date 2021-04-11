@@ -316,4 +316,145 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         return resultsList;
     }
+
+    /**
+     * Gets a Cart with the items ordered from the specified order
+     * @param orderID ID of the past order
+     * @return Cart
+     */
+    public Cart getOrderItems(String orderID){
+        Cart cart = new Cart();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        addPizzasToCart(db, orderID, cart);
+        addSubsToCart(db, orderID, cart);
+        addWingsToCart(db, orderID, cart);
+        addDrinksToCart(db, orderID, cart);
+
+        db.close();
+
+        return cart;
+    }
+
+    /**
+     * Get all of the pizzas for a specified order
+     * @param db
+     * @param orderID ID of the past order
+     * @param cart Cart to add the pizzas
+     */
+    private void addPizzasToCart(SQLiteDatabase db, String orderID, Cart cart){
+
+        Cursor cursor = db.rawQuery("Select * From " + DB_Util.TABLE_PIZZA + " WHERE " + DB_Util.PIZZA_FK + " = " + orderID, null);
+
+        if (cursor.moveToFirst()){
+            do {
+
+                String size, crust, sauce, cheese;
+                String[] toppings;
+                double cost;
+                int quantity;
+
+                size = cursor.getString(2);
+                crust = cursor.getString(3);
+                sauce = cursor.getString(4);
+                cheese = cursor.getString(5);
+                cost = cursor.getDouble(6);
+                toppings = cursor.getString(7).split(";");
+                quantity = cursor.getInt(8);
+
+                Pizza pizza = new Pizza(quantity, size, crust, sauce, cheese);
+                for (String topping: toppings) {
+                    pizza.addToppings(topping);
+                }
+                pizza.setCost(cost);
+                cart.addItem(pizza);
+
+            } while (cursor.moveToNext());
+        }
+    }
+
+    /**
+     * Get all of the subs for a specified order
+     * @param db
+     * @param orderID ID of the past order
+     * @param cart Cart to add the subs
+     */
+    private void addSubsToCart(SQLiteDatabase db, String orderID, Cart cart){
+
+        Cursor cursor = db.rawQuery("Select * From " + DB_Util.TABLE_SUB + " WHERE " + DB_Util.SUB_FK + " = " + orderID, null);
+
+        if (cursor.moveToFirst()){
+            do {
+
+                String type;
+                double cost;
+                int quantity;
+
+                type = cursor.getString(2);
+                cost = cursor.getDouble(3);
+                quantity = cursor.getInt(4);
+
+                Sub sub = new Sub(type, cost, quantity);
+                cart.addItem(sub);
+
+            } while (cursor.moveToNext());
+        }
+    }
+
+    /**
+     * Get all of the wings for a specified order
+     * @param db
+     * @param orderID ID of the past order
+     * @param cart Cart to add the wings
+     */
+    private void addWingsToCart(SQLiteDatabase db, String orderID, Cart cart){
+
+        Cursor cursor = db.rawQuery("Select * From " + DB_Util.TABLE_WINGS + " WHERE " + DB_Util.WINGS_FK + " = " + orderID, null);
+
+        if (cursor.moveToFirst()){
+            do {
+
+                String size, sauce;
+                double cost;
+                int quantity;
+
+                size = cursor.getString(2);
+                sauce = cursor.getString(3);
+                cost = cursor.getDouble(4);
+                quantity = cursor.getInt(5);
+
+                Wings wings = new Wings(size, sauce, cost, quantity);
+                cart.addItem(wings);
+
+            } while (cursor.moveToNext());
+        }
+    }
+
+    /**
+     * Get all of the drinks for a specified order
+     * @param db
+     * @param orderID ID of the past order
+     * @param cart Cart to add the drinks
+     */
+    private void addDrinksToCart(SQLiteDatabase db, String orderID, Cart cart){
+
+        Cursor cursor = db.rawQuery("Select * From " + DB_Util.TABLE_DRINK + " WHERE " + DB_Util.DRINK_FK + " = " + orderID, null);
+
+        if (cursor.moveToFirst()){
+            do {
+
+                String type;
+                double cost;
+                int quantity;
+
+                type = cursor.getString(2);
+                cost = cursor.getDouble(3);
+                quantity = cursor.getInt(4);
+
+                Drink drink = new Drink(type, cost, quantity);
+                cart.addItem(drink);
+
+            } while (cursor.moveToNext());
+        }
+    }
 }
