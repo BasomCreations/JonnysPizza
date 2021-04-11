@@ -6,7 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.jonnyspizza.CustomObjects.Address;
 import com.example.jonnyspizza.CustomObjects.Carryout;
+import com.example.jonnyspizza.CustomObjects.Delivery;
 import com.example.jonnyspizza.CustomObjects.Order;
 
 import java.lang.reflect.Array;
@@ -50,11 +52,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 DB_Util.DRINK_FK + " INTEGER, " + DB_Util.DRINK_TYPE + " TEXT," + DB_Util.DRINK_COST + " REAL, " + DB_Util.DRINK_QUANTITY + " INTEGER, FOREIGN KEY(" +
                 DB_Util.DRINK_FK + ") REFERENCES " + DB_Util.TABLE_ORDER + "(" + DB_Util.ORDER_PK + "))";
 
+        String CREATE_DELIVERY_ADDRESS_TABLE = "CREATE TABLE IF NOT EXISTS " + DB_Util.TABLE_DELIVERY_ADDRESS + " (" + DB_Util.DELIVERY_ADDRESS_PK + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                DB_Util.DELIVERY_ADDRESS_FK + " INTEGER, " + DB_Util.DELIVERY_ADDRESS_STREET + " TEXT," + DB_Util.DELIVERY_ADDRESS_CITY + " TEXT, " + DB_Util.DELIVERY_ADDRESS_STATE + " TEXT, " +
+                DB_Util.DELIVERY_ADDRESS_ZIP + " TEXT, FOREIGN KEY(" + DB_Util.DELIVERY_ADDRESS_FK + ") REFERENCES " + DB_Util.TABLE_ORDER + "(" + DB_Util.ORDER_PK + "))";
+
         db.execSQL(CREATE_ORDER_TABLE);
         db.execSQL(CREATE_PIZZA_TABLE);
         db.execSQL(CREATE_SUB_TABLE);
         db.execSQL(CREATE_WINGS_TABLE);
         db.execSQL(CREATE_DRINK_TABLE);
+        db.execSQL(CREATE_DELIVERY_ADDRESS_TABLE);
 
     }
 
@@ -74,6 +81,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + DB_Util.TABLE_SUB);
         db.execSQL("DROP TABLE IF EXISTS " + DB_Util.TABLE_WINGS);
         db.execSQL("DROP TABLE IF EXISTS " + DB_Util.TABLE_DRINK);
+        db.execSQL("DROP TABLE IF EXISTS " + DB_Util.TABLE_DELIVERY_ADDRESS);
 
         // create new tables
         onCreate(db);
@@ -97,9 +105,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String orderID = getLastRowID(db);
 
+        // If Delivery, insert delivery address
+        if (orderID != null && order instanceof Delivery){
+            Delivery delivery = (Delivery) order;
+            success = handleDeliveryAddress(db, orderID, delivery.getDeliveryAddress());
+        }
+
         // Insert all of the items
         if (orderID != null){
-            handleItems(db, orderID, order.getCart());
+            success = handleItems(db, orderID, order.getCart()) & success;
         }
         else { success = false; }
 
@@ -137,6 +151,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(DB_Util.ORDER_DATE, strDate);
 
         return values;
+    }
+
+    /**
+     * Inserts Delivery Address from an Order into the DB
+     * @param db
+     * @param orderID ID of the corresponding order
+     * @param deliveryAddress
+     * @return boolean true if the insertion was successful
+     */
+    private boolean handleDeliveryAddress(SQLiteDatabase db, String orderID, Address deliveryAddress){
+        boolean success = true;
+
+        ContentValues values = new ContentValues();
+
+        values.put(DB_Util.DELIVERY_ADDRESS_FK, orderID);
+        values.put(DB_Util.DELIVERY_ADDRESS_STREET, deliveryAddress.getStreetAddress());
+        values.put(DB_Util.DELIVERY_ADDRESS_CITY, deliveryAddress.getCity());
+        values.put(DB_Util.DELIVERY_ADDRESS_STATE, deliveryAddress.getState());
+        values.put(DB_Util.DELIVERY_ADDRESS_ZIP, deliveryAddress.getZip());
+
+        long result = db.insert(DB_Util.TABLE_DELIVERY_ADDRESS, null, values);
+        if (result == -1) {success = false; }
+
+        return success;
     }
 
     /**
@@ -315,6 +353,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
 
         return resultsList;
+    }
+
+    public Address getDeliveryAddress(String orderID){
+        Address address = null;
+        String street, city, state, zip;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("Select * From " + DB_Util.TABLE_DELIVERY_ADDRESS + " WHERE " + DB_Util.DELIVERY_ADDRESS_FK + " = " + orderID, null);
+
+        if (cursor.moveToFirst()) {
+            street = cursor.getString(2);
+            city = cursor.getString(3);
+            state = cursor.getString(4);
+            zip = cursor.getString(5);
+
+            address = new Address(street, city, state, zip);
+        }
+
+        db.close();
+
+        return address;
     }
 
     /**

@@ -83,8 +83,11 @@ public class PlaceOrderActivity extends AppCompatActivity {
             Delivery delivery = (Delivery) order;
 
             sb.append("Order Type: Delivery\n\n");
-            sb.append(delivery.getDeliveryAddress().getStreetAddress() + "\n");
-            sb.append(delivery.getDeliveryAddress().getCity() + ", " + delivery.getDeliveryAddress().getState() + " " + delivery.getDeliveryAddress().getZip() + "\n\n");
+
+            if (delivery.getDeliveryAddress() != null) {
+                sb.append(delivery.getDeliveryAddress().getStreetAddress() + "\n");
+                sb.append(delivery.getDeliveryAddress().getCity() + ", " + delivery.getDeliveryAddress().getState() + " " + delivery.getDeliveryAddress().getZip() + "\n\n");
+            }
         }
         else if (order instanceof Carryout){
             sb.append("Order Type: Carryout\n\n");

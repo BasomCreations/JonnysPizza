@@ -314,7 +314,8 @@ public class MainActivity extends AppCompatActivity {
         Cart cart = dbHandler.getOrderItems(orderID);
 
         if (orderType.equals(DB_Util.DELIVERY_TYPE)){
-            order = new Delivery(cart, null);   //TODO: fix this field by getting address data
+            Address deliveryAddress = dbHandler.getDeliveryAddress(orderID);
+            order = new Delivery(cart, deliveryAddress);
         }
         else{
             order = new Carryout(cart);

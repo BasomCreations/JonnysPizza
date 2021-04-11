@@ -23,7 +23,7 @@
             android:layout_gravity="center" />
 
         <View
-            android:id="@+id/orderConfirmBottom"
+            android:id="@+id/orderSummaryDivider1"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@android:color/darker_gray"
@@ -31,12 +31,33 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/orderConfirmLbl"/>
 
+        <TextView
+            android:id="@+id/orderSummary_summaryText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="test"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/orderSummaryDivider1"/>
+
+        <View
+            android:id="@+id/orderSummaryDivider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/orderSummary_summaryText"/>
+
         <LinearLayout
             android:id="@+id/parentLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/orderConfirmBottom"
+            app:layout_constraintTop_toBottomOf="@+id/orderSummaryDivider2"
             android:paddingTop="16dp"
             android:paddingLeft="4dp"
             android:paddingRight="4dp">

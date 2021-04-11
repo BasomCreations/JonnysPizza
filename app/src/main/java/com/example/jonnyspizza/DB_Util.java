@@ -2,8 +2,8 @@ package com.example.jonnyspizza;
 
 public final class DB_Util {
 
-    public static final int VERSION_NUMBER = 5;
     public static final String DB_NAME = "JonnyPizza.db";
+    public static final int VERSION_NUMBER = 6;
 
     // Order Table
     public static final String TABLE_ORDER = "order_table";
@@ -52,6 +52,15 @@ public final class DB_Util {
     public static final String DRINK_TYPE = "Type";
     public static final String DRINK_COST = "Cost";
     public static final String DRINK_QUANTITY = "Quantity";
+
+    // Delivery Address Table
+    public static final String TABLE_DELIVERY_ADDRESS = "deliveryAddress_table";
+    public static final String DELIVERY_ADDRESS_PK = "ID";
+    public static final String DELIVERY_ADDRESS_FK = "OrderID";
+    public static final String DELIVERY_ADDRESS_STREET = "Street";
+    public static final String DELIVERY_ADDRESS_CITY = "City";
+    public static final String DELIVERY_ADDRESS_STATE = "State";
+    public static final String DELIVERY_ADDRESS_ZIP = "Zip";
 
     private DB_Util(){ }
 

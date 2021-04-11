@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.jonnyspizza.CustomObjects.Carryout;
+import com.example.jonnyspizza.CustomObjects.Delivery;
 import com.example.jonnyspizza.CustomObjects.Order;
 
 import org.jetbrains.annotations.NotNull;
@@ -47,6 +49,8 @@ public class OrderSummaryActivity extends AppCompatActivity {
         this.order = (Order) getIntent().getSerializableExtra(getString(R.string.order_name));
         Cart cart = order.getCart();
         handleCart(cart);
+
+        setSummaryText();
     }
 
     /**
@@ -60,6 +64,34 @@ public class OrderSummaryActivity extends AppCompatActivity {
         else{
             editMode = false;
         }
+    }
+
+    /**
+     * Sets the Order Summary text at the top of the page
+     */
+    private void setSummaryText() {
+        TextView summaryText = findViewById(R.id.orderSummary_summaryText);
+
+        //String total = String.format("Total: $%.2f", order.getCart().getTotalCost());
+
+        StringBuilder sb = new StringBuilder();
+        if (order instanceof Delivery){
+            Delivery delivery = (Delivery) order;
+
+            sb.append("Order Type: Delivery\n\n");
+
+            if (delivery.getDeliveryAddress() != null) {
+                sb.append(delivery.getDeliveryAddress().getStreetAddress() + "\n");
+                sb.append(delivery.getDeliveryAddress().getCity() + ", " + delivery.getDeliveryAddress().getState() + " " + delivery.getDeliveryAddress().getZip());
+            }
+        }
+        else if (order instanceof Carryout){
+            sb.append("Order Type: Carryout");
+        }
+
+        //sb.append(total);
+
+        summaryText.setText(sb.toString());
     }
 
     @Override
