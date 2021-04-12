@@ -8,8 +8,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.jonnyspizza.CustomObjects.Address;
 import com.example.jonnyspizza.CustomObjects.Carryout;
+import com.example.jonnyspizza.CustomObjects.Customer;
 import com.example.jonnyspizza.CustomObjects.Delivery;
 import com.example.jonnyspizza.CustomObjects.Order;
+import com.example.jonnyspizza.CustomObjects.Payment;
 
 import java.lang.reflect.Array;
 import java.text.DateFormat;
@@ -53,8 +55,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 DB_Util.DRINK_FK + ") REFERENCES " + DB_Util.TABLE_ORDER + "(" + DB_Util.ORDER_PK + "))";
 
         String CREATE_DELIVERY_ADDRESS_TABLE = "CREATE TABLE IF NOT EXISTS " + DB_Util.TABLE_DELIVERY_ADDRESS + " (" + DB_Util.DELIVERY_ADDRESS_PK + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                DB_Util.DELIVERY_ADDRESS_FK + " INTEGER, " + DB_Util.DELIVERY_ADDRESS_STREET + " TEXT," + DB_Util.DELIVERY_ADDRESS_CITY + " TEXT, " + DB_Util.DELIVERY_ADDRESS_STATE + " TEXT, " +
+                DB_Util.DELIVERY_ADDRESS_FK + " INTEGER, " + DB_Util.DELIVERY_ADDRESS_STREET + " TEXT, " + DB_Util.DELIVERY_ADDRESS_CITY + " TEXT, " + DB_Util.DELIVERY_ADDRESS_STATE + " TEXT, " +
                 DB_Util.DELIVERY_ADDRESS_ZIP + " TEXT, FOREIGN KEY(" + DB_Util.DELIVERY_ADDRESS_FK + ") REFERENCES " + DB_Util.TABLE_ORDER + "(" + DB_Util.ORDER_PK + "))";
+
+        String CREATE_CUSTOMER_TABLE = "CREATE TABLE IF NOT EXISTS " + DB_Util.TABLE_CUSTOMER + " (" + DB_Util.CUSTOMER_PK + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                DB_Util.CUSTOMER_FK + " INTEGER, " + DB_Util.CUSTOMER_FIRST_NAME + " TEXT, " + DB_Util.CUSTOMER_LAST_NAME + " TEXT, " + DB_Util.CUSTOMER_EMAIL + " TEXT, " +
+                DB_Util.CUSTOMER_PHONE + " TEXT, FOREIGN KEY(" + DB_Util.CUSTOMER_FK + ") REFERENCES " + DB_Util.TABLE_ORDER + "(" + DB_Util.ORDER_PK + "))";
+
+        String CREATE_PAYMENT_TABLE = "CREATE TABLE IF NOT EXISTS " + DB_Util.TABLE_PAYMENT + " (" + DB_Util.PAYMENT_PK + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                DB_Util.CUSTOMER_FK + " INTEGER, " + DB_Util.PAYMENT_CREDIT_CARD + " TEXT, " + DB_Util.PAYMENT_SECURITY_CODE + " TEXT, " + DB_Util.PAYMENT_MONTH + " TEXT, " +
+                DB_Util.PAYMENT_YEAR + " TEXT, " + DB_Util.PAYMENT_ZIP + " TEXT, FOREIGN KEY(" + DB_Util.PAYMENT_FK + ") REFERENCES " + DB_Util.TABLE_ORDER + "(" + DB_Util.ORDER_PK + "))";
 
         db.execSQL(CREATE_ORDER_TABLE);
         db.execSQL(CREATE_PIZZA_TABLE);
@@ -62,7 +72,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_WINGS_TABLE);
         db.execSQL(CREATE_DRINK_TABLE);
         db.execSQL(CREATE_DELIVERY_ADDRESS_TABLE);
-
+        db.execSQL(CREATE_CUSTOMER_TABLE);
+        db.execSQL(CREATE_PAYMENT_TABLE);
     }
 
     /**
@@ -82,6 +93,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + DB_Util.TABLE_WINGS);
         db.execSQL("DROP TABLE IF EXISTS " + DB_Util.TABLE_DRINK);
         db.execSQL("DROP TABLE IF EXISTS " + DB_Util.TABLE_DELIVERY_ADDRESS);
+        db.execSQL("DROP TABLE IF EXISTS " + DB_Util.TABLE_CUSTOMER);
+        db.execSQL("DROP TABLE IF EXISTS " + DB_Util.TABLE_PAYMENT);
 
         // create new tables
         onCreate(db);
@@ -109,6 +122,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (orderID != null && order instanceof Delivery){
             Delivery delivery = (Delivery) order;
             success = handleDeliveryAddress(db, orderID, delivery.getDeliveryAddress());
+        }
+
+        // Insert the Customer Info
+        if (orderID != null) {
+            success = handleCustomer(db, orderID, order.getCustomer()) & success;
+        }
+
+        // Insert the Payment Info
+        if (orderID != null){
+            success = handlePayment(db, orderID, order.getPayment()) & success;
         }
 
         // Insert all of the items
@@ -172,6 +195,55 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(DB_Util.DELIVERY_ADDRESS_ZIP, deliveryAddress.getZip());
 
         long result = db.insert(DB_Util.TABLE_DELIVERY_ADDRESS, null, values);
+        if (result == -1) {success = false; }
+
+        return success;
+    }
+
+    /**
+     * Inserts Customer from an Order into the DB
+     * @param db
+     * @param orderID ID of the corresponding order
+     * @param customer
+     * @return boolean true if the insertion was successful
+     */
+    private boolean handleCustomer(SQLiteDatabase db, String orderID, Customer customer){
+        boolean success = true;
+
+        ContentValues values = new ContentValues();
+
+        values.put(DB_Util.CUSTOMER_FK, orderID);
+        values.put(DB_Util.CUSTOMER_FIRST_NAME, customer.getFirstName());
+        values.put(DB_Util.CUSTOMER_LAST_NAME, customer.getLastName());
+        values.put(DB_Util.CUSTOMER_EMAIL, customer.getEmail());
+        values.put(DB_Util.CUSTOMER_PHONE, customer.getPhoneNumber());
+
+        long result = db.insert(DB_Util.TABLE_CUSTOMER, null, values);
+        if (result == -1) {success = false; }
+
+        return success;
+    }
+
+    /**
+     * Inserts Payment for an Order into the DB
+     * @param db
+     * @param orderID ID of the corresponding order
+     * @param payment
+     * @return boolean true if the insertion was successful
+     */
+    private boolean handlePayment(SQLiteDatabase db, String orderID, Payment payment){
+        boolean success = true;
+
+        ContentValues values = new ContentValues();
+
+        values.put(DB_Util.PAYMENT_FK, orderID);
+        values.put(DB_Util.PAYMENT_CREDIT_CARD, payment.getCreditCartNumber());
+        values.put(DB_Util.PAYMENT_SECURITY_CODE, payment.getSecurityCode());
+        values.put(DB_Util.PAYMENT_MONTH, payment.getExpMM());
+        values.put(DB_Util.PAYMENT_YEAR, payment.getExpYYYY());
+        values.put(DB_Util.PAYMENT_ZIP, payment.getBillingZip());
+
+        long result = db.insert(DB_Util.TABLE_PAYMENT, null, values);
         if (result == -1) {success = false; }
 
         return success;
@@ -355,6 +427,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return resultsList;
     }
 
+    /**
+     * Gets the Address from the specified order
+     * @param orderID ID of the past order
+     * @return Address
+     */
     public Address getDeliveryAddress(String orderID){
         Address address = null;
         String street, city, state, zip;
@@ -374,6 +451,59 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
 
         return address;
+    }
+
+    /**
+     * Gets the Customer for the specified order
+     * @param orderID ID of the past order
+     * @return Customer
+     */
+    public Customer getCustomer(String orderID){
+        Customer customer = null;
+        String first, last, email, phone;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("Select * From " + DB_Util.TABLE_CUSTOMER + " WHERE " + DB_Util.CUSTOMER_FK + " = " + orderID, null);
+
+        if (cursor.moveToFirst()) {
+            first = cursor.getString(2);
+            last = cursor.getString(3);
+            email = cursor.getString(4);
+            phone = cursor.getString(5);
+
+            customer = new Customer(first, last, email, phone);
+        }
+
+        db.close();
+
+        return customer;
+    }
+
+    /**
+     * Gets the Payment for the specified order
+     * @param orderID ID of the past order
+     * @return Payment
+     */
+    public Payment getPayment(String orderID){
+        Payment payment = null;
+        String creditCard, security, month, year, zip;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("Select * From " + DB_Util.TABLE_PAYMENT + " WHERE " + DB_Util.PAYMENT_FK + " = " + orderID, null);
+
+        if (cursor.moveToFirst()) {
+            creditCard = cursor.getString(2);
+            security = cursor.getString(3);
+            month = cursor.getString(4);
+            year = cursor.getString(5);
+            zip = cursor.getString(6);
+
+            payment = new Payment(creditCard, security, month, year, zip);
+        }
+
+        db.close();
+
+        return payment;
     }
 
     /**

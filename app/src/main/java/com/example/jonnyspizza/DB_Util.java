@@ -3,7 +3,7 @@ package com.example.jonnyspizza;
 public final class DB_Util {
 
     public static final String DB_NAME = "JonnyPizza.db";
-    public static final int VERSION_NUMBER = 6;
+    public static final int VERSION_NUMBER = 7;
 
     // Order Table
     public static final String TABLE_ORDER = "order_table";
@@ -61,6 +61,25 @@ public final class DB_Util {
     public static final String DELIVERY_ADDRESS_CITY = "City";
     public static final String DELIVERY_ADDRESS_STATE = "State";
     public static final String DELIVERY_ADDRESS_ZIP = "Zip";
+
+    // Customer Table
+    public static final String TABLE_CUSTOMER = "customer_table";
+    public static final String CUSTOMER_PK = "ID";
+    public static final String CUSTOMER_FK = "OrderID";
+    public static final String CUSTOMER_FIRST_NAME = "FirstName";
+    public static final String CUSTOMER_LAST_NAME = "LastName";
+    public static final String CUSTOMER_EMAIL = "Email";
+    public static final String CUSTOMER_PHONE = "Phone";
+
+    // Payment Table
+    public static final String TABLE_PAYMENT = "payment_table";
+    public static final String PAYMENT_PK = "ID";
+    public static final String PAYMENT_FK = "OrderID";
+    public static final String PAYMENT_CREDIT_CARD = "CreditCard";
+    public static final String PAYMENT_SECURITY_CODE = "SecurityCode";
+    public static final String PAYMENT_MONTH = "Month";
+    public static final String PAYMENT_YEAR = "Year";
+    public static final String PAYMENT_ZIP = "Zip";
 
     private DB_Util(){ }
 

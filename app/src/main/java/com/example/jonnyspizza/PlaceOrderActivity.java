@@ -48,6 +48,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
 
         this.order = (Order) getIntent().getSerializableExtra(getString(R.string.order_name));
         this.cart = order.getCart();
+        setDefaultEditFields();
         setSummaryText();
 
         dbHandler = new DatabaseHandler(this);
@@ -68,6 +69,27 @@ public class PlaceOrderActivity extends AppCompatActivity {
         mmTxt = findViewById(R.id.expirationMonthText);
         yyyyTxt = findViewById(R.id.expirationYearText);
         billingZipTxt = findViewById(R.id.billingZipText);
+    }
+
+    /**
+     * Fill in the edit text fields with Customer and Payment info if available
+     */
+    private void setDefaultEditFields(){
+        Customer customer;
+        Payment payment;
+        if ((customer = order.getCustomer()) != null){
+            if (customer.getFirstName() != null) firstNameTxt.setText(customer.getFirstName());
+            if (customer.getLastName() != null) lastNameTxt.setText(customer.getLastName());
+            if (customer.getEmail() != null) emailAddressTxt.setText(customer.getEmail());
+            if (customer.getPhoneNumber() != null) phoneNumberTxt.setText(customer.getPhoneNumber());
+        }
+        if ((payment = order.getPayment()) != null){
+            if (payment.getCreditCartNumber() != null) creditCardTxt.setText(payment.getCreditCartNumber());
+            if (payment.getSecurityCode() != null) securityCodeTxt.setText(payment.getSecurityCode());
+            if (payment.getExpMM() != null) mmTxt.setText(payment.getExpMM());
+            if (payment.getExpYYYY() != null) yyyyTxt.setText(payment.getExpYYYY());
+            if (payment.getBillingZip() != null) billingZipTxt.setText(payment.getBillingZip());
+        }
     }
 
     /**

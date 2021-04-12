@@ -21,8 +21,10 @@ import android.widget.TextView;
 
 import com.example.jonnyspizza.CustomObjects.Address;
 import com.example.jonnyspizza.CustomObjects.Carryout;
+import com.example.jonnyspizza.CustomObjects.Customer;
 import com.example.jonnyspizza.CustomObjects.Delivery;
 import com.example.jonnyspizza.CustomObjects.Order;
+import com.example.jonnyspizza.CustomObjects.Payment;
 
 import java.util.ArrayList;
 
@@ -311,14 +313,16 @@ public class MainActivity extends AppCompatActivity {
      */
     private void viewButton_Click(String orderID, String orderType){
         Order order;
+        Customer customer = dbHandler.getCustomer(orderID);
+        Payment payment = dbHandler.getPayment(orderID);
         Cart cart = dbHandler.getOrderItems(orderID);
 
         if (orderType.equals(DB_Util.DELIVERY_TYPE)){
             Address deliveryAddress = dbHandler.getDeliveryAddress(orderID);
-            order = new Delivery(cart, deliveryAddress);
+            order = new Delivery(cart, customer, payment, deliveryAddress);
         }
         else{
-            order = new Carryout(cart);
+            order = new Carryout(cart, customer, payment);
         }
 
         viewOrderSummary(order);
