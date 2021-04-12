@@ -125,6 +125,8 @@ public class OrderItemActivity extends AppCompatActivity {
                 refreshFragments();
             }
             if (resultCode == Activity.RESULT_CANCELED){
+                Intent returnIntent = new Intent();
+                setResult(Activity.RESULT_CANCELED, returnIntent);
                 finish();
             }
         }

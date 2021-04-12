@@ -43,6 +43,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
     private final static int DELETE_BTN_DIMENSION = 100;
 
     private final static int LAUNCH_PAYMENT_ACTIVITY = 1;
+    private final static int LAUNCH_ORDER_ITEMS_ACTIVITY = 1;
 
     private Order order;
     private boolean editMode, oldOrder;
@@ -403,7 +404,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == LAUNCH_PAYMENT_ACTIVITY) {
+        if (requestCode == LAUNCH_PAYMENT_ACTIVITY || requestCode == LAUNCH_ORDER_ITEMS_ACTIVITY) {
             if (resultCode == Activity.RESULT_OK){ }
             else if (resultCode == Activity.RESULT_CANCELED){
                 Intent returnIntent = new Intent();
@@ -613,7 +614,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
     public void addItemsBtn_Click(View view){
         Intent intent = new Intent(this, OrderItemActivity.class);
         intent.putExtra(getString(R.string.order_name), order);
-        startActivity(intent);
+        startActivityForResult(intent, LAUNCH_ORDER_ITEMS_ACTIVITY);
     }
 
     /**
