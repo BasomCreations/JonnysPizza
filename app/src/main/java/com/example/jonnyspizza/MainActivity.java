@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == Activity.RESULT_OK){
             }
             if (resultCode == Activity.RESULT_CANCELED){
-                if (dialog.isShowing()){
+                if (dialog != null && dialog.isShowing()){
                     dialog.dismiss();
                 }
             }

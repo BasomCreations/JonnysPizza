@@ -28,4 +28,10 @@
     <string name="checkout_view_only">Reorder</string>
     <string name="checkout_editable">Checkout</string>
 
+    <!-- Order Types -->
+    <string name="carryout">Carryout</string>
+    <string name="delivery">Delivery</string>
+
+    <string name="edit_button"><u>Edit</u></string>
+
 </resources>

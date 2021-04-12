@@ -31,6 +31,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/orderConfirmLbl"/>
 
+        <Button
+            android:id="@+id/editOrderTypeBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/white"
+            android:paddingLeft="0dp"
+            android:paddingTop="0dp"
+            android:paddingRight="0dp"
+            android:paddingBottom="0dp"
+            android:text="@string/edit_button"
+            android:textColor="@color/purple_500"
+            style="?android:attr/borderlessButtonStyle"
+            android:onClick="editBtn_Click"/>
+
         <TextView
             android:id="@+id/orderSummary_summaryText"
             android:layout_width="match_parent"

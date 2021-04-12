@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="5dp">
+
+            <Button
+                android:id="@+id/closeOrderTypeEditBtn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:backgroundTint="@android:color/holo_red_dark"
+                android:text="X"
+                android:layout_gravity="right"
+                android:onClick="closeOrderTypedEditBtn_Click"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:text="Order Type"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:background="@drawable/header_border"/>
+
+            <RadioGroup
+                android:id="@+id/orderTypeGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/carryoutRadioBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/carryout"
+                    android:onClick="handleCarryoutSelection"/>
+
+                <RadioButton
+                    android:id="@+id/deliveryRadioBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/delivery"
+                    android:onClick="handleDeliverySelection"/>
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray" />
+
+        <include
+            android:id="@+id/editDeliveryAddressLayout"
+            android:visibility="gone"
+            layout="@layout/delivery_address_popup"/>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

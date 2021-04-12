@@ -1,6 +1,7 @@
 package com.example.jonnyspizza;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -8,13 +9,19 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.jonnyspizza.CustomObjects.Address;
 import com.example.jonnyspizza.CustomObjects.Carryout;
 import com.example.jonnyspizza.CustomObjects.Delivery;
 import com.example.jonnyspizza.CustomObjects.Order;
@@ -40,6 +47,13 @@ public class OrderSummaryActivity extends AppCompatActivity {
     private Order order;
     private boolean editMode;
 
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+    private RadioGroup orderTypeGroup;
+    private EditText deliveryPopup_streetAddress, deliveryPopup_city, deliveryPopup_zip;
+    private Spinner deliveryPopup_stateSpinner;
+    private Button deliveryPopup_cancelBtn, deliveryPopup_saveBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,11 +72,14 @@ public class OrderSummaryActivity extends AppCompatActivity {
      */
     private void setMode(){
         String mode = getIntent().getStringExtra(getString(R.string.summary_mode));
+        Button editBtn = findViewById(R.id.editOrderTypeBtn);
         if (mode.equals(getString(R.string.editable))){
             editMode = true;
+            editBtn.setVisibility(View.GONE);
         }
         else{
             editMode = false;
+            editBtn.setVisibility(View.VISIBLE);
         }
     }
 
@@ -375,6 +392,178 @@ public class OrderSummaryActivity extends AppCompatActivity {
                 finish();
             }
         }
+    }
+
+    /**
+     * Edit button click displays a popup allowing the user to edit the order type when reordering a past order
+     * @param view
+     */
+    public void editBtn_Click(View view){
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View editOrderTypePopupView = getLayoutInflater().inflate(R.layout.order_type_edit_popup, null);
+
+        orderTypeGroup = (RadioGroup) editOrderTypePopupView.findViewById(R.id.orderTypeGroup);
+        if (order instanceof Carryout) orderTypeGroup.check(R.id.carryoutRadioBtn);
+        else orderTypeGroup.check(R.id.deliveryRadioBtn);
+
+        deliveryPopup_streetAddress = (EditText) editOrderTypePopupView.findViewById(R.id.deliveryPopup_streetAddress);
+        deliveryPopup_city = (EditText) editOrderTypePopupView.findViewById(R.id.deliveryPopup_city);
+        deliveryPopup_zip = (EditText) editOrderTypePopupView.findViewById(R.id.deliveryPopup_zip);
+
+        deliveryPopup_stateSpinner = (Spinner) editOrderTypePopupView.findViewById(R.id.deliveryPopup_stateSpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.states_array, R.layout.spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        deliveryPopup_stateSpinner.setAdapter(adapter);
+
+        deliveryPopup_cancelBtn = (Button) editOrderTypePopupView.findViewById(R.id.deliveryPopup_cancelBtn);
+        deliveryPopup_saveBtn = (Button) editOrderTypePopupView.findViewById(R.id.deliveryPopup_saveBtn);
+
+        dialogBuilder.setView(editOrderTypePopupView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        if (order instanceof Delivery) displayDeliverySection();
+
+        deliveryPopup_cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        deliveryPopup_saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                switchToDeliveryType();
+            }
+        });
+    }
+
+    /**
+     * Takes a new order and replaces the intents old order with this one
+     * @param newOrder Order with the updated information
+     */
+    private void switchOrderType(Order newOrder){
+        Intent i = getIntent();
+        i.removeExtra(getString(R.string.order_name));
+        i.putExtra(getString(R.string.order_name), newOrder);
+        setIntent(i);
+        recreate();
+    }
+
+    /**
+     * Switches an order to a new Delivery order
+     */
+    private void switchToDeliveryType(){
+        Delivery delivery;
+        Address address;
+        boolean valid = validateDeliveryPopupInput();
+
+        if (valid){
+            address = createDeliveryAddress();
+            delivery = new Delivery(order.getCart(), order.getCustomer(), order.getPayment(), address);
+            switchOrderType(delivery);
+        }
+    }
+
+    /**
+     * Make sure all Delivery address inputs are valid
+     * @return true if all inputs are valid, else false
+     */
+    private boolean validateDeliveryPopupInput() {
+        boolean isValid = true;
+        String emptyString = "";
+        String streetAddress = deliveryPopup_streetAddress.getText().toString();
+        String city = deliveryPopup_city.getText().toString();
+        String zip = deliveryPopup_zip.getText().toString();
+
+        if (streetAddress == null || streetAddress.equals(emptyString)) {
+            deliveryPopup_streetAddress.setError("Street Address Required!");
+            isValid = false;
+        }
+
+        if (city == null || city.equals(emptyString)){
+            deliveryPopup_city.setError("City Required!");
+            isValid = false;
+        }
+
+        if (zip == null || zip.equals(emptyString)){
+            deliveryPopup_zip.setError("Zip Code Required!");
+            isValid = false;
+        }
+        else if (zip.length() != 5){                        // check zip code length
+            deliveryPopup_zip.setError("Invalid Zip Code!");
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    /**
+     * Creates a DeliveryAddress object based on popup input
+     * @return Address
+     */
+    private Address createDeliveryAddress(){
+        String streetAddress = deliveryPopup_streetAddress.getText().toString();
+        String city = deliveryPopup_city.getText().toString();
+        String state = deliveryPopup_stateSpinner.getSelectedItem().toString();
+        String zip = deliveryPopup_zip.getText().toString();
+
+        Address address = new Address(streetAddress, city, state, zip);
+
+        return address;
+    }
+
+    /**
+     * Edit Order Popup "X" button closes the popup
+     * @param view
+     */
+    public void closeOrderTypedEditBtn_Click(View view){
+        if (dialog != null && dialog.isShowing()){
+            dialog.dismiss();
+        }
+    }
+
+    /**
+     * Selecting "Carryout" radio button switches the order type of Carryout
+     * @param view
+     */
+    public void handleCarryoutSelection(View view){
+        View deliveryAddrSection = dialog.findViewById(R.id.editDeliveryAddressLayout);
+        deliveryAddrSection.setVisibility(View.GONE);
+
+        dialog.dismiss();
+
+        if (order instanceof Delivery){
+            Carryout carryout = new Carryout(order.getCart(), order.getCustomer(), order.getPayment());
+            switchOrderType(carryout);
+        }
+    }
+
+    /**
+     * Selecting the "Delivery" radio button displays more fields to create a new Delivery address
+     * @param view
+     */
+    public void handleDeliverySelection(View view){
+        displayDeliverySection();
+    }
+
+    /**
+     * Displays the Delivery address fields to update/create a new address
+     */
+    private void displayDeliverySection(){
+        final float scale = getResources().getDisplayMetrics().density;
+        int leftPadding = (int) (5 * scale + 0.5f);
+
+        View deliveryAddrSection = dialog.findViewById(R.id.editDeliveryAddressLayout);
+        deliveryAddrSection.setVisibility(View.VISIBLE);
+
+        TextView deliveryHeader = dialog.findViewById(R.id.deliveryAddressText);
+        deliveryHeader.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        deliveryHeader.setGravity(Gravity.LEFT);
+        deliveryHeader.setPadding(leftPadding, 0, 0, 0);
+        deliveryHeader.setBackgroundResource(R.drawable.header_border);
     }
 
     /**
