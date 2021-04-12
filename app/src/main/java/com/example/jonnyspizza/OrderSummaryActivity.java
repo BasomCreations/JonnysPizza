@@ -13,6 +13,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -560,10 +561,19 @@ public class OrderSummaryActivity extends AppCompatActivity {
         deliveryAddrSection.setVisibility(View.VISIBLE);
 
         TextView deliveryHeader = dialog.findViewById(R.id.deliveryAddressText);
-        deliveryHeader.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        deliveryHeader.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
         deliveryHeader.setGravity(Gravity.LEFT);
         deliveryHeader.setPadding(leftPadding, 0, 0, 0);
         deliveryHeader.setBackgroundResource(R.drawable.header_border);
+
+        if (order instanceof Delivery){
+            Delivery delivery = (Delivery) order;
+            deliveryPopup_streetAddress.setText(delivery.getDeliveryAddress().getStreetAddress());
+            deliveryPopup_city.setText(delivery.getDeliveryAddress().getCity());
+            ArrayAdapter<CharSequence> adapter = (ArrayAdapter<CharSequence>) deliveryPopup_stateSpinner.getAdapter();
+            deliveryPopup_stateSpinner.setSelection(adapter.getPosition(delivery.getDeliveryAddress().getState()));
+            deliveryPopup_zip.setText(delivery.getDeliveryAddress().getZip());
+        }
     }
 
     /**

@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="5dp"
                 android:text="Order Type"
-                android:textSize="20sp"
+                android:textSize="24sp"
                 android:textColor="@color/black"
                 android:background="@drawable/header_border"/>
 
@@ -45,13 +45,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/carryout"
-                    android:onClick="handleCarryoutSelection"/>
+                    android:onClick="handleCarryoutSelection"
+                    android:textSize="24sp"/>
 
                 <RadioButton
                     android:id="@+id/deliveryRadioBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/delivery"
+                    android:textSize="24sp"
                     android:onClick="handleDeliverySelection"/>
 
             </RadioGroup>
