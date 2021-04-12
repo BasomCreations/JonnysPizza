@@ -13,7 +13,6 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,7 +45,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
     private final static int LAUNCH_PAYMENT_ACTIVITY = 1;
 
     private Order order;
-    private boolean editMode;
+    private boolean editMode, oldOrder;
 
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
@@ -73,14 +72,33 @@ public class OrderSummaryActivity extends AppCompatActivity {
      */
     private void setMode(){
         String mode = getIntent().getStringExtra(getString(R.string.summary_mode));
-        Button editBtn = findViewById(R.id.editOrderTypeBtn);
-        if (mode.equals(getString(R.string.editable))){
+        Button editOrderTypeBtn = findViewById(R.id.editOrderTypeBtn);
+        Button editItemsBtn = findViewById(R.id.editItemsBtn);
+        Button addItemsBtn = findViewById(R.id.addMoreItemsBtn);
+
+        // Shown when creating a new order
+        if (mode.equals(getString(R.string.new_editable))){
             editMode = true;
-            editBtn.setVisibility(View.GONE);
+            oldOrder = false;
+            editOrderTypeBtn.setVisibility(View.GONE);
+            editItemsBtn.setVisibility(View.GONE);
+            addItemsBtn.setVisibility(View.GONE);
         }
+        // Shown when viewing past orders that have selected "Edit Items"
+        else if (mode.equals(getString(R.string.past_editable))){
+            editMode = true;
+            oldOrder = true;
+            editOrderTypeBtn.setVisibility(View.VISIBLE);
+            editItemsBtn.setVisibility(View.GONE);
+            addItemsBtn.setVisibility(View.VISIBLE);
+        }
+        // VIEW_ONLY shown when initially viewing past orders
         else{
             editMode = false;
-            editBtn.setVisibility(View.VISIBLE);
+            oldOrder = true;
+            editOrderTypeBtn.setVisibility(View.VISIBLE);
+            editItemsBtn.setVisibility(View.VISIBLE);
+            addItemsBtn.setVisibility(View.GONE);
         }
     }
 
@@ -156,7 +174,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
         Button backButton = findViewById(R.id.orderSummary_backToMenuBtn);
         Button checkoutButton = findViewById(R.id.proceedToPaymentBtn);
 
-        if (editMode){
+        if (editMode && !oldOrder){
             backButton.setText(R.string.back_editable);
             checkoutButton.setText(R.string.checkout_editable);
         }
@@ -399,7 +417,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
      * Edit button click displays a popup allowing the user to edit the order type when reordering a past order
      * @param view
      */
-    public void editBtn_Click(View view){
+    public void editOrderTypeBtn_Click(View view){
         dialogBuilder = new AlertDialog.Builder(this);
         final View editOrderTypePopupView = getLayoutInflater().inflate(R.layout.order_type_edit_popup, null);
 
@@ -574,6 +592,28 @@ public class OrderSummaryActivity extends AppCompatActivity {
             deliveryPopup_stateSpinner.setSelection(adapter.getPosition(delivery.getDeliveryAddress().getState()));
             deliveryPopup_zip.setText(delivery.getDeliveryAddress().getZip());
         }
+    }
+
+    /**
+     * When Edit Items is clicked the button is hidden and the "+" button is shown
+     * @param view
+     */
+    public void editItemsBtn_Click(View view){
+        Intent i = getIntent();
+        i.removeExtra(getString(R.string.summary_mode));
+        i.putExtra(getString(R.string.summary_mode), getString(R.string.past_editable));
+        setIntent(i);
+        recreate();
+    }
+
+    /**
+     * This button allows users to go to the menu and add more items to the order
+     * @param view
+     */
+    public void addItemsBtn_Click(View view){
+        Intent intent = new Intent(this, OrderItemActivity.class);
+        intent.putExtra(getString(R.string.order_name), order);
+        startActivity(intent);
     }
 
     /**

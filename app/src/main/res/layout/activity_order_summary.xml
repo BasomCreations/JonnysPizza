@@ -41,10 +41,10 @@
             android:paddingTop="0dp"
             android:paddingRight="0dp"
             android:paddingBottom="0dp"
-            android:text="@string/edit_button"
+            android:text="@string/edit_order_type_button"
             android:textColor="@color/purple_500"
             style="?android:attr/borderlessButtonStyle"
-            android:onClick="editBtn_Click"/>
+            android:onClick="editOrderTypeBtn_Click"/>
 
         <TextView
             android:id="@+id/orderSummary_summaryText"
@@ -67,12 +67,41 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/orderSummary_summaryText"/>
 
+        <Button
+            android:id="@+id/editItemsBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/white"
+            android:paddingLeft="0dp"
+            android:paddingTop="0dp"
+            android:paddingRight="0dp"
+            android:paddingBottom="0dp"
+            android:text="@string/edit_items_button"
+            android:textColor="@color/purple_500"
+            style="?android:attr/borderlessButtonStyle"
+            app:layout_constraintTop_toBottomOf="@+id/orderSummaryDivider2"
+            android:onClick="editItemsBtn_Click"/>
+
+        <Button
+            android:id="@+id/addMoreItemsBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:backgroundTint="@android:color/darker_gray"
+            android:text="+"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:layout_gravity="right"
+            android:layout_marginRight="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/orderSummaryDivider2"
+            android:onClick="addItemsBtn_Click"/>
+
         <LinearLayout
             android:id="@+id/parentLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/orderSummaryDivider2"
+            app:layout_constraintTop_toBottomOf="@+id/editItemsBtn"
             android:paddingTop="16dp"
             android:paddingLeft="4dp"
             android:paddingRight="4dp">

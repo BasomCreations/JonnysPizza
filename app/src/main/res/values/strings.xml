@@ -21,7 +21,8 @@
     <!-- Strings to determine mode of Order Summary -->
     <string name="summary_mode">SUMMARY_MODE</string>
     <string name="view_only">VIEW_ONLY</string>
-    <string name="editable">EDITABLE</string>
+    <string name="new_editable">NEW_EDITABLE</string>
+    <string name="past_editable">PAST_EDITABLE</string>
     <!-- Button names for modes -->
     <string name="back_view_only">Back</string>
     <string name="back_editable">Back to Menu</string>
@@ -32,6 +33,7 @@
     <string name="carryout">Carryout</string>
     <string name="delivery">Delivery</string>
 
-    <string name="edit_button"><u>Edit</u></string>
+    <string name="edit_order_type_button"><u>Edit Order Type</u></string>
+    <string name="edit_items_button"><u>Edit Items</u></string>
 
 </resources>

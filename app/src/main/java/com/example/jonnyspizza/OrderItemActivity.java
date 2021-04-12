@@ -59,6 +59,8 @@ public class OrderItemActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        updateCartCost();
     }
 
     /**
@@ -106,7 +108,7 @@ public class OrderItemActivity extends AppCompatActivity {
         if (this.cart.getItems().size() > 0) {
             Intent i = new Intent(this, OrderSummaryActivity.class);
             i.putExtra(getString(R.string.order_name), order);
-            i.putExtra(getString(R.string.summary_mode), getString(R.string.editable));
+            i.putExtra(getString(R.string.summary_mode), getString(R.string.new_editable));
             //startActivity(i);
             startActivityForResult(i, LAUNCH_CONFIRMATION_ACTIVITY);
         }
