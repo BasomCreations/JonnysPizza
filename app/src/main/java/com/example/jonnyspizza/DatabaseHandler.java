@@ -104,9 +104,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /**
      * Adds an order to the database
      * @param order
-     * @return boolean - true if successfully added
+     * @return String with the orderID if successful or else null
      */
-    public boolean addOrder(Order order){
+    public String addOrder(Order order){
         boolean success = true;
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -114,7 +114,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Insert the Order into the DB
         ContentValues values = handleOrder(order);
         long result = db.insert(DB_Util.TABLE_ORDER, null, values);
-        if (result == -1) {return false; }
+        if (result == -1) {return null; }
 
         String orderID = getLastRowID(db);
 
@@ -147,7 +147,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         int records = cursor.getCount();
         db.close();*/
 
-        return success;
+        if (success) return orderID;
+        else return null;
 
     }
 

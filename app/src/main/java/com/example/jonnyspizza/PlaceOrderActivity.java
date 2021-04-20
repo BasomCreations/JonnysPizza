@@ -138,8 +138,8 @@ public class PlaceOrderActivity extends AppCompatActivity {
         if (isValid){
             setOrderCustomer();
             setOrderPayment();
-            dbHandler.addOrder(order);
-            createOrderPlacedDialog();
+            String orderID = dbHandler.addOrder(order);
+            createOrderPlacedDialog(orderID);
         }
     }
 
@@ -172,13 +172,14 @@ public class PlaceOrderActivity extends AppCompatActivity {
 
     /**
      * Create the popup to notify user of successful order
+     * @param orderID
      */
-    public void createOrderPlacedDialog() {
+    public void createOrderPlacedDialog(String orderID) {
         dialogBuilder = new AlertDialog.Builder(this);
         final View orderPlacedPopupView = getLayoutInflater().inflate(R.layout.order_placed_popup, null);
 
         orderPlaced_CustomerMsg = (TextView) orderPlacedPopupView.findViewById(R.id.customerNotificationMessage);
-        orderPlaced_CustomerMsg.setText(createPopupText());
+        orderPlaced_CustomerMsg.setText(createPopupText(orderID));
         orderPlaced_OkBtn = (Button) orderPlacedPopupView.findViewById(R.id.orderPlaced_OkBtn);
 
         dialogBuilder.setView(orderPlacedPopupView);
@@ -198,15 +199,17 @@ public class PlaceOrderActivity extends AppCompatActivity {
 
     /**
      * Create the text that will be displayed in the order placed popup
+     * @param orderID
      * @return String
      */
-    private String createPopupText(){
+    private String createPopupText(String orderID){
         StringBuilder sb = new StringBuilder();
         String firstName = order.getCustomer().getFirstName();
         String email = order.getCustomer().getEmail();
         String phone = parseCustomerPhone();
 
-        sb.append(firstName + ", your order has been received!\n\n");
+        sb.append(firstName + ", your order has been received!\n");
+        sb.append("Your order number is #" + orderID + ".\n\n");
         sb.append("We will notify you as soon as your order is ready. Make sure to check your email " + email);
         sb.append(" and your phone " + phone + ".");
 
