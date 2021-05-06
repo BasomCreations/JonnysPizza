@@ -38,6 +38,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
     private Button orderPlaced_OkBtn;
 
     private DatabaseHandler dbHandler;
+    private RESTHandler restHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
         setSummaryText();
 
         dbHandler = new DatabaseHandler(this);
+        restHandler = new RESTHandler(this);
     }
 
     /**
@@ -138,7 +140,8 @@ public class PlaceOrderActivity extends AppCompatActivity {
         if (isValid){
             setOrderCustomer();
             setOrderPayment();
-            String orderID = dbHandler.addOrder(order);
+            //String orderID = dbHandler.addOrder(order);
+            String orderID = restHandler.addOrder(order);
             createOrderPlacedDialog(orderID);
         }
     }
