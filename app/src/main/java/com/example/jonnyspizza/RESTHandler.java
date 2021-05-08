@@ -1,7 +1,9 @@
 package com.example.jonnyspizza;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -18,6 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +28,7 @@ public class RESTHandler {
 
     public static final String BASE_URL = "https://dev4.jonathanbasom.repl.co";
     public static final String POST_ORDER_URL = BASE_URL + "/postOrder";
+    public static final String GET_RECENT_ORDERS_URL = BASE_URL + "/orders";
 
     private Context context;
     private RequestQueue queue;
@@ -154,7 +158,7 @@ public class RESTHandler {
              queue.add(sr);
              */
 
-            return "123";
+            return "123";       //TODO: Change this to the actual order ID
         }
         catch (JsonProcessingException e){
             return "JSON Processing Error";
@@ -162,5 +166,80 @@ public class RESTHandler {
         catch (JSONException e){
             return "JSON Exception";
         }
+    }
+
+    /**
+     * Get "/orders" - gets the most recent orders from the server
+     * @param displayContext Context of the dialog builder for the order history popup
+     * @param view View for the Order History Popup
+     */
+    public void getRecentOrders(Context displayContext, View view){
+
+        //ArrayList<ContentValues> resultsList = new ArrayList<>();
+        System.out.println("This is a test");
+
+        try{
+            //JSONObject jsonObject = new JSONObject();
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, GET_RECENT_ORDERS_URL, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    System.out.println("Response Received");
+                    System.out.println(response);
+
+                    ArrayList<ContentValues> resultsList;
+
+                    try {
+                        JSONArray jsonArray = response.getJSONArray("orders");
+                        resultsList = parseOrdersJSON(jsonArray);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        resultsList = new ArrayList<>();
+                    }
+
+                    ((MainActivity) context).populateOrderHistoryDialog(displayContext, view, resultsList);
+
+                }
+            }, new Response.ErrorListener(){
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                }
+            });
+            queue.add(jsonObjectRequest);
+
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
+     * Parses the JSON response from "/orders" for the recent history display
+     * @param ordersJSON JSONArray - body of the response with a list of recent orders
+     * @return ArrayList<ContentValues> Contains the parsed recent orders
+     * @throws JSONException
+     */
+    private ArrayList<ContentValues> parseOrdersJSON(JSONArray ordersJSON) throws JSONException {
+
+        ArrayList<ContentValues> resultsList = new ArrayList<>();
+
+        for (int i = 0; i < ordersJSON.length(); ++i){
+            JSONObject order = ordersJSON.getJSONObject(i);
+
+            String orderID = order.getString(DB_Util.ORDER_PK);
+            String orderType = order.getString(DB_Util.ORDER_TYPE);
+            String orderCost = order.getString(DB_Util.ORDER_COST);
+            String orderDate = order.getString(DB_Util.ORDER_DATE);
+
+            ContentValues values = new ContentValues();
+            values.put(DB_Util.ORDER_PK, orderID);
+            values.put(DB_Util.ORDER_TYPE, orderType);
+            values.put(DB_Util.ORDER_COST, orderCost);
+            values.put(DB_Util.ORDER_DATE, orderDate);
+
+            resultsList.add(values);
+        }
+
+        return resultsList;
     }
 }

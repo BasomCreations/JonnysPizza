@@ -35,7 +35,9 @@ public class MainActivity extends AppCompatActivity {
     private EditText deliveryPopup_streetAddress, deliveryPopup_city, deliveryPopup_zip;
     private Spinner deliveryPopup_stateSpinner;
     private Button deliveryPopup_cancelBtn, deliveryPopup_saveBtn, historyPopup_closeBtn;
+
     private DatabaseHandler dbHandler;
+    private RESTHandler restHandler;
 
     private final static int LAUNCH_ORDER_SUMMARY_ACTIVITY = 1;
 
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         dbHandler = new DatabaseHandler(this);
+        restHandler = new RESTHandler(this);
     }
 
     @Override
@@ -211,11 +214,13 @@ public class MainActivity extends AppCompatActivity {
         historyPopup_closeBtn = (Button) orderHistoryPopupView.findViewById(R.id.closeHistoryBtn);
         historyLinearLayout = (LinearLayout) orderHistoryPopupView.findViewById(R.id.historyLinearLayout);
 
-        populateOrderHistoryDialog(dialogBuilder.getContext());
+        //populateOrderHistoryDialog(dialogBuilder.getContext());
 
-        dialogBuilder.setView(orderHistoryPopupView);
-        dialog = dialogBuilder.create();
-        dialog.show();
+        restHandler.getRecentOrders(dialogBuilder.getContext(), orderHistoryPopupView);
+
+        //dialogBuilder.setView(orderHistoryPopupView);
+        //dialog = dialogBuilder.create();
+        //dialog.show();
 
         historyPopup_closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -225,14 +230,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void populateOrderHistoryDialog(Context context){
-        ArrayList<ContentValues> results = dbHandler.getRecentOrders();
+    protected void populateOrderHistoryDialog(Context context, View view, ArrayList<ContentValues> results){
+        //ArrayList<ContentValues> results = dbHandler.getRecentOrders();
 
         int i = 1;
         for (ContentValues values: results) {
             displayOrder(context, values, i);
             i++;
         }
+
+        dialogBuilder.setView(view);
+        dialog = dialogBuilder.create();
+        dialog.show();
     }
 
     private void displayOrder(Context context, ContentValues values, int index){
