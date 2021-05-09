@@ -1,5 +1,7 @@
 package com.example.jonnyspizza;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -7,10 +9,19 @@ public class Pizza extends Item implements Serializable {
 
     //private final static String name = "Pizza";
     //private String name = "Pizza";
+    @JsonProperty(DB_Util.PIZZA_SIZE)
     private String size;
+
+    @JsonProperty(DB_Util.PIZZA_CRUST)
     private String crust;
+
+    @JsonProperty(DB_Util.PIZZA_SAUCE)
     private String sauce;
+
+    @JsonProperty(DB_Util.PIZZA_CHEESE)
     private String cheese;
+
+    @JsonProperty(DB_Util.PIZZA_TOPPINGS)
     private ArrayList<String> toppings = new ArrayList<>();
 
     public Pizza(int quantity, String size, String crust, String sauce, String cheese) {
@@ -20,6 +31,11 @@ public class Pizza extends Item implements Serializable {
         this.sauce = sauce;
         this.cheese = cheese;
     }
+
+    /**
+     * Empty constructor only used for deserialization from JSON
+     */
+    protected Pizza(){ }
 
     public void addToppings(String topping){
         this.toppings.add(topping);

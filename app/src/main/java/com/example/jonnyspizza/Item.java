@@ -1,11 +1,18 @@
 package com.example.jonnyspizza;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 public abstract class Item implements Serializable {
 
+    @JsonProperty(DB_Util.ITEM_NAME)
     private String name;
+
+    @JsonProperty(DB_Util.ITEM_COST)
     private double cost;        // cost of item of 1 quantity
+
+    @JsonProperty(DB_Util.ITEM_QUANTITY)
     private int quantity;
 
     /**
@@ -28,6 +35,11 @@ public abstract class Item implements Serializable {
         this.cost = 0;      // default cost is 0 until calculated later
         this.quantity = quantity;
     }
+
+    /**
+     * Empty constructor used only for deserialization from JSON
+     */
+    protected Item(){}
 
     /**
      * Gets a formatted string of the description of the item

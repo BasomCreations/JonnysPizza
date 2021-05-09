@@ -16,6 +16,21 @@ public final class DB_Util {
 
     public static final int NUMBER_RECENT_ORDERS = 10;
 
+    // General Item Info
+    public static final String ITEM_NAME = "Name";
+    public static final String ITEM_COST = "Cost";
+    public static final String ITEM_QUANTITY = "Quantity";
+
+    // JSON Strings
+    public static final String DELIVERY_ADDRESS_KEY = "deliveryAddress";
+    public static final String CUSTOMER_KEY = "customer";
+    public static final String PAYMENT_KEY = "payment";
+    public static final String CART_KEY = "cart";
+    public static final String PIZZA_KEY = "pizza";
+    public static final String SUB_KEY = "sub";
+    public static final String WINGS_KEY = "wings";
+    public static final String DRINK_KEY = "drink";
+
     // Pizza Table
     public static final String TABLE_PIZZA = "pizza_table";
     public static final String PIZZA_PK = "ID";

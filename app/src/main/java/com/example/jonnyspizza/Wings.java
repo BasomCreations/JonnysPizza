@@ -1,10 +1,15 @@
 package com.example.jonnyspizza;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 public class Wings extends Item implements Serializable {
 
+    @JsonProperty(DB_Util.WINGS_SIZE)
     private String size;
+
+    @JsonProperty(DB_Util.WINGS_SAUCE)
     private String sauce;
 
 
@@ -19,6 +24,11 @@ public class Wings extends Item implements Serializable {
         this.size = size;
         this.sauce = sauce;
     }
+
+    /**
+     * Empty constructor only used for deserialization from JSON
+     */
+    protected Wings(){}
 
     public void calculateCost(){
         double total = 0;

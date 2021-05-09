@@ -2,7 +2,6 @@ package com.example.jonnyspizza;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 
 import com.android.volley.Request;
@@ -10,9 +9,13 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.jonnyspizza.CustomObjects.Address;
+import com.example.jonnyspizza.CustomObjects.Carryout;
+import com.example.jonnyspizza.CustomObjects.Customer;
+import com.example.jonnyspizza.CustomObjects.Delivery;
 import com.example.jonnyspizza.CustomObjects.Order;
+import com.example.jonnyspizza.CustomObjects.Payment;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -28,7 +31,7 @@ public class RESTHandler {
 
     public static final String BASE_URL = "https://dev4.jonathanbasom.repl.co";
     public static final String POST_ORDER_URL = BASE_URL + "/postOrder";
-    public static final String GET_RECENT_ORDERS_URL = BASE_URL + "/orders";
+    public static final String ORDERS_URL = BASE_URL + "/orders";
 
     private Context context;
     private RequestQueue queue;
@@ -175,22 +178,17 @@ public class RESTHandler {
      */
     public void getRecentOrders(Context displayContext, View view){
 
-        //ArrayList<ContentValues> resultsList = new ArrayList<>();
-        System.out.println("This is a test");
-
         try{
-            //JSONObject jsonObject = new JSONObject();
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, GET_RECENT_ORDERS_URL, null, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, ORDERS_URL, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
-                    System.out.println("Response Received");
                     System.out.println(response);
 
                     ArrayList<ContentValues> resultsList;
 
                     try {
                         JSONArray jsonArray = response.getJSONArray("orders");
-                        resultsList = parseOrdersJSON(jsonArray);
+                        resultsList = parseRecentOrdersJSON(jsonArray);
                     } catch (JSONException e) {
                         e.printStackTrace();
                         resultsList = new ArrayList<>();
@@ -202,7 +200,7 @@ public class RESTHandler {
             }, new Response.ErrorListener(){
                 @Override
                 public void onErrorResponse(VolleyError error) {
-
+                    System.out.println(error.getMessage());
                 }
             });
             queue.add(jsonObjectRequest);
@@ -219,7 +217,7 @@ public class RESTHandler {
      * @return ArrayList<ContentValues> Contains the parsed recent orders
      * @throws JSONException
      */
-    private ArrayList<ContentValues> parseOrdersJSON(JSONArray ordersJSON) throws JSONException {
+    private ArrayList<ContentValues> parseRecentOrdersJSON(JSONArray ordersJSON) throws JSONException {
 
         ArrayList<ContentValues> resultsList = new ArrayList<>();
 
@@ -241,5 +239,156 @@ public class RESTHandler {
         }
 
         return resultsList;
+    }
+
+    public void getOrder(String orderID, String orderType){
+
+        try{
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, ORDERS_URL + "/" + orderID, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Order order = parseOrderJSON(response);
+                    // Exception means that Order unable to be parsed -- TODO: Set an error popup for user
+                    if (order != null){
+                        ((MainActivity) context).viewOrderSummary(order);
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    System.out.println(error.getMessage());
+                }
+            });
+
+            queue.add(jsonObjectRequest);
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    /**
+     * Takes the JSON from an Order and deserializes the Order object
+     * @param orderJSON Resposne from the server
+     * @return Order
+     */
+    private Order parseOrderJSON(JSONObject orderJSON) {
+
+        try {
+            Customer customer = parseCustomerJSON(orderJSON);
+            Payment payment = parsePaymentJSON(orderJSON);
+            Cart cart = parseItemsJSON(orderJSON);
+
+            Order order = createOrder(orderJSON, cart, customer, payment);
+
+            return order;
+        }
+        catch (Exception e) {
+            // Log Order unable to be successfully parsed from JSON from server
+            return null;
+        }
+    }
+
+    /**
+     * Takes the JSON from an Order and deserializes the Customer object
+     * @param orderJSON Response from the server
+     * @return Customer with the customer info
+     * @throws JSONException
+     * @throws JsonProcessingException
+     */
+    private Customer parseCustomerJSON(JSONObject orderJSON) throws JSONException, JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Customer customer = null;
+
+        if (orderJSON.has(DB_Util.CUSTOMER_KEY)) {
+            String customerJSONString = orderJSON.getString(DB_Util.CUSTOMER_KEY);
+            customer = objectMapper.readValue(customerJSONString, Customer.class);
+        }
+
+        return customer;
+    }
+
+    /**
+     * Takes the JSON from an Order and deserializes the Payment object
+     * @param orderJSON Response from the server
+     * @return Payment with the payment info
+     * @throws JSONException
+     * @throws JsonProcessingException
+     */
+    private Payment parsePaymentJSON(JSONObject orderJSON) throws JSONException, JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Payment payment = null;
+
+        if (orderJSON.has(DB_Util.PAYMENT_KEY)) {
+            String paymentJSONString = orderJSON.getString(DB_Util.PAYMENT_KEY);
+            payment = objectMapper.readValue(paymentJSONString, Payment.class);
+        }
+
+        return payment;
+    }
+
+    /**
+     * Takes the JSON from an Order and deserializes the Cart object
+     * @param orderJSON Response from the server
+     * @return Cart with the Order Items
+     * @throws JSONException
+     * @throws JsonProcessingException
+     */
+    private Cart parseItemsJSON(JSONObject orderJSON) throws JSONException, JsonProcessingException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JSONArray cartJSON = orderJSON.getJSONArray(DB_Util.CART_KEY);
+
+        Cart cart = new Cart();
+
+        for (int i = 0; i < cartJSON.length(); ++i) {
+            JSONObject itemJSON = cartJSON.getJSONObject(i);
+            Item item;
+            if (itemJSON.has(DB_Util.PIZZA_KEY)) {
+                String itemJSONString = itemJSON.getString(DB_Util.PIZZA_KEY);
+                item = objectMapper.readValue(itemJSONString, Pizza.class);
+                cart.addItem(item);
+            } else if (itemJSON.has(DB_Util.SUB_KEY)) {
+                String itemJSONString = itemJSON.getString(DB_Util.SUB_KEY);
+                item = objectMapper.readValue(itemJSONString, Sub.class);
+                cart.addItem(item);
+            } else if (itemJSON.has(DB_Util.WINGS_KEY)) {
+                String itemJSONString = itemJSON.getString(DB_Util.WINGS_KEY);
+                item = objectMapper.readValue(itemJSONString, Wings.class);
+                cart.addItem(item);
+            } else if (itemJSON.has(DB_Util.DRINK_KEY)) {
+                String itemJSONString = itemJSON.getString(DB_Util.DRINK_KEY);
+                item = objectMapper.readValue(itemJSONString, Drink.class);
+                cart.addItem(item);
+            }
+        }
+            return cart;
+    }
+
+    /**
+     * Assembles an Order object with the previously abstracted data from the server
+     * @param orderJSON Response from server(determines the type of order)
+     * @param cart Cart
+     * @param customer Customer
+     * @param payment Payment
+     * @return Order
+     * @throws JSONException
+     * @throws JsonProcessingException
+     */
+    private Order createOrder(JSONObject orderJSON, Cart cart, Customer customer, Payment payment) throws JSONException, JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Order order;
+
+        if (orderJSON.has(DB_Util.DELIVERY_ADDRESS_KEY)) {
+            String addressJSONString = orderJSON.getString(DB_Util.DELIVERY_ADDRESS_KEY);
+            Address address = objectMapper.readValue(addressJSONString, Address.class);
+            order = new Delivery(cart, customer, payment, address);
+        }
+        else {
+            order = new Carryout(cart, customer, payment);
+        }
+
+        return order;
     }
 }

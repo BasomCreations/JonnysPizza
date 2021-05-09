@@ -321,27 +321,29 @@ public class MainActivity extends AppCompatActivity {
      * @param orderType
      */
     private void viewButton_Click(String orderID, String orderType){
-        Order order;
-        Customer customer = dbHandler.getCustomer(orderID);
-        Payment payment = dbHandler.getPayment(orderID);
-        Cart cart = dbHandler.getOrderItems(orderID);
+//        Order order;
+//        Customer customer = dbHandler.getCustomer(orderID);
+//        Payment payment = dbHandler.getPayment(orderID);
+//        Cart cart = dbHandler.getOrderItems(orderID);
 
-        if (orderType.equals(DB_Util.DELIVERY_TYPE)){
-            Address deliveryAddress = dbHandler.getDeliveryAddress(orderID);
-            order = new Delivery(cart, customer, payment, deliveryAddress);
-        }
-        else{
-            order = new Carryout(cart, customer, payment);
-        }
+        restHandler.getOrder(orderID, orderType);
 
-        viewOrderSummary(order);
+//        if (orderType.equals(DB_Util.DELIVERY_TYPE)){
+//            Address deliveryAddress = dbHandler.getDeliveryAddress(orderID);
+//            order = new Delivery(cart, customer, payment, deliveryAddress);
+//        }
+//        else{
+//            order = new Carryout(cart, customer, payment);
+//        }
+//
+//        viewOrderSummary(order);
     }
 
     /**
      * Proceed to the Order Summary activities
      * @param order
      */
-    private void viewOrderSummary(Order order){
+    protected void viewOrderSummary(Order order){
         Intent intent = new Intent(this, OrderSummaryActivity.class);
         intent.putExtra(getString(R.string.order_name), order);
         intent.putExtra(getString(R.string.summary_mode), getString(R.string.view_only));
