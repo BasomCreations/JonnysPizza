@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +39,10 @@ public class MainActivity extends AppCompatActivity {
 
     private DatabaseHandler dbHandler;
     private RESTHandler restHandler;
+    private UserAccount userAccount;
 
     private final static int LAUNCH_ORDER_SUMMARY_ACTIVITY = 1;
+    private final static int LAUNCH_USER_ACCOUNT_ACTIVITY = 2;
 
     private LinearLayout historyLinearLayout;
     private final static int HISTORY_TEXT_SIZE = 20;
@@ -52,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         dbHandler = new DatabaseHandler(this);
         restHandler = new RESTHandler(this);
+        userAccount = new UserAccount();
     }
 
     @Override
@@ -64,6 +68,14 @@ public class MainActivity extends AppCompatActivity {
                 if (dialog != null && dialog.isShowing()){
                     dialog.dismiss();
                 }
+            }
+        }
+        if (requestCode == LAUNCH_USER_ACCOUNT_ACTIVITY){
+            if (resultCode == Activity.RESULT_OK){
+                this.userAccount = (UserAccount) data.getSerializableExtra(getString(R.string.user_account_name));
+                updateCurrentUser();
+            }
+            else if (resultCode == Activity.RESULT_CANCELED){
             }
         }
     }
@@ -358,5 +370,45 @@ public class MainActivity extends AppCompatActivity {
     private String formatMoney(String cost){
         double costDouble = Double.parseDouble(cost);
         return String.format("$%.2f", costDouble);
+    }
+
+    /**
+     * Handles users logging in and out of their accounts
+     * @param view
+     */
+    public void userAccountBtn_Click(View view){
+        Button accountBtn = (Button)view;
+        TextView userGreetingLbl = findViewById(R.id.userGreetingLbl);
+        // Sign out the user
+        if (userAccount.isSignedIn()){
+            userAccount.signOut();
+            accountBtn.setText(R.string.login_button_text);
+            userGreetingLbl.setText("");
+        }
+        // Sign in the user
+        else{
+            proceedToUserAccount();
+        }
+    }
+
+    /**
+     * Proceed to the User Account Activity
+     */
+    protected void proceedToUserAccount(){
+        Intent intent = new Intent(this, UserAccountActivity.class);
+        intent.putExtra(getString(R.string.user_account_name), userAccount);
+        startActivityForResult(intent, LAUNCH_USER_ACCOUNT_ACTIVITY);
+    }
+
+    /**
+     * After the user signs in, update the user on screen
+     */
+    private void updateCurrentUser(){
+        // Change the "Sign In" button to "Sign Out"
+        Button accountBtn = (Button)findViewById(R.id.userAccountBtn);
+        accountBtn.setText(R.string.logout_button_text);
+        // Update the user greeting
+        TextView userGreetingLbl = findViewById(R.id.userGreetingLbl);
+        userGreetingLbl.setText("Welcome, " + userAccount.getUserName() + "!");
     }
 }

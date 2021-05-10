@@ -11,9 +11,10 @@
     <string name="half_dozen_name">Half Dozen</string>
     <string name="dozen_name">Dozen</string>
 
-    <!-- Strings to pass Cart and Order objects between activities -->
+    <!-- Strings to pass objects between activities -->
     <string name="cart_name">Cart</string>
     <string name="order_name">Order</string>
+    <string name="user_account_name">UserAccount</string>
 
     <!-- Text for Order Item buttons -->
     <string name="add_to_cart">ADD TO CART</string>
@@ -33,7 +34,12 @@
     <string name="carryout">Carryout</string>
     <string name="delivery">Delivery</string>
 
+    <!-- Edit Order Buttons -->
     <string name="edit_order_type_button"><u>Edit Order Type</u></string>
     <string name="edit_items_button"><u>Edit Items</u></string>
+
+    <!-- User Account Buttons -->
+    <string name="login_button_text"><u>Sign In</u></string>
+    <string name="logout_button_text"><u>Sign Out</u></string>
 
 </resources>

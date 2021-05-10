@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.JonnysPizza">
-        <activity android:name=".PlaceOrderActivity"></activity>
+        <activity android:name=".UserAccountActivity"></activity>
+        <activity android:name=".PlaceOrderActivity" />
         <activity
             android:name=".OrderItemActivity"
             android:label="@string/title_activity_order_item"
