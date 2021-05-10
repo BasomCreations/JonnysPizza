@@ -1,5 +1,6 @@
 package com.example.jonnyspizza;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -9,13 +10,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextClock;
+import android.widget.TextView;
 
 import com.example.jonnyspizza.CustomObjects.Order;
 
 public class UserAccountActivity extends AppCompatActivity {
 
-    private UserAccount userAccount;
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+    private TextView errorMessageTV;
+    private Button okBtn;
 
+    private UserAccount userAccount;
     private RESTHandler restHandler;
 
     @Override
@@ -166,5 +173,31 @@ public class UserAccountActivity extends AppCompatActivity {
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED, returnIntent);
         finish();
+    }
+
+    /**
+     * Displays an error popup if issues arise with the user account sign in or creation
+     * @param message String - error message to display to the user
+     */
+    protected void createErrorDialog(String message){
+
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View userAccountErrorPopupView = getLayoutInflater().inflate(R.layout.user_account_error_popup, null);
+
+        errorMessageTV = (TextView) userAccountErrorPopupView.findViewById(R.id.userAccountErrorMsgText);
+        errorMessageTV.setText(message);
+
+        okBtn = (Button) userAccountErrorPopupView.findViewById(R.id.userAccountErrorOkBtn);
+
+        dialogBuilder.setView(userAccountErrorPopupView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        okBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
 }

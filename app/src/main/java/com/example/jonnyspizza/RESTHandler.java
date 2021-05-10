@@ -427,7 +427,8 @@ public class RESTHandler {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     // Indicate replicate, try again
-                    System.out.println("Error");
+                    String errorMessage = "Username " + username + " already exists.  Please try a new username!";
+                    ((UserAccountActivity) context).createErrorDialog(errorMessage);
                 }
 
             }){
