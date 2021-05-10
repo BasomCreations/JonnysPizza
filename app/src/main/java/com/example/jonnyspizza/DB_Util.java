@@ -5,6 +5,12 @@ public final class DB_Util {
     public static final String DB_NAME = "JonnyPizza.db";
     public static final int VERSION_NUMBER = 7;
 
+    // User Table
+    public static final String TABLE_USER_ACCOUNT = "userAccount_table";
+    public static final String USER_ACCOUNT_PK = "ID";
+    public static final String USER_ACCOUNT_USERNAME = "Username";
+    public static final String USER_ACCOUNT_PASSWORD = "Password";
+
     // Order Table
     public static final String TABLE_ORDER = "order_table";
     public static final String ORDER_PK = "ID";

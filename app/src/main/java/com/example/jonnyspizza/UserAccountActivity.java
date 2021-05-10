@@ -16,12 +16,15 @@ public class UserAccountActivity extends AppCompatActivity {
 
     private UserAccount userAccount;
 
+    private RESTHandler restHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_account);
 
         this.userAccount = (UserAccount) getIntent().getSerializableExtra(getString(R.string.user_account_name));
+        this.restHandler = new RESTHandler(this);
     }
 
     /**
@@ -38,13 +41,23 @@ public class UserAccountActivity extends AppCompatActivity {
         // TODO: Check server if valid match -- if so, userAccount.signIn() with valid credentials, else notify with popup
 
         if (validateSignInDetails()){
-            userAccount.signIn(username, password);
-
-            Intent returnIntent = new Intent();
-            returnIntent.putExtra(getString(R.string.user_account_name), userAccount);
-            setResult(Activity.RESULT_OK, returnIntent);
-            finish();
+            //restHandler.sign
         }
+    }
+
+    /**
+     * Once user credentials have been validated, sign in and return home
+     * @param userID
+     * @param username
+     * @param password
+     */
+    protected void completeSignIn(String userID, String username, String password){
+        userAccount.signIn(userID, username, password);
+
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(getString(R.string.user_account_name), userAccount);
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
     }
 
     /**
@@ -95,6 +108,13 @@ public class UserAccountActivity extends AppCompatActivity {
     public void createAccountBtn_Click(View view){
         if (validateNewAccountDetails()){
 
+            EditText usernameText = findViewById(R.id.userNameNewText);
+            EditText passwordText = findViewById(R.id.passwordNewText);
+
+            String username = usernameText.getText().toString();
+            String password = passwordText.getText().toString();
+
+            restHandler.addUser(username, password);
         }
     }
 

@@ -30,6 +30,7 @@ import java.util.Map;
 public class RESTHandler {
 
     public static final String BASE_URL = "https://dev4.jonathanbasom.repl.co";
+    public static final String USERS_URL = BASE_URL + "/users";
     public static final String POST_ORDER_URL = BASE_URL + "/postOrder";
     public static final String ORDERS_URL = BASE_URL + "/orders";
 
@@ -46,7 +47,7 @@ public class RESTHandler {
     }
 
     /**
-     * "/postOrder"
+     * POST "/postOrder"
      * @param order
      * @return
      */
@@ -172,7 +173,7 @@ public class RESTHandler {
     }
 
     /**
-     * Get "/orders" - gets the most recent orders from the server
+     * GET "/orders" - gets the most recent orders from the server
      * @param displayContext Context of the dialog builder for the order history popup
      * @param view View for the Order History Popup
      */
@@ -241,6 +242,11 @@ public class RESTHandler {
         return resultsList;
     }
 
+    /**
+     * GET "/order/<orderID>" - gets the details for the specified order
+     * @param orderID
+     * @param orderType
+     */
     public void getOrder(String orderID, String orderType){
 
         try{
@@ -390,5 +396,55 @@ public class RESTHandler {
         }
 
         return order;
+    }
+
+    /**
+     * POST "/users" - adds a new user account to the system
+     * @param username
+     * @param password
+     */
+    public void addUser(String username, String password){
+        try{
+            UserAccount userAccount = new UserAccount(username, password);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String orderJSONString = objectMapper.writeValueAsString(userAccount);
+            JSONObject jsonBody = new JSONObject(orderJSONString);
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, USERS_URL, jsonBody,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            String userID = null;
+                            try {
+                                userID = response.getString(DB_Util.USER_ACCOUNT_PK);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            ((UserAccountActivity) context).completeSignIn(userID, username, password);
+                        }
+                    }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    // Indicate replicate, try again
+                    System.out.println("Error");
+                }
+
+            }){
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("Content-Type", "application/json");
+                    return params;
+                }
+
+            };
+
+            queue.add(request);
+        }
+        catch (Exception e){
+
+        }
+
     }
 }
