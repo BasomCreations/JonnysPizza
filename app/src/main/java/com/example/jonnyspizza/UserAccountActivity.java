@@ -45,10 +45,8 @@ public class UserAccountActivity extends AppCompatActivity {
         String username = usernameText.getText().toString();
         String password = passwordText.getText().toString();
 
-        // TODO: Check server if valid match -- if so, userAccount.signIn() with valid credentials, else notify with popup
-
         if (validateSignInDetails()){
-            //restHandler.sign
+            restHandler.signInUser(username, password);
         }
     }
 

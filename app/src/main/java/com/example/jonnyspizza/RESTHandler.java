@@ -31,6 +31,8 @@ public class RESTHandler {
 
     public static final String BASE_URL = "https://dev4.jonathanbasom.repl.co";
     public static final String USERS_URL = BASE_URL + "/users";
+    private static final String EXISTING_USERS_URL = USERS_URL + "/existingAccounts";
+    private static final String NEW_USERS_URL = USERS_URL + "/newAccounts";
     public static final String POST_ORDER_URL = BASE_URL + "/postOrder";
     public static final String ORDERS_URL = BASE_URL + "/orders";
 
@@ -399,7 +401,7 @@ public class RESTHandler {
     }
 
     /**
-     * POST "/users" - adds a new user account to the system
+     * POST "/users/newAccounts" - adds a new user account to the system
      * @param username
      * @param password
      */
@@ -410,7 +412,7 @@ public class RESTHandler {
             String orderJSONString = objectMapper.writeValueAsString(userAccount);
             JSONObject jsonBody = new JSONObject(orderJSONString);
 
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, USERS_URL, jsonBody,
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, NEW_USERS_URL, jsonBody,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
@@ -446,6 +448,55 @@ public class RESTHandler {
         catch (Exception e){
 
         }
+    }
 
+    /**
+     * POST "/users/existingAccounts" - determines if the username and password are a valid match
+     * @param username
+     * @param password
+     */
+    public void signInUser(String username, String password){
+        try{
+            UserAccount userAccount = new UserAccount(username, password);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String orderJSONString = objectMapper.writeValueAsString(userAccount);
+            JSONObject jsonBody = new JSONObject(orderJSONString);
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, EXISTING_USERS_URL, jsonBody,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            String userID = null;
+                            try {
+                                userID = response.getString(DB_Util.USER_ACCOUNT_PK);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            ((UserAccountActivity) context).completeSignIn(userID, username, password);
+                        }
+                    }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    // Indicate replicate, try again
+                    String errorMessage = "Username and password do not match.  Please try again!";
+                    ((UserAccountActivity) context).createErrorDialog(errorMessage);
+                }
+
+            }){
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("Content-Type", "application/json");
+                    return params;
+                }
+
+            };
+
+            queue.add(request);
+        }
+        catch (Exception e){
+
+        }
     }
 }
