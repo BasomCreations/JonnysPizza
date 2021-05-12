@@ -8,6 +8,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpResponse;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.jonnyspizza.CustomObjects.Address;
@@ -23,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -208,7 +210,9 @@ public class RESTHandler {
             }, new Response.ErrorListener(){
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    System.out.println(error.getMessage());
+                    // Indicate server error
+                    String errorMessage = "The server is temporarily unavailable. Please try again later.";
+                    ((UserAccountActivity) context).createErrorDialog(errorMessage);
                 }
             });
             queue.add(jsonObjectRequest);
@@ -271,7 +275,9 @@ public class RESTHandler {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    System.out.println(error.getMessage());
+                    // Indicate server error
+                    String errorMessage = "The server is temporarily unavailable. Please try again later.";
+                    ((UserAccountActivity) context).createErrorDialog(errorMessage);
                 }
             });
 
@@ -435,8 +441,15 @@ public class RESTHandler {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    String errorMessage;
                     // Indicate replicate, try again
-                    String errorMessage = "Username " + username + " already exists.  Please try a new username!";
+                    if (error.networkResponse.statusCode == HttpURLConnection.HTTP_CONFLICT){
+                        errorMessage = "Username " + username + " already exists.  Please try a new username!";
+                    }
+                    // Indicate server error
+                    else {
+                        errorMessage = "The server is temporarily unavailable. Please try again later.";
+                    }
                     ((UserAccountActivity) context).createErrorDialog(errorMessage);
                 }
 
@@ -485,8 +498,15 @@ public class RESTHandler {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    // Indicate replicate, try again
-                    String errorMessage = "Username and password do not match.  Please try again!";
+                    String errorMessage;
+                    // Indicate invalid credentials
+                    if (error.networkResponse.statusCode == HttpURLConnection.HTTP_UNAUTHORIZED){
+                        errorMessage = "Username and password do not match.  Please try again!";
+                    }
+                    // Indicate server error
+                    else {
+                        errorMessage = "The server is temporarily unavailable. Please try again later.";
+                    }
                     ((UserAccountActivity) context).createErrorDialog(errorMessage);
                 }
 

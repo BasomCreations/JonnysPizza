@@ -10,10 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextClock;
 import android.widget.TextView;
-
-import com.example.jonnyspizza.CustomObjects.Order;
 
 public class UserAccountActivity extends AppCompatActivity {
 
@@ -180,7 +177,7 @@ public class UserAccountActivity extends AppCompatActivity {
     protected void createErrorDialog(String message){
 
         dialogBuilder = new AlertDialog.Builder(this);
-        final View userAccountErrorPopupView = getLayoutInflater().inflate(R.layout.user_account_error_popup, null);
+        final View userAccountErrorPopupView = getLayoutInflater().inflate(R.layout.error_popup, null);
 
         errorMessageTV = (TextView) userAccountErrorPopupView.findViewById(R.id.userAccountErrorMsgText);
         errorMessageTV.setText(message);

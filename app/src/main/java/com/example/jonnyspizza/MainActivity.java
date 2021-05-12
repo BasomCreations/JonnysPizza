@@ -27,6 +27,8 @@ import com.example.jonnyspizza.CustomObjects.Delivery;
 import com.example.jonnyspizza.CustomObjects.Order;
 import com.example.jonnyspizza.CustomObjects.Payment;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -102,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
             proceedToOrder(carryout);
         }
         else {
-            // TODO: Popup notifying user of error - must be signed in
+            createErrorDialog("You must sign in or create an account to continue!");
         }
     }
 
@@ -115,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
             createNewDeliveryAddressDialog();
         }
         else {
-            // TODO: Popup notifying user of error - must be signed in
+            createErrorDialog("You must sign in or create an account to continue!");
         }
     }
 
@@ -229,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
             restHandler.getRecentOrders(this.userAccount.getId());
         }
         else {
-            // TODO: Popup notifying user of error - must be signed in
+            createErrorDialog("You must sign in or create an account to continue!");
         }
     }
 
@@ -433,6 +435,32 @@ public class MainActivity extends AppCompatActivity {
         // Update the user greeting
         TextView userGreetingLbl = findViewById(R.id.userGreetingLbl);
         userGreetingLbl.setText("Welcome, " + userAccount.getUserName() + "!");
+    }
+
+    /**
+     * Displays an error popup if the user tries to user app without being signed in or if there is a server issues
+     * @param message String - error message to display to the user
+     */
+    protected void createErrorDialog(String message){
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        final View userAccountErrorPopupView = getLayoutInflater().inflate(R.layout.error_popup, null);
+
+        TextView errorMessageTV = (TextView) userAccountErrorPopupView.findViewById(R.id.userAccountErrorMsgText);
+        errorMessageTV.setText(message);
+
+        Button okBtn = (Button) userAccountErrorPopupView.findViewById(R.id.userAccountErrorOkBtn);
+
+        dialogBuilder.setView(userAccountErrorPopupView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        okBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
 
 
