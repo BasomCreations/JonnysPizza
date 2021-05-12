@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class UserAccount implements Serializable {
 
     @JsonProperty(DB_Util.USER_ACCOUNT_PK)
-    private String id;
+    private int id;
 
     @JsonProperty(DB_Util.USER_ACCOUNT_USERNAME)
     private String userName;
@@ -21,6 +21,7 @@ public class UserAccount implements Serializable {
      * @param password
      */
     public UserAccount(String userName, String password) {
+        this.id = -1;
         this.userName = userName;
         this.password = password;
     }
@@ -31,7 +32,7 @@ public class UserAccount implements Serializable {
      * @param userName
      * @param password
      */
-    public UserAccount(String id, String userName, String password) {
+    public UserAccount(int id, String userName, String password) {
         this.id = id;
         this.userName = userName;
         this.password = password;
@@ -41,6 +42,7 @@ public class UserAccount implements Serializable {
      * Constructor
      */
     public UserAccount() {
+        this.id = -1;
     }
 
     /**
@@ -57,7 +59,7 @@ public class UserAccount implements Serializable {
      * @param userName String
      * @param password String
      */
-    public void signIn(String id, String userName, String password){
+    public void signIn(int id, String userName, String password){
         this.setId(id);
         this.setUserName(userName);
         this.setPassword(password);
@@ -67,15 +69,16 @@ public class UserAccount implements Serializable {
      * Signs the user out of the account by clearing the user credentials
      */
     public void signOut(){
+        this.id = -1;
         this.userName = null;
         this.password = null;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

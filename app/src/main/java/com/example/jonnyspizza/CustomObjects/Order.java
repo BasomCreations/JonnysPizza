@@ -6,9 +6,18 @@ import java.io.Serializable;
 
 public abstract class Order implements Serializable {
 
+    private int userID;
     private Cart cart;
     private Customer customer;
     private Payment payment;
+
+    /** Constructors */
+    public Order(int userID, Cart cart, Customer customer, Payment payment) {
+        this.userID = userID;
+        this.cart = cart;
+        this.customer = customer;
+        this.payment = payment;
+    }
 
     public Order(Cart cart, Customer customer, Payment payment) {
         this.cart = cart;
@@ -16,11 +25,28 @@ public abstract class Order implements Serializable {
         this.payment = payment;
     }
 
+    public Order(int userID, Cart cart) {
+        this.userID = userID;
+        this.cart = cart;
+    }
+
     public Order(Cart cart) {
         this.cart = cart;
     }
 
+    public Order(int userID) {
+        this.userID = userID;
+    }
+
     public Order(){
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
     public Cart getCart() {

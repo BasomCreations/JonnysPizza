@@ -30,11 +30,12 @@ import java.util.Map;
 public class RESTHandler {
 
     public static final String BASE_URL = "https://dev4.jonathanbasom.repl.co";
-    public static final String USERS_URL = BASE_URL + "/users";
-    private static final String EXISTING_USERS_URL = USERS_URL + "/existingAccounts";
-    private static final String NEW_USERS_URL = USERS_URL + "/newAccounts";
-    public static final String POST_ORDER_URL = BASE_URL + "/postOrder";
-    public static final String ORDERS_URL = BASE_URL + "/orders";
+    public static final String USERS_RESOURCE = "/users";
+    private static final String EXISTING_USERS_RESOURCE = "/existingAccounts";
+    private static final String NEW_USERS_RESOURCE = "/newAccounts";
+    public static final String ORDERS_RESOURCE = "/orders";
+
+    public static final String POST_ORDER_URL = "/postOrder";
 
     private Context context;
     private RequestQueue queue;
@@ -49,11 +50,11 @@ public class RESTHandler {
     }
 
     /**
-     * POST "/postOrder"
+     * POST "/users/<userID>/orders" - adds a new order for the user "userID"
      * @param order
      * @return
      */
-    public String addOrder(Order order){
+    public void addOrder(Order order){
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -61,10 +62,18 @@ public class RESTHandler {
 
             JSONObject jsonBody = new JSONObject(orderJSONString);
 
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, POST_ORDER_URL, jsonBody,
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + USERS_RESOURCE + "/" + order.getUserID() + ORDERS_RESOURCE, jsonBody,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+
+                            String orderID = "";
+                            try {
+                                orderID = response.getString(DB_Util.ORDER_ID_KEY);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            ((PlaceOrderActivity) context).createOrderPlacedDialog(orderID);
 
                         /*try{
                             if(response.getString("status").equals("true")){
@@ -163,26 +172,23 @@ public class RESTHandler {
             };
              queue.add(sr);
              */
-
-            return "123";       //TODO: Change this to the actual order ID
         }
         catch (JsonProcessingException e){
-            return "JSON Processing Error";
+            //return "JSON Processing Error";
         }
         catch (JSONException e){
-            return "JSON Exception";
+            //return "JSON Exception";
         }
     }
 
     /**
-     * GET "/orders" - gets the most recent orders from the server
-     * @param displayContext Context of the dialog builder for the order history popup
-     * @param view View for the Order History Popup
+     * GET "/users/<userID>/orders" - gets the most recent orders for user "userID" from the server
+     * @param userID ID of the user account for which the recent orders are associated
      */
-    public void getRecentOrders(Context displayContext, View view){
+    public void getRecentOrders(int userID){
 
         try{
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, ORDERS_URL, null, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL + USERS_RESOURCE + "/" + userID + ORDERS_RESOURCE, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     System.out.println(response);
@@ -197,8 +203,7 @@ public class RESTHandler {
                         resultsList = new ArrayList<>();
                     }
 
-                    ((MainActivity) context).populateOrderHistoryDialog(displayContext, view, resultsList);
-
+                    ((MainActivity) context).createNewOrderHistoryDialog(resultsList);
                 }
             }, new Response.ErrorListener(){
                 @Override
@@ -252,7 +257,7 @@ public class RESTHandler {
     public void getOrder(String orderID, String orderType){
 
         try{
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, ORDERS_URL + "/" + orderID, null, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, BASE_URL + ORDERS_RESOURCE + "/" + orderID, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     Order order = parseOrderJSON(response);
@@ -412,14 +417,14 @@ public class RESTHandler {
             String orderJSONString = objectMapper.writeValueAsString(userAccount);
             JSONObject jsonBody = new JSONObject(orderJSONString);
 
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, NEW_USERS_URL, jsonBody,
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + USERS_RESOURCE + NEW_USERS_RESOURCE, jsonBody,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            String userID = null;
+                            int userID = -1;
                             try {
-                                userID = response.getString(DB_Util.USER_ACCOUNT_PK);
-                            } catch (JSONException e) {
+                                userID = Integer.parseInt(response.getString(DB_Util.USER_ID_KEY));
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                             ((UserAccountActivity) context).completeSignIn(userID, username, password);
@@ -462,14 +467,14 @@ public class RESTHandler {
             String orderJSONString = objectMapper.writeValueAsString(userAccount);
             JSONObject jsonBody = new JSONObject(orderJSONString);
 
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, EXISTING_USERS_URL, jsonBody,
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + USERS_RESOURCE + EXISTING_USERS_RESOURCE, jsonBody,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
-                            String userID = null;
+                            int userID = -1;
                             try {
-                                userID = response.getString(DB_Util.USER_ACCOUNT_PK);
-                            } catch (JSONException e) {
+                                userID = Integer.parseInt(response.getString(DB_Util.USER_ID_KEY));
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
                             ((UserAccountActivity) context).completeSignIn(userID, username, password);

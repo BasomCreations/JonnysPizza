@@ -56,7 +56,7 @@ public class UserAccountActivity extends AppCompatActivity {
      * @param username
      * @param password
      */
-    protected void completeSignIn(String userID, String username, String password){
+    protected void completeSignIn(int userID, String username, String password){
         userAccount.signIn(userID, username, password);
 
         Intent returnIntent = new Intent();

@@ -96,9 +96,14 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void CarryoutBtn_Click(View view){
-        Cart cart = new Cart();
-        Carryout carryout = new Carryout(cart);
-        proceedToOrder(carryout);
+        if (this.userAccount != null && this.userAccount.getId() != -1){
+            Cart cart = new Cart();
+            Carryout carryout = new Carryout(this.userAccount.getId(), cart);
+            proceedToOrder(carryout);
+        }
+        else {
+            // TODO: Popup notifying user of error - must be signed in
+        }
     }
 
     /**
@@ -106,7 +111,12 @@ public class MainActivity extends AppCompatActivity {
      * @param v
      */
     public void DeliveryBtn_Click(View v){
-        createNewDeliveryAddressDialog();
+        if (this.userAccount != null && this.userAccount.getId() != -1){
+            createNewDeliveryAddressDialog();
+        }
+        else {
+            // TODO: Popup notifying user of error - must be signed in
+        }
     }
 
     /**
@@ -156,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
         if (isValid){
             Address deliveryAddress = createDeliveryAddress();
             Cart cart = new Cart();
-            Delivery delivery = new Delivery(cart, deliveryAddress);
+            Delivery delivery = new Delivery(this.userAccount.getId(), cart, deliveryAddress);
             proceedToOrder(delivery);
         }
     }
@@ -214,25 +224,29 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void orderHistoryBtn_Click(View view){
-        createNewOrderHistoryDialog();
+        if (this.userAccount != null && this.userAccount.getId() != -1){
+     //       createNewOrderHistoryDialog();
+            restHandler.getRecentOrders(this.userAccount.getId());
+        }
+        else {
+            // TODO: Popup notifying user of error - must be signed in
+        }
     }
 
     /**
      * Create the popup to display the order history
      */
-    public void createNewOrderHistoryDialog() {
+    protected void createNewOrderHistoryDialog(ArrayList<ContentValues> results) {
         dialogBuilder = new AlertDialog.Builder(this);
         final View orderHistoryPopupView = getLayoutInflater().inflate(R.layout.fragment_order_history, null);
         historyPopup_closeBtn = (Button) orderHistoryPopupView.findViewById(R.id.closeHistoryBtn);
         historyLinearLayout = (LinearLayout) orderHistoryPopupView.findViewById(R.id.historyLinearLayout);
 
-        //populateOrderHistoryDialog(dialogBuilder.getContext());
+        populateOrderHistoryDialog(dialogBuilder.getContext(), results);
 
-        restHandler.getRecentOrders(dialogBuilder.getContext(), orderHistoryPopupView);
-
-        //dialogBuilder.setView(orderHistoryPopupView);
-        //dialog = dialogBuilder.create();
-        //dialog.show();
+        dialogBuilder.setView(orderHistoryPopupView);
+        dialog = dialogBuilder.create();
+        dialog.show();
 
         historyPopup_closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -242,18 +256,27 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    protected void populateOrderHistoryDialog(Context context, View view, ArrayList<ContentValues> results){
+    private void populateOrderHistoryDialog(Context context, ArrayList<ContentValues> results){
         //ArrayList<ContentValues> results = dbHandler.getRecentOrders();
 
-        int i = 1;
-        for (ContentValues values: results) {
-            displayOrder(context, values, i);
-            i++;
+        if (results.size() == 0){
+            displayNoHistory(context);
         }
+        else {
+            int i = 1;
+            for (ContentValues values: results) {
+                displayOrder(context, values, i);
+                i++;
+            }
+        }
+    }
 
-        dialogBuilder.setView(view);
-        dialog = dialogBuilder.create();
-        dialog.show();
+    private void displayNoHistory(Context context) {
+        TextView resultsTv = new TextView(context);
+        resultsTv.setText("0 Results");
+        resultsTv.setGravity(View.TEXT_ALIGNMENT_CENTER);
+        resultsTv.setTextSize(HISTORY_TEXT_SIZE);
+        historyLinearLayout.addView(resultsTv);
     }
 
     private void displayOrder(Context context, ContentValues values, int index){

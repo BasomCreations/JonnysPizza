@@ -141,8 +141,8 @@ public class PlaceOrderActivity extends AppCompatActivity {
             setOrderCustomer();
             setOrderPayment();
             //String orderID = dbHandler.addOrder(order);
-            String orderID = restHandler.addOrder(order);
-            createOrderPlacedDialog(orderID);
+            restHandler.addOrder(order);
+            //createOrderPlacedDialog(orderID);
         }
     }
 

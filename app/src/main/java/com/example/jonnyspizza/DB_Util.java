@@ -14,6 +14,7 @@ public final class DB_Util {
     // Order Table
     public static final String TABLE_ORDER = "order_table";
     public static final String ORDER_PK = "ID";
+    public static final String ORDER_FK = "UserID";
     public static final String ORDER_TYPE = "Order_Type";
         public static final String DELIVERY_TYPE = "Delivery";
         public static final String CARRYOUT_TYPE = "Carryout";
@@ -28,6 +29,8 @@ public final class DB_Util {
     public static final String ITEM_QUANTITY = "Quantity";
 
     // JSON Strings
+    public static final String USER_ID_KEY = "userID";
+    public static final String ORDER_ID_KEY = "orderID";
     public static final String DELIVERY_ADDRESS_KEY = "deliveryAddress";
     public static final String CUSTOMER_KEY = "customer";
     public static final String PAYMENT_KEY = "payment";

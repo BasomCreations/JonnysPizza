@@ -482,7 +482,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
 
         if (valid){
             address = createDeliveryAddress();
-            delivery = new Delivery(order.getCart(), order.getCustomer(), order.getPayment(), address);
+            delivery = new Delivery(order.getUserID(), order.getCart(), order.getCustomer(), order.getPayment(), address);
             switchOrderType(delivery);
         }
     }
@@ -556,7 +556,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
         dialog.dismiss();
 
         if (order instanceof Delivery){
-            Carryout carryout = new Carryout(order.getCart(), order.getCustomer(), order.getPayment());
+            Carryout carryout = new Carryout(order.getUserID(), order.getCart(), order.getCustomer(), order.getPayment());
             switchOrderType(carryout);
         }
     }
