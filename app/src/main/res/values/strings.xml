@@ -42,4 +42,7 @@
     <string name="login_button_text"><u>Sign In</u></string>
     <string name="logout_button_text"><u>Sign Out</u></string>
 
+    <!-- SharedPreferences -->
+    <string name="user_account_preference">UserAccount</string>
+
 </resources>

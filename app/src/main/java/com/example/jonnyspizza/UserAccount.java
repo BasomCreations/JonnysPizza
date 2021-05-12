@@ -1,5 +1,6 @@
 package com.example.jonnyspizza;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
@@ -49,6 +50,7 @@ public class UserAccount implements Serializable {
      * Determines if the user is currently signed into an account
      * @return boolean - true if the user is signed in, false if not
      */
+    @JsonIgnore
     public boolean isSignedIn(){
         return (this.userName != null && this.password != null);
     }

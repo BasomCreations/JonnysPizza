@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.Gravity;
@@ -26,12 +27,16 @@ import com.example.jonnyspizza.CustomObjects.Customer;
 import com.example.jonnyspizza.CustomObjects.Delivery;
 import com.example.jonnyspizza.CustomObjects.Order;
 import com.example.jonnyspizza.CustomObjects.Payment;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+
+    private SharedPreferences sharedPreferences;
 
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
@@ -55,9 +60,28 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        sharedPreferences = getPreferences(MODE_PRIVATE);
+
         dbHandler = new DatabaseHandler(this);
         restHandler = new RESTHandler(this);
-        userAccount = new UserAccount();
+        initUserAccount(); //userAccount = new UserAccount();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ObjectMapper objectMapper = new ObjectMapper();
+        SharedPreferences.Editor spEditor = sharedPreferences.edit();
+        try {
+            String accountString = objectMapper.writeValueAsString(userAccount);
+            spEditor.putString(getString(R.string.user_account_preference), accountString);
+            spEditor.commit();
+        }
+        // If error writing account, write null so that new account generated
+        catch (JsonProcessingException e) {
+            spEditor.putString(getString(R.string.user_account_preference), null);
+            spEditor.commit();
+        }
     }
 
     @Override
@@ -80,6 +104,31 @@ public class MainActivity extends AppCompatActivity {
             else if (resultCode == Activity.RESULT_CANCELED){
             }
         }
+    }
+
+    /**
+     * Initializes the UserAccount
+     * @return UserAccount - UserAccount stored in SharedPreferences or a new instance if one does not exist
+     */
+    private void initUserAccount(){
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        if (sharedPreferences.contains(getString(R.string.user_account_preference))){
+            String accountString = sharedPreferences.getString(getString(R.string.user_account_preference), null);
+
+            try{
+                userAccount = objectMapper.readValue(accountString, UserAccount.class);
+                if (userAccount != null){
+                    updateCurrentUser();
+                    return;
+                }
+            }
+            catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+        }
+
+        userAccount = new UserAccount();
     }
 
     /**
