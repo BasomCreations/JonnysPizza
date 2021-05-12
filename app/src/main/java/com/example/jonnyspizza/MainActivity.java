@@ -191,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
 
         dialogBuilder.setView(deliveryPopupView);
         dialog = dialogBuilder.create();
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
 
         deliveryPopup_cancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -203,16 +204,19 @@ public class MainActivity extends AppCompatActivity {
         deliveryPopup_saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ConfirmAddressBtn_Click();
-                dialog.dismiss();
+                boolean isValid = ConfirmAddressBtn_Click();
+                if (isValid) {
+                    dialog.dismiss();
+                }
             }
         });
     }
 
     /**
      * Proceeds to ordering activity after the address confirmation button is clicked
+     * @return boolean - true if the input was valid and the order started
      */
-    private void ConfirmAddressBtn_Click(){
+    private boolean ConfirmAddressBtn_Click(){
         boolean isValid = validateDeliveryPopupInput();
         if (isValid){
             Address deliveryAddress = createDeliveryAddress();
@@ -220,6 +224,8 @@ public class MainActivity extends AppCompatActivity {
             Delivery delivery = new Delivery(this.userAccount.getId(), cart, deliveryAddress);
             proceedToOrder(delivery);
         }
+
+        return isValid;
     }
 
     /**
@@ -297,6 +303,7 @@ public class MainActivity extends AppCompatActivity {
 
         dialogBuilder.setView(orderHistoryPopupView);
         dialog = dialogBuilder.create();
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
 
         historyPopup_closeBtn.setOnClickListener(new View.OnClickListener() {

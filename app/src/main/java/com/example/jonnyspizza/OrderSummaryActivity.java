@@ -372,7 +372,7 @@ public class OrderSummaryActivity extends AppCompatActivity {
         totalTextView.setTextSize(HEADER_TEXT_SIZE);
         totalTextView.setTypeface(null, Typeface.BOLD);
         totalTextView.setTextColor(Color.BLACK);
-        totalTextView.setBackgroundColor(Color.YELLOW);
+        //totalTextView.setBackgroundColor(Color.YELLOW);
 
         totalCostLayout.addView(totalTextView);
     }

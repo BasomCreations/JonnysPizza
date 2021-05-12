@@ -187,6 +187,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
 
         dialogBuilder.setView(orderPlacedPopupView);
         dialog = dialogBuilder.create();
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
 
         orderPlaced_OkBtn.setOnClickListener(new View.OnClickListener() {
@@ -260,8 +261,15 @@ public class PlaceOrderActivity extends AppCompatActivity {
         String year = yyyyTxt.getText().toString();
         String billingZip = billingZipTxt.getText().toString();
 
-        int monthInt = Integer.parseInt(month);
-        int yearInt = Integer.parseInt(year);
+        int monthInt = minMonth - 1;
+        int yearInt = minYear - 1;
+
+        if (!month.equals(emptyString)){
+            monthInt = Integer.parseInt(month);
+        }
+        if (!year.equals(emptyString)){
+            yearInt = Integer.parseInt(year);
+        }
 
         if (firstName.equals(emptyString)){
             firstNameTxt.setError("First Name Required!");

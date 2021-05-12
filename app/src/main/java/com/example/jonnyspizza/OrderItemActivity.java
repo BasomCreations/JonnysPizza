@@ -50,6 +50,7 @@ public class OrderItemActivity extends AppCompatActivity {
         viewPager.setOffscreenPageLimit(sectionsPagerAdapter.getCount());       // retains the info between all the menu fragments
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
+        /*
         FloatingActionButton fab = findViewById(R.id.fab);
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +60,7 @@ public class OrderItemActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+         */
 
         updateCartCost();
     }
@@ -76,6 +78,7 @@ public class OrderItemActivity extends AppCompatActivity {
 
         dialogBuilder.setView(addedItemPopupView);
         dialog = dialogBuilder.create();
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
 
         backToMenuBtn.setOnClickListener(new View.OnClickListener() {
