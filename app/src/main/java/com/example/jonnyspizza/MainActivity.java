@@ -434,4 +434,9 @@ public class MainActivity extends AppCompatActivity {
         TextView userGreetingLbl = findViewById(R.id.userGreetingLbl);
         userGreetingLbl.setText("Welcome, " + userAccount.getUserName() + "!");
     }
+
+
+    public UserAccount getUserAccount() {
+        return userAccount;
+    }
 }

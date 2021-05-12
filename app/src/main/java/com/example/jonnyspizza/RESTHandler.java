@@ -263,6 +263,8 @@ public class RESTHandler {
                     Order order = parseOrderJSON(response);
                     // Exception means that Order unable to be parsed -- TODO: Set an error popup for user
                     if (order != null){
+                        int userId = ((MainActivity) context).getUserAccount().getId();
+                        order.setUserID(userId);
                         ((MainActivity) context).viewOrderSummary(order);
                     }
                 }
