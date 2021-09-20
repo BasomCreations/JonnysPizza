@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
             try{
                 userAccount = objectMapper.readValue(accountString, UserAccount.class);
-                if (userAccount != null){
+                if (userAccount != null && (userAccount.getUserName().equals("null") && userAccount.getPassword().equals("null"))){
                     updateCurrentUser();
                     return;
                 }
