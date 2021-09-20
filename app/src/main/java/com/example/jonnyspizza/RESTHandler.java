@@ -31,7 +31,7 @@ import java.util.Map;
 
 public class RESTHandler {
 
-    public static final String BASE_URL = "https://dev4.jonathanbasom.repl.co";
+    public static final String BASE_URL = "https://Jonnys-Pizza-Backend.jonathanbasom.repl.co";
     public static final String USERS_RESOURCE = "/users";
     private static final String EXISTING_USERS_RESOURCE = "/existingAccounts";
     private static final String NEW_USERS_RESOURCE = "/newAccounts";
